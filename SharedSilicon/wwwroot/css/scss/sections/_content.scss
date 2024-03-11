@@ -1,0 +1,49 @@
+﻿.content {
+    .container {
+        padding-top: 5vh;
+        padding-bottom: 5vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        @include md {
+            padding-top: 10vh;
+            padding-bottom: 10vh;
+        }
+
+        .calender {
+            display: none;
+
+            @include lg {
+                display: block;
+            }
+        }
+
+        .content {
+            h2 {
+                padding-bottom: 20px;
+            }
+
+            .icon-points {
+                display: flex;
+                align-items: center;
+                justify-content: left;
+
+                i {
+                    position: relative;
+                    top: -7px;
+                    color: $theme;
+                    font-weight: 500;
+                }
+
+                p {
+                    margin-left: 10px;
+                }
+            }
+
+            button {
+                margin-top: 10px;
+            }
+        }
+    }
+}
