@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
     <None Include="wwwroot\css\scss\components\_buttons.scss" />
     <None Include="wwwroot\css\scss\components\_links.scss" />
     <None Include="wwwroot\css\scss\core\_base.scss" />
@@ -19,6 +24,10 @@
     <None Include="wwwroot\css\scss\_components.scss" />
     <None Include="wwwroot\css\scss\_core.scss" />
     <None Include="wwwroot\css\scss\_sections.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>
