@@ -6,4 +6,32 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\css\scss\components\_buttons.scss" />
+    <None Include="wwwroot\css\scss\components\_links.scss" />
+    <None Include="wwwroot\css\scss\core\_base.scss" />
+    <None Include="wwwroot\css\scss\core\_colors.scss" />
+    <None Include="wwwroot\css\scss\core\_media.scss" />
+    <None Include="wwwroot\css\scss\core\_typography.scss" />
+    <None Include="wwwroot\css\scss\sections\_footer.scss" />
+    <None Include="wwwroot\css\scss\sections\_header.scss" />
+    <None Include="wwwroot\css\site.scss" />
+    <None Include="wwwroot\css\scss\_components.scss" />
+    <None Include="wwwroot\css\scss\_core.scss" />
+    <None Include="wwwroot\css\scss\_sections.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\Shared\Sections\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

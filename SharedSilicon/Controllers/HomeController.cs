@@ -1,32 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
-using SharedSilicon.Models;
-using System.Diagnostics;
+
 
 namespace SharedSilicon.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        //[Route("/")]
         public IActionResult Index()
         {
+            //var viewModel = new SubscribeViewModel();
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[HttpPost]
+        //public IActionResult Subscribe(SubscribeViewModel viewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //        return RedirectToAction("Success");
+        //    return View("~/Views/Shared/Sections/_Subscribe.cshtml", viewModel);
+        //}
     }
 }
