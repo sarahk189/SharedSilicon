@@ -1,4 +1,4 @@
-/*.contact-us {
+.contact-us {
     background-color: $gray-100;
     position: relative;
 
@@ -89,14 +89,14 @@
 
             .contact-form-container {
                 flex: 1;
-                margin-top: 50px;*/
-/*position: absolute;*/
-/*right: 0;
-                top: 0;*/
-/*background-color: white;
+                margin-top: 50px;
+position: absolute;
+right: 0;
+                top: 0;
+background-color: white;
                 padding: 20px;
-                width: 50%;*/ /* Adjust as needed */
-/*max-width: 800px;
+                width: 50%;  Adjust as needed 
+max-width: 800px;
                 border-radius: 8px;
                 align-self: center;
                 z-index: 1;
@@ -118,11 +118,11 @@
 
 
 
-                        input {*/
-/*width: 491px;
+                        input {
+width: 491px;
                             height: 52px;
-                            padding: 10px;*/
-/*width: 100%;
+                            padding: 10px;
+width: 100%;
                             padding: 10px;
                             border-radius: 8px !important;
                             border: 0.063rem solid $gray-400;
@@ -162,14 +162,14 @@
                             }
                         }
 
-                        textarea {*/
-/*padding: 1rem;*/
-/*border-radius: 0.5rem !important;
+                        textarea {
+padding: 1rem;
+border-radius: 0.5rem !important;
                             border: 0.063rem solid $gray-400;
-                            resize: none;*/
-/*  width: 492px;
-                            height: 199px;*/
-/*width: 100%;
+                            resize: none;
+  width: 492px;
+                            height: 199px;
+width: 100%;
                             padding: 10px;
 
                             &::placeholder {
@@ -186,11 +186,11 @@
                             }
                         }
 
-                        select {*/
-/*width: 491px;
+                        select {
+width: 491px;
                             height: 52px;
-                            padding: 10px;*/
-/*width: 100%;
+                            padding: 10px;
+width: 100%;
                             padding: 10px;
                             border: 1px solid $gray-400;
                             color: $gray-500;
@@ -221,13 +221,13 @@
         width: 100%;
         height: auto;
         display: block;
-        margin-top: -50px;*/ /* Adjust as needed */
-/*z-index: 0;
+        margin-top: -50px;  Adjust as needed 
+z-index: 0;
     }
-}*/
+}
 
 
-.contact-us {
+/*.contact-us {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -283,13 +283,13 @@ img {
 
 .contact-text {
     width: 70%;
-}
+}*/
 /*.content-head {
     font-weight: bolder;
     font-size: 24px;
 }*/
 
-.contact-form-container {
+/*.contact-form-container {
     width: 30%;
     position: relative;
     margin-top: 50px;
@@ -336,4 +336,4 @@ input, select, textarea {
     height: auto;
     display: block;
     margin-top: 50px;
-}
+}*/
