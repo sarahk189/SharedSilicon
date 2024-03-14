@@ -31,9 +31,7 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
-
     <Folder Include="Views\Shared\Sections\" />
-
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

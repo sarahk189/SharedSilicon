@@ -1,24 +1,24 @@
-using SharedSilicon.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SharedSilicon.Controllers;
 
-public class HomeController : Controller
+namespace SharedSilicon.Controllers
 {
-    [Route("/")]
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        var viewModel = new SubscribeViewModel();
-        return View(viewModel);
-    }
+        //[Route("/")]
+        public IActionResult Index()
+        {
+            //var viewModel = new SubscribeViewModel();
+            return View();
+        }
 
 
-    [HttpPost]
-    public IActionResult Subscribe(SubscribeViewModel viewModel)
-    {
-        if (ModelState.IsValid)
-            return RedirectToAction("Success");
-        return View("~/Views/Shared/Sections/_Subscribe.cshtml", viewModel);
+        //[HttpPost]
+        //public IActionResult Subscribe(SubscribeViewModel viewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //        return RedirectToAction("Success");
+        //    return View("~/Views/Shared/Sections/_Subscribe.cshtml", viewModel);
+        //}
     }
 }
-
