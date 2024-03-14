@@ -36,6 +36,12 @@
 			<div class="contact-form-container">
 
 				<form class="contact-form" method="post" asp-controller="Contact" asp-action="Index" novalidate>
+					@if (TempData["MessageSent"] != null)
+					{
+						<div class="alert alert-success">
+							@TempData["MessageSent"]
+						</div>
+					}
 
 					<h2>Get In Contact With Us</h2>
 
@@ -65,6 +71,7 @@
 						<textarea asp-for="Message" rows="5"></textarea>
 					</div>
 
+				
 					<button type="submit" class="btn-theme">Send Contact Request</button>
 
 				</form>

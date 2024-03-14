@@ -20,9 +20,30 @@
             margin-left: 30px;
 
 
+
+            @include sm {
+                flex-direction: column;
+                align-items: center;
+                margin-left: 0;
+            }
+
+            @include mid {
+                flex-direction: column;
+                align-items: center;
+                margin-left: 0;
+            }
+
             .contact-info {
                 flex: 1;
                 margin-right: 20px;
+
+                @include sm {
+                    margin-right: 0;
+                }
+
+                @include mid {
+                    margin-right: 0;
+                }
 
 
                 .navigation {
@@ -112,6 +133,20 @@
                 align-self: center;
                 z-index: 1;
 
+                @include sm {
+                    position: static;
+                    width: 100%;
+                    padding: 0;
+                    margin-top: 20px;
+                }
+
+                @include mid {
+                    position: static;
+                    width: 100%;
+                    padding: 0;
+                    margin-top: 20px;
+                }
+
                 h2 {
                     margin-top: 20px;
                     margin-bottom: 50px;
@@ -123,8 +158,18 @@
                     background-color: white;
                     padding: 60px;
                     width: 636px;
-                    height: 848px;
+                    height: auto;
                     border-radius: 8px;
+
+                    @include sm {
+                        width: 100%;
+                        padding: 20px;
+                    }
+
+                    @include mid {
+                        width: 100%;
+                        padding: 20px;
+                    }
 
 
                     .input-group {
@@ -138,7 +183,7 @@
                             padding: 10px;
                             width: 100%;
                             padding: 10px;
-                            border-radius: 8px !important;
+                            border-radius: 0.5rem !important;
                             border: 0.063rem solid $gray-400;
 
                             &::placeholder {
@@ -157,8 +202,8 @@
 
                         label {
                             display: block;
-                            margin-bottom: 0;
-                            font-weight: 600;
+                            margin-bottom: 0.188rem;
+                            font-weight: 700;
                             color: black;
                         }
 
@@ -210,13 +255,21 @@
                             color: $gray-500;
                             border-radius: 8px !important;
                         }
+
+                        @include sm {
+                            width: 100%;
+                        }
+
+                        @include mid {
+                            width: 100%;
+                        }
                     }
 
                     .btn-theme {
                         margin-top: 30px;
-                        background-color: $theme;  
+                        background-color: $theme;
                         @include theme-shadow;
-                        font-size: 16px;                       
+                        font-size: 16px;
                         padding: 10px 20px;
                         cursor: pointer;
                         transition: background-color 0.25s ease-in-out;
