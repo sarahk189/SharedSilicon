@@ -436,6 +436,384 @@ footer .container .social-media {
   margin-bottom: 30px;
 }
 
+.sign-in {
+  position: relative;
+  height: 70vh;
+}
+.sign-in .content {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+}
+.sign-in .content .input-field {
+  display: grid;
+  grid-template-columns: 1fr;
+  position: relative;
+}
+.sign-in .content .input-field label {
+  font-weight: 900;
+  margin-bottom: 5px;
+  padding-top: 1rem;
+}
+.sign-in .content .input-field input {
+  border: 2px solid red;
+  max-width: 33rem;
+  width: 100%;
+  height: 3rem;
+  border-radius: 10px;
+  border: 1px solid;
+  border-color: #D4D7E5;
+  padding-left: 20px;
+  font-weight: 500;
+  opacity: 0.7;
+}
+.sign-in .content .input-field span.error-message {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: red;
+  font-size: 0.8rem;
+  padding-top: 1rem;
+}
+.sign-in .content .checkbox input {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid gray;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transform: translateY(10%);
+  opacity: 0.6;
+}
+.sign-in .content .checkbox input:checked {
+  background-color: gray;
+}
+.sign-in .content .checkbox {
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+.sign-in .content .checkbox span {
+  padding-left: 0.5rem;
+}
+.sign-in .content .btn-theme-s {
+  height: 3rem;
+  font-weight: 600;
+  width: 33rem;
+  border: none;
+}
+.sign-in .content .forgot {
+  color: #6366F1;
+  margin-left: auto;
+  padding-top: 1.5rem;
+  text-align: center;
+}
+.sign-in .content .forgot a {
+  font-weight: 600;
+  margin-left: auto;
+  text-align: center;
+  text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.create-account {
+  position: relative;
+  height: 70vh;
+}
+.create-account .content {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+}
+.create-account .content .name-by-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.create-account .content .input-field {
+  display: grid;
+  grid-template-columns: 1fr;
+  position: relative;
+}
+.create-account .content .input-field label {
+  font-weight: 900;
+  margin-bottom: 5px;
+  padding-top: 1rem;
+}
+.create-account .content .input-field input {
+  max-width: 33rem;
+  width: 100%;
+  height: 3rem;
+  border-radius: 10px;
+  border: 1px solid;
+  border-color: #D4D7E5;
+  padding-left: 20px;
+  font-weight: 500;
+  opacity: 0.7;
+}
+.create-account .content .input-field input.input-validation-error {
+  border: 2px solid #EF4444;
+}
+.create-account .content .input-field .field-validation-error {
+  color: red;
+}
+.create-account .content .input-field span.error-message {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: red;
+  font-size: 0.8rem;
+  padding-top: 1rem;
+}
+.create-account .content .checkbox input {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid gray;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transform: translateY(10%);
+  opacity: 0.6;
+}
+.create-account .content .checkbox input:checked {
+  background-color: gray;
+}
+.create-account .content .checkbox {
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+.create-account .content .checkbox span {
+  padding-left: 0.5rem;
+}
+.create-account .content .checkbox span.error-message {
+  position: absolute;
+  right: 0;
+  color: #EF4444;
+  font-size: 0.8rem;
+  padding-top: 1rem;
+  transform: translateY(-40%);
+}
+.create-account .content .btn-theme-s {
+  height: 3rem;
+  font-weight: 600;
+  width: 33rem;
+  border: none;
+}
+
+.single-course .top-content .laptop {
+  width: 100%;
+  height: 40%;
+  overflow: hidden;
+  z-index: -1;
+  position: absolute;
+  top: 0;
+}
+.single-course .top-content .container .seeding {
+  margin-top: 2rem;
+  font-size: small;
+  color: rgba(255, 255, 255, 0.767);
+  padding-bottom: 1.5rem;
+}
+.single-course .top-content .container .seeding .arrows {
+  margin: 1px 10px 1px 10px;
+  font-size: x-small;
+}
+.single-course .top-content .container .small-btns {
+  display: flex;
+  font-size: smaller;
+}
+.single-course .top-content .container .small-btns .green-btn {
+  background: #22C55E;
+  color: white;
+  border-radius: 5px;
+  margin-right: 1rem;
+  padding: 0px 15px 0px 15px;
+}
+.single-course .top-content .container .small-btns .white-btn {
+  background: white;
+  color: blacK;
+  border-radius: 5px;
+  padding: 0px 15px 0px 15px;
+}
+.single-course .top-content h1 {
+  color: white;
+}
+.single-course .top-content .text-under {
+  color: rgba(255, 255, 255, 0.63);
+  margin-bottom: 3rem;
+}
+.single-course .top-content .smol-things {
+  display: flex;
+}
+.single-course .top-content .smol-things p {
+  font-size: smaller;
+}
+.single-course .top-content .smol-things .star {
+  color: #FFBA08;
+  font-size: smaller;
+  transform: translateY(-20%);
+}
+.single-course .top-content .smol-things .blank-star {
+  font-size: smaller;
+  color: rgba(255, 255, 255, 0.575);
+  transform: translateY(-20%);
+  margin-right: 0.5rem;
+}
+.single-course .top-content .smol-things .little-icon {
+  color: rgba(255, 255, 255, 0.596);
+  transform: translateY(10%);
+  margin-right: 0.5rem;
+}
+.single-course .top-content .smol-things span {
+  height: 1rem;
+  width: 0.1rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.548);
+  transform: translateY(25%);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.single-course .top-content .smol-things p {
+  color: rgba(255, 255, 255, 0.5);
+}
+.single-course .top-content .albert {
+  display: flex;
+  padding-top: 6rem;
+  padding-bottom: 5rem;
+}
+.single-course .top-content .albert .smol-img-albert {
+  height: 3rem;
+  width: 3rem;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 1.2rem;
+  transform: translateY(30%);
+}
+.single-course .top-content .albert .albert-text {
+  color: white;
+}
+.single-course .top-content .albert .albert-text .created {
+  font-weight: 700;
+  transform: translateY(40%);
+}
+.single-course .description .container .divide {
+  display: flex;
+}
+.single-course .description .container .divide .course-description h2 {
+  padding-top: 2.1rem;
+}
+.single-course .description .container .divide .course-description .things-to-learn h3 {
+  padding-top: 2rem;
+}
+.single-course .description .container .divide .course-description .things-to-learn .what-what p {
+  margin-bottom: 0.3rem;
+}
+.single-course .description .container .divide .course-description .things-to-learn .what-what .fa-circle-check {
+  color: #6366F1;
+  padding-right: 0.7rem;
+}
+.single-course .description .container .divide .this-includes {
+  width: 100%;
+  margin-top: 3rem;
+  margin-left: 8rem;
+  padding-left: 4rem;
+  border: 1px solid rgba(128, 124, 124, 0.37);
+  border-radius: 0.5rem;
+  padding: 1.5rem 3rem 2rem 2rem;
+  box-shadow: 0px 1px 1px rgba(3, 7, 18, 0.02), 0px 5px 4px rgba(3, 7, 18, 0.03), 0px 12px 9px rgba(3, 7, 18, 0.05);
+}
+.single-course .description .container .divide .this-includes .smolicon {
+  margin-right: 0.8rem;
+}
+.single-course .description .container .divide .this-includes h5 {
+  padding-top: 1rem;
+}
+.single-course .description .container .divide .this-includes .price {
+  display: flex;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+.single-course .description .container .divide .this-includes .price h4 {
+  text-decoration: line-through;
+  transform: translateY(10%);
+  font-weight: 100;
+  opacity: 0.6;
+  padding-left: 0.5rem;
+}
+.single-course .description .container .divide .this-includes button {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+.single-course .description .container .program-details h2 {
+  margin-top: 3rem;
+  padding-bottom: 2rem;
+}
+.single-course .description .container .program-details img {
+  margin-right: 2rem;
+  height: 4.5rem;
+  width: 4.5rem;
+}
+.single-course .description .container .program-details .the-info {
+  display: flex;
+}
+.single-course .description .container .program-details .the-info h4 {
+  margin-top: 0;
+}
+.single-course .description .container .program-details .the-info p {
+  padding-bottom: 2rem;
+}
+.single-course .description .big-albert {
+  margin-top: 3rem;
+  display: flex;
+  height: 29rem;
+  z-index: 0;
+}
+.single-course .description .big-albert .blu-background {
+  height: 29rem;
+  z-index: -1;
+  position: absolute;
+}
+.single-course .description .big-albert .halfscreen {
+  color: white;
+  background-color: rgb(27, 24, 54);
+  z-index: -2;
+  padding-top: 5rem;
+  padding-left: 5rem;
+  padding-right: 4rem;
+}
+.single-course .description .big-albert .halfscreen h2 {
+  color: white;
+}
+.single-course .description .big-albert .halfscreen .learn {
+  font-size: large;
+}
+.single-course .description .big-albert .halfscreen p {
+  opacity: 0.8;
+}
+.single-course .description .big-albert .halfscreen .other-btns {
+  display: flex;
+}
+.single-course .description .big-albert .halfscreen .other-btns .fa-brands {
+  padding-right: 0.4rem;
+}
+.single-course .description .big-albert .halfscreen .other-btns .red-btn {
+  background: #EF4444;
+  color: white;
+  border-radius: 5px;
+  margin-right: 1.5rem;
+  padding: 8px 25px 8px 25px;
+  font-size: small;
+}
+.single-course .description .big-albert .halfscreen .other-btns .blu-btn {
+  background: #4C82F7;
+  color: white;
+  border-radius: 4px;
+  padding: 8px 25px 8px 25px;
+  font-size: small;
+}
+
 .apps {
   background-color: #EFF2FC;
 }
@@ -1287,382 +1665,4 @@ form span.field-validation-error {
 }
 .tools .container .grid .tool-card8:hover {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-.sign-in {
-  position: relative;
-  height: 70vh;
-}
-.sign-in .content {
-  position: absolute;
-  left: 50%;
-  top: 20%;
-  transform: translateX(-50%);
-}
-.sign-in .content .input-field {
-  display: grid;
-  grid-template-columns: 1fr;
-  position: relative;
-}
-.sign-in .content .input-field label {
-  font-weight: 900;
-  margin-bottom: 5px;
-  padding-top: 1rem;
-}
-.sign-in .content .input-field input {
-  border: 2px solid red;
-  max-width: 33rem;
-  width: 100%;
-  height: 3rem;
-  border-radius: 10px;
-  border: 1px solid;
-  border-color: #D4D7E5;
-  padding-left: 20px;
-  font-weight: 500;
-  opacity: 0.7;
-}
-.sign-in .content .input-field span.error-message {
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: red;
-  font-size: 0.8rem;
-  padding-top: 1rem;
-}
-.sign-in .content .checkbox input {
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid gray;
-  border-radius: 3px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  transform: translateY(10%);
-  opacity: 0.6;
-}
-.sign-in .content .checkbox input:checked {
-  background-color: gray;
-}
-.sign-in .content .checkbox {
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
-}
-.sign-in .content .checkbox span {
-  padding-left: 0.5rem;
-}
-.sign-in .content .btn-theme-s {
-  height: 3rem;
-  font-weight: 600;
-  width: 33rem;
-  border: none;
-}
-.sign-in .content .forgot {
-  color: #6366F1;
-  margin-left: auto;
-  padding-top: 1.5rem;
-  text-align: center;
-}
-.sign-in .content .forgot a {
-  font-weight: 600;
-  margin-left: auto;
-  text-align: center;
-  text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-}
-
-.create-account {
-  position: relative;
-  height: 70vh;
-}
-.create-account .content {
-  position: absolute;
-  left: 50%;
-  top: 20%;
-  transform: translateX(-50%);
-}
-.create-account .content .name-by-side {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-.create-account .content .input-field {
-  display: grid;
-  grid-template-columns: 1fr;
-  position: relative;
-}
-.create-account .content .input-field label {
-  font-weight: 900;
-  margin-bottom: 5px;
-  padding-top: 1rem;
-}
-.create-account .content .input-field input {
-  max-width: 33rem;
-  width: 100%;
-  height: 3rem;
-  border-radius: 10px;
-  border: 1px solid;
-  border-color: #D4D7E5;
-  padding-left: 20px;
-  font-weight: 500;
-  opacity: 0.7;
-}
-.create-account .content .input-field input.input-validation-error {
-  border: 2px solid #EF4444;
-}
-.create-account .content .input-field .field-validation-error {
-  color: red;
-}
-.create-account .content .input-field span.error-message {
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: red;
-  font-size: 0.8rem;
-  padding-top: 1rem;
-}
-.create-account .content .checkbox input {
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid gray;
-  border-radius: 3px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  transform: translateY(10%);
-  opacity: 0.6;
-}
-.create-account .content .checkbox input:checked {
-  background-color: gray;
-}
-.create-account .content .checkbox {
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
-}
-.create-account .content .checkbox span {
-  padding-left: 0.5rem;
-}
-.create-account .content .checkbox span.error-message {
-  position: absolute;
-  right: 0;
-  color: #EF4444;
-  font-size: 0.8rem;
-  padding-top: 1rem;
-  transform: translateY(-40%);
-}
-.create-account .content .btn-theme-s {
-  height: 3rem;
-  font-weight: 600;
-  width: 33rem;
-  border: none;
-}
-
-.single-course .top-content .laptop {
-  width: 100%;
-  height: 40%;
-  overflow: hidden;
-  z-index: -1;
-  position: absolute;
-  top: 0;
-}
-.single-course .top-content .container .seeding {
-  margin-top: 2rem;
-  font-size: small;
-  color: rgba(255, 255, 255, 0.767);
-  padding-bottom: 1.5rem;
-}
-.single-course .top-content .container .seeding .arrows {
-  margin: 1px 10px 1px 10px;
-  font-size: x-small;
-}
-.single-course .top-content .container .small-btns {
-  display: flex;
-  font-size: smaller;
-}
-.single-course .top-content .container .small-btns .green-btn {
-  background: #22C55E;
-  color: white;
-  border-radius: 5px;
-  margin-right: 1rem;
-  padding: 0px 15px 0px 15px;
-}
-.single-course .top-content .container .small-btns .white-btn {
-  background: white;
-  color: blacK;
-  border-radius: 5px;
-  padding: 0px 15px 0px 15px;
-}
-.single-course .top-content h1 {
-  color: white;
-}
-.single-course .top-content .text-under {
-  color: rgba(255, 255, 255, 0.63);
-  margin-bottom: 3rem;
-}
-.single-course .top-content .smol-things {
-  display: flex;
-}
-.single-course .top-content .smol-things p {
-  font-size: smaller;
-}
-.single-course .top-content .smol-things .star {
-  color: #FFBA08;
-  font-size: smaller;
-  transform: translateY(-20%);
-}
-.single-course .top-content .smol-things .blank-star {
-  font-size: smaller;
-  color: rgba(255, 255, 255, 0.575);
-  transform: translateY(-20%);
-  margin-right: 0.5rem;
-}
-.single-course .top-content .smol-things .little-icon {
-  color: rgba(255, 255, 255, 0.596);
-  transform: translateY(10%);
-  margin-right: 0.5rem;
-}
-.single-course .top-content .smol-things span {
-  height: 1rem;
-  width: 0.1rem;
-  background-color: rgba(255, 255, 255, 0.5);
-  color: rgba(255, 255, 255, 0.548);
-  transform: translateY(25%);
-  margin-left: 10px;
-  margin-right: 10px;
-}
-.single-course .top-content .smol-things p {
-  color: rgba(255, 255, 255, 0.5);
-}
-.single-course .top-content .albert {
-  display: flex;
-  padding-top: 6rem;
-  padding-bottom: 5rem;
-}
-.single-course .top-content .albert .smol-img-albert {
-  height: 3rem;
-  width: 3rem;
-  overflow: hidden;
-  border-radius: 50%;
-  margin-right: 1.2rem;
-  transform: translateY(30%);
-}
-.single-course .top-content .albert .albert-text {
-  color: white;
-}
-.single-course .top-content .albert .albert-text .created {
-  font-weight: 700;
-  transform: translateY(40%);
-}
-.single-course .description .container .divide {
-  display: flex;
-}
-.single-course .description .container .divide .course-description h2 {
-  padding-top: 2.1rem;
-}
-.single-course .description .container .divide .course-description .things-to-learn h3 {
-  padding-top: 2rem;
-}
-.single-course .description .container .divide .course-description .things-to-learn .what-what p {
-  margin-bottom: 0.3rem;
-}
-.single-course .description .container .divide .course-description .things-to-learn .what-what .fa-circle-check {
-  color: #6366F1;
-  padding-right: 0.7rem;
-}
-.single-course .description .container .divide .this-includes {
-  width: 100%;
-  margin-top: 3rem;
-  margin-left: 8rem;
-  padding-left: 4rem;
-  border: 1px solid rgba(128, 124, 124, 0.37);
-  border-radius: 0.5rem;
-  padding: 1.5rem 3rem 2rem 2rem;
-  box-shadow: 0px 1px 1px rgba(3, 7, 18, 0.02), 0px 5px 4px rgba(3, 7, 18, 0.03), 0px 12px 9px rgba(3, 7, 18, 0.05);
-}
-.single-course .description .container .divide .this-includes .smolicon {
-  margin-right: 0.8rem;
-}
-.single-course .description .container .divide .this-includes h5 {
-  padding-top: 1rem;
-}
-.single-course .description .container .divide .this-includes .price {
-  display: flex;
-  padding-top: 2rem;
-  padding-bottom: 1rem;
-}
-.single-course .description .container .divide .this-includes .price h4 {
-  text-decoration: line-through;
-  transform: translateY(10%);
-  font-weight: 100;
-  opacity: 0.6;
-  padding-left: 0.5rem;
-}
-.single-course .description .container .divide .this-includes button {
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
-}
-.single-course .description .container .program-details h2 {
-  margin-top: 3rem;
-  padding-bottom: 2rem;
-}
-.single-course .description .container .program-details img {
-  margin-right: 2rem;
-  height: 4.5rem;
-  width: 4.5rem;
-}
-.single-course .description .container .program-details .the-info {
-  display: flex;
-}
-.single-course .description .container .program-details .the-info h4 {
-  margin-top: 0;
-}
-.single-course .description .container .program-details .the-info p {
-  padding-bottom: 2rem;
-}
-.single-course .description .big-albert {
-  margin-top: 3rem;
-  display: flex;
-  height: 29rem;
-  z-index: 0;
-}
-.single-course .description .big-albert .blu-background {
-  height: 29rem;
-  z-index: -1;
-  position: absolute;
-}
-.single-course .description .big-albert .halfscreen {
-  color: white;
-  background-color: rgb(27, 24, 54);
-  z-index: -2;
-  padding-top: 5rem;
-  padding-left: 5rem;
-  padding-right: 4rem;
-}
-.single-course .description .big-albert .halfscreen h2 {
-  color: white;
-}
-.single-course .description .big-albert .halfscreen .learn {
-  font-size: large;
-}
-.single-course .description .big-albert .halfscreen p {
-  opacity: 0.8;
-}
-.single-course .description .big-albert .halfscreen .other-btns {
-  display: flex;
-}
-.single-course .description .big-albert .halfscreen .other-btns .fa-brands {
-  padding-right: 0.4rem;
-}
-.single-course .description .big-albert .halfscreen .other-btns .red-btn {
-  background: #EF4444;
-  color: white;
-  border-radius: 5px;
-  margin-right: 1.5rem;
-  padding: 8px 25px 8px 25px;
-  font-size: small;
-}
-.single-course .description .big-albert .halfscreen .other-btns .blu-btn {
-  background: #4C82F7;
-  color: white;
-  border-radius: 4px;
-  padding: 8px 25px 8px 25px;
-  font-size: small;
 }
