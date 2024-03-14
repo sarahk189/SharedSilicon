@@ -1,0 +1,64 @@
+﻿.apps {
+    background-color: $gray-200;
+
+    .container {
+        justify-content: center;
+        text-align: center;
+
+        @include md {
+            display: flex;
+            justify-content: space-evenly;
+            text-align: left;
+            padding: 50px 0;
+        }
+
+        .iphone {
+            display: none;
+
+            @include lg {
+                display: block;
+            }
+        }
+
+        .content {
+            padding-top: 4vh;
+            width: 80%;
+            font-size: small;
+            line-height: 1vh;
+
+            h1 {
+                width: 60%;
+
+                @include md {
+                    width: 40%
+                }
+            }
+
+            .download-type {
+                padding-top: 4vh;
+
+                .text {
+                    padding-bottom: 0;
+                    margin-bottom: 0;
+                    line-height: 14px;
+                }
+
+                img {
+                    padding-top: 0;
+                    margin-top: 0;
+                    position: relative;
+                    top: -.5vh;
+                }
+
+                .app-type {
+                    display: flex;
+
+                    img {
+                        width: 15vh;
+                        padding-left: 5vh;
+                    }
+                }
+            }
+        }
+    }
+}
