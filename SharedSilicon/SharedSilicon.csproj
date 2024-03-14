@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="Views\Account\Details.cshtml" />
+    <None Include="Views\Account\SavedCourses.cshtml" />
+    <None Include="Views\Account\Security.cshtml" />
     <None Include="wwwroot\css\scss\components\_buttons.scss" />
     <None Include="wwwroot\css\scss\components\_links.scss" />
     <None Include="wwwroot\css\scss\core\_base.scss" />
@@ -27,8 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Helpers\" />
+
+    <Folder Include="Views\Shared\Sections\" />
+
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
