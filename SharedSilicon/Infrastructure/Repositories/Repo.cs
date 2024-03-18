@@ -1,5 +1,8 @@
 ﻿using Infrastructure.Contexts;
+using Infrastructure.Dto;
+using Infrastructure.Factories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 
 namespace Infrastructure.Repositories;
@@ -8,19 +11,22 @@ public abstract class Repo<TEntity>(DataContext context) where TEntity : class
 {
 	private readonly DataContext _context = context;
 
-	public virtual async Task<TEntity> CreateAsync(TEntity entity)
+	public virtual async Task<ResponseResult> CreateAsync(TEntity entity)
 	{
 		try
 		{
 			_context.Set<TEntity>().Add(entity);
 			await _context.SaveChangesAsync();
-			return entity;
+			return ResponseFactory.Ok(entity);
 		}
-		catch
+		catch (Exception ex)
 		{
-
+			
+			{
+				return ResponseFactory.Error(ex.Message);
+			};
 		}
-		return null!;
+		
 	}
 
 	public virtual async Task<TEntity> UpdateAsync(TEntity entity)
@@ -38,11 +44,25 @@ public abstract class Repo<TEntity>(DataContext context) where TEntity : class
 		return null!;
 	}
 
-	public virtual async Task<List<TEntity>> GetAllAsync()
+	public virtual async Task<TEntity> GetOneAsync(Expression<Func<TEntity, bool>> predicate)
 	{
 		try
 		{
-			var result = await _context.Set<TEntity>().ToListAsync();
+			var result = await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+			return result;
+		}
+		catch
+		{
+
+		}
+		return null!;
+	}
+
+	public virtual async Task<IEnumerable<ResponseResult>> GetAllAsync()
+	{
+		try
+		{
+			IEnumerable<TEntity> result = await _context.Set<TEntity>().ToListAsync();
 			return result;
 		}
 		catch
