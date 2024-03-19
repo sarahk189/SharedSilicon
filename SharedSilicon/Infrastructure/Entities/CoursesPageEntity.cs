@@ -7,8 +7,6 @@ public class CoursesPageEntity
 	public string Title { get; set; } = null!;
 	public string Author { get; set; } = null!;
 	public string ImageUrl { get; set; } = null!;
-	public string BestBadgeUrl { get; set; } = null!;
-	public string BookMarkUrl { get; set; } = null!;
 	public decimal? Price { get; set; }
 	public decimal? RedPrice { get; set; }
 	public decimal? OldPrice { get; set; }
