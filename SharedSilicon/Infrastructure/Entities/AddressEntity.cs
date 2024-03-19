@@ -6,7 +6,6 @@ public class AddressEntity
 {
 	[Key]
 	public int Id { get; set; }
-
 	
 	public string StreetName { get; set; } = null!;
 
