@@ -1,9 +1,8 @@
 ﻿using Infrastructure.Contexts;
-using Infrastructure.Dto;
+using Infrastructure.Dtos;
 using Infrastructure.Factories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-
 
 namespace Infrastructure.Repositories;
 
@@ -21,12 +20,12 @@ public abstract class Repo<TEntity>(DataContext context) where TEntity : class
 		}
 		catch (Exception ex)
 		{
-			
+
 			{
 				return ResponseFactory.Error(ex.Message);
 			};
 		}
-		
+
 	}
 
 	public virtual async Task<TEntity> UpdateAsync(TEntity entity)
@@ -62,14 +61,16 @@ public abstract class Repo<TEntity>(DataContext context) where TEntity : class
 	{
 		try
 		{
-			IEnumerable<TEntity> result = await _context.Set<TEntity>().ToListAsync();
+
+			IEnumerable<TEntity> entities = await _context.Set<TEntity>().ToListAsync();
+			IEnumerable<ResponseResult> result = entities.Select(entity => ResponseFactory.Ok(entity));
 			return result;
 		}
 		catch
 		{
 
 		}
-		return null!;
+		return [];
 	}
 
 	public virtual async Task<TEntity> DeleteAsync(TEntity entity)
@@ -86,6 +87,4 @@ public abstract class Repo<TEntity>(DataContext context) where TEntity : class
 		}
 		return null!;
 	}
-	
 }
-

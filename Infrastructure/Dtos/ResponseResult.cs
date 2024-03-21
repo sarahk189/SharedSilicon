@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Dto;
+﻿
+
+namespace Infrastructure.Dtos;
 
 public enum StatusCode
 {

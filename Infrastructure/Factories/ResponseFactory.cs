@@ -1,4 +1,5 @@
-﻿using Infrastructure.Dto;
+﻿using Infrastructure.Dtos;
+
 
 namespace Infrastructure.Factories;
 
@@ -50,8 +51,4 @@ public class ResponseFactory
 			StatusCode = StatusCode.EXISTS
 		};
 	}
-
-	
-
-	
 }
