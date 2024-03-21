@@ -31,6 +31,7 @@
 
     <Folder Include="Views\Shared\Sections\" />
 
+    <Folder Include="ViewModels\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
