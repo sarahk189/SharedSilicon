@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="Views\Shared\Sections\_Details.cshtml" />
+    <Content Remove="Views\Shared\Sections\_SavedCourses.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Views\Shared\Sections\_Details.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +21,7 @@
     <None Include="Views\Account\Details.cshtml" />
     <None Include="Views\Account\SavedCourses.cshtml" />
     <None Include="Views\Account\Security.cshtml" />
+    <None Include="Views\Shared\Sections\_SavedCourses.cshtml" />
     <None Include="wwwroot\css\scss\components\_buttons.scss" />
     <None Include="wwwroot\css\scss\components\_links.scss" />
     <None Include="wwwroot\css\scss\core\_base.scss" />
@@ -31,7 +38,6 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="Views\Shared\Sections\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
