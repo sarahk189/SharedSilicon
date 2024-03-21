@@ -1,5 +1,5 @@
 ﻿using SharedSilicon.Models;
-using static SharedSilicon.Models.CoursesModel;
+//using static SharedSilicon.Models.CoursesModel;
 using static SharedSilicon.Models.SavedCoursesModel;
 
 namespace SharedSilicon.ViewModels
