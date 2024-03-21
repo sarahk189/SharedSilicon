@@ -1,0 +1,146 @@
+﻿@import '../core/_colors.scss';
+@import '../core/_media.scss';
+@import '../core/_typography.scss';
+
+.computer {
+    height: 300px;
+    position: relative;
+
+    @include md {
+        height: 500px;
+    }
+
+    @include lg {
+        height: 700px;
+    }
+
+    .text {
+        position: absolute;
+        display: flex;
+        padding-top: 1rem;
+        width: 100%;
+        padding: 5px;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+
+        @include md {
+            padding: 0px;
+            padding-top: 4rem;
+        }
+
+
+        #s-b {
+            @include h4;
+            text-align: right;
+            color: $gray-100 !important;
+            margin-left: 20px;
+
+            @include md {
+                @include h1;
+                margin-left: 20px;
+                text-align: center;
+            }
+        }
+
+        #l-d {
+            @include h4;
+            text-align: left;
+            color: black;
+            padding-left: 30px;
+
+            @include md {
+                @include h1;
+                text-align: center;
+            }
+        }
+    }
+
+    #light-dark {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        z-index: 0;
+        position: relative;
+
+        .dark {
+            background-color: $gray-900;
+            width: 50%;
+            height: 100%;
+        }
+
+        .light {
+            background-color: white;
+            width: 50%;
+            height: 100%;
+        }
+    }
+
+    .image {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70%;
+        height: auto;
+        z-index: 2;
+        padding-top: 1rem;
+
+        @include md {
+            width: 50%;
+            top: 50%;
+            padding-top: 5rem;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    }
+
+    .changer {
+        position: absolute;
+        width: 3px;
+        height: 100%;
+        top: 0;
+        left: 50%;
+        background-color: $theme;
+        transform: translateX(-50%);
+        z-index: 3;
+        padding-top: 10rem;
+
+        &::before {
+            content: '';
+            width: 10px;
+            aspect-ratio: 1;
+            background-color: inherit;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            margin-top: 2rem;
+
+            @include md {
+                width: 20px;
+            }
+        }
+
+        .fa-arrows-left-right {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: $gray-100;
+            font-weight: 200;
+            width: 5px;
+            margin-top: 2rem;
+
+            @include md {
+                width: auto;
+                font-weight: 700;
+            }
+        }
+    }
+}
