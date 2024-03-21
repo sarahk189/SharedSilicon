@@ -26,7 +26,7 @@
 //Egen gjorda mixins
 
 @mixin sm {
-    @media(max-width: 375px) {
+    @media(max-width: 390px) {
         @content
     }
 }

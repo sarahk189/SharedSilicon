@@ -455,7 +455,7 @@ footer .container .social-media {
   margin-bottom: 150px;
   margin-left: 30px;
 }
-@media (max-width: 375px) {
+@media (max-width: 390px) {
   .contact-us .container .contact-layout {
     flex-direction: column;
     align-items: center;
@@ -473,7 +473,7 @@ footer .container .social-media {
   flex: 1;
   margin-right: 20px;
 }
-@media (max-width: 375px) {
+@media (max-width: 390px) {
   .contact-us .container .contact-layout .contact-info {
     margin-right: 0;
   }
@@ -554,7 +554,7 @@ footer .container .social-media {
   align-self: center;
   z-index: 1;
 }
-@media (max-width: 375px) {
+@media (max-width: 390px) {
   .contact-us .container .contact-layout .contact-form-container {
     position: static;
     width: 100%;
@@ -583,7 +583,7 @@ footer .container .social-media {
   height: auto;
   border-radius: 8px;
 }
-@media (max-width: 375px) {
+@media (max-width: 390px) {
   .contact-us .container .contact-layout .contact-form-container .contact-form {
     width: 100%;
     padding: 20px;
@@ -669,7 +669,7 @@ footer .container .social-media {
   color: #B4B7C9;
   border-radius: 8px !important;
 }
-@media (max-width: 375px) {
+@media (max-width: 390px) {
   .contact-us .container .contact-layout .contact-form-container .contact-form .input-group {
     width: 100%;
   }
