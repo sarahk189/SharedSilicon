@@ -8,12 +8,7 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
-    <Content Remove="Views\Shared\Sections\_Details.cshtml" />
     <Content Remove="Views\Shared\Sections\_SavedCourses.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Views\Shared\Sections\_Details.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
