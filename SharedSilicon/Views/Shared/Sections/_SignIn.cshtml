@@ -1,0 +1,47 @@
+﻿@model SignInViewModel
+@using SharedSilicon.ViewModels
+
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<div class="sign-in ">
+    <div class="content">
+        <form method="post" asp-controller="Auth" asp-action="SignIn" novalidate>
+            <div>
+                @Model.ErrorMessage
+            </div>
+
+            <h1>Welcome back</h1>
+            <p>Don't have an account yet? <a asp-controller="Auth" asp-action="SignUp">Sign up here.</a></p>
+
+            <div id="form-email" class="input-field">
+                <label asp-for="Form.Email"></label>
+                <span asp-validation-for="Form.Email" class="error-message"></span>
+                <input asp-for="Form.Email" />
+            </div>
+
+            <div id="form-password" class="input-field">
+                <label asp-for="Form.Password"></label>
+                <span asp-validation-for="Form.Password" class="error-message"></span>
+                <input asp-for="Form.Password" />
+            </div>
+
+
+            <div id="form-remember" class="checkbox">
+                <input asp-for="Form.RememberMe" />
+                <label asp-for="Form.RememberMe"> Remember me</label>
+            </div>
+
+            <button id="form-submit" class="btn-theme-s" type="submit">@Model.PageTitle</button>
+
+
+            <div class="forgot">
+                <a id="form-forgot-password" asp-controller="" asp-action="">Forgot your password?</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+

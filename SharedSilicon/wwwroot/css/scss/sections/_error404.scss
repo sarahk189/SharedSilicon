@@ -1,0 +1,56 @@
+.error-404 {
+    .container {
+        margin-top: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .content {
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+
+            .btn-theme {
+                width: 200px;
+                height: 50px;
+            }
+        }
+    }
+
+    @include md {
+        .container {
+            flex-direction: row;
+
+            nav {
+                .btn-theme {
+                    width: 200px;
+                }
+            }
+        }
+    }
+
+    @include lg {
+        .container {
+            nav {
+                .btn-theme {
+                    width: 250px;
+                }
+            }
+        }
+    }
+
+    @include xl {
+        .container {
+            nav {
+                .btn-theme {
+                    width: 300px;
+                }
+            }
+        }
+    }
+}
