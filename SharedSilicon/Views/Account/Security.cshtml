@@ -1,0 +1,77 @@
+﻿@using SharedSilicon.ViewModels
+@model SecurityViewModel
+
+@{
+    ViewData["Title"] = "Security";
+} 
+
+<div class="container">
+    <section class="account-details">
+        <aside>
+            <div class="profile-info">
+                <img src="@Model.Password.ProfileImage" alt="@($"{Model.Password.FirstName} {Model.Password.LastName}")" />
+                <h5>@($"{Model.Password.FirstName} {Model.Password.LastName}")</h5>
+                <p>@Model.Password.Email</p>
+            </div>
+            <nav>
+                <a class="btn-transparent" asp-controller="Account" asp-action="Details"><i class="fa-light fa-gear"></i> Account Details</a>
+                <a class="btn-theme-s" asp-controller="Account" asp-action="Security"><i class="fa-light fa-lock"></i> Security</a>
+                <a class="btn-transparent" asp-controller="Account" asp-action="SavedCourses"><i class="fa-light fa-bookmark"></i> Saved Courses</a>
+                <a class="btn-transparent" asp-controller="Auth" asp-action="SignIn"><i class="fa-sharp fa-light fa-person-to-door"></i> Sign out</a>
+            </nav>
+        </aside>
+        <div class="security">
+            <section class="change-password">
+                <form method="post" asp-controller="Account" asp-action="Security">
+                    <h2>Security</h2>
+                    <h5>Password</h5>
+
+                    <div class="content">
+                        <div id="form-currentpassword" class="input-group">
+                            <label asp-for=Password.CurrentPassword></label>
+                            <span asp-validation-for="Password.CurrentPassword"></span>
+                            <input asp-for="Password.CurrentPassword" />
+                        </div>
+
+                        <div id="form-newpassword" class="input-group">
+                            <label asp-for=Password.NewPassword></label>
+                            <span asp-validation-for="Password.NewPassword"></span>
+                            <input asp-for="Password.NewPassword" />
+                        </div>
+
+                        <div id="form-confirmpassword" class="input-group">
+                            <label asp-for=Password.ConfirmPassword></label>
+                            <span asp-validation-for="Password.ConfirmPassword"></span>
+                            <input asp-for="Password.ConfirmPassword" />
+                        </div>
+
+                        <div class="form-buttons">
+                            <button class="btn-gray" type="reset">Cancel</button>
+                            <button class="btn-theme" type="submit">Change Password</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+            <hr />
+            <section class="delete-account">
+                <form method="post" asp-controller="Account" asp-action="AddressInfo">
+                    <h5>Delete Account</h5>
+                    <div class="content">
+                        <p>When you delete your account, your public profile will be deactivated immediately. If you change your mind before the 14 days are up, sign in with your email and password, and we’ll send you a link to reactivate your account.</p>
+
+                        <div class="checkbox">
+                            <input asp-for="DeleteAccount" type="checkbox" />
+                            <label asp-for="DeleteAccount">Yes, I want to delete my account.</label>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button class="btn-gray" type="reset">Delete</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </section>
+        </div>
+    </section>
+</div>
