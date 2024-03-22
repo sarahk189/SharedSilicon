@@ -11,7 +11,7 @@ public class AccountController : Controller
     //{
     //    _accountService = accountService;
     //}
-
+     
     [Route("/account")]
     public IActionResult Details()
     {

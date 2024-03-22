@@ -13,7 +13,7 @@ namespace SharedSilicon.ViewModels
             LastName = "Nilsson",
             Email = "micaela.nilsson@domain.com"
         };
-
+         
         public AccountDetailsAddressInfoModel AddressInfo { get; set; } = new AccountDetailsAddressInfoModel();
     }
 }

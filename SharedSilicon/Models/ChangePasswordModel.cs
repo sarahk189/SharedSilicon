@@ -6,7 +6,7 @@ public class ChangePasswordModel
 {
     [DataType(DataType.ImageUrl)]
     public string? ProfileImage { get; set; }
-
+     
     [Display(Name = "First name", Prompt = "Enter your first name", Order = 0)]
     [Required(ErrorMessage = "First name is required")]
     public string FirstName { get; set; } = null!;

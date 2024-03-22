@@ -7,7 +7,7 @@ namespace SharedSilicon.ViewModels
     public class SavedCoursesViewModel
     {
         public string Title { get; set; } = "Saved Items";
-
+         
         public SavedCoursesModel AccountInfo { get; set; } = new SavedCoursesModel()
         {
             ProfileImage = "images/contactDetailsImages/profile_image.svg",

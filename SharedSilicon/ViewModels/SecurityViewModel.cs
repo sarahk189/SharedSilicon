@@ -5,7 +5,7 @@ namespace SharedSilicon.ViewModels
     public class SecurityViewModel
     {
         public string Title { get; set; } = "Security";
-
+         
         public ChangePasswordModel Password { get; set; } = new ChangePasswordModel()
         {
             ProfileImage = "images/contactDetailsImages/profile_image.svg",
