@@ -1,0 +1,296 @@
+.contact-header {
+    background-color: $gray-100;
+}
+
+
+.contact-us {
+    background-color: $gray-100;
+    position: relative;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+
+        .contact-layout {
+            display: flex;
+            justify-content: center;
+            flex-direction: row-reverse;
+            position: relative;
+            margin-bottom: 150px;
+            margin-left: 30px;
+
+
+
+            @include sm {
+                flex-direction: column;
+                align-items: center;
+                margin-left: 0;
+            }
+
+            @include mid {
+                flex-direction: column;
+                align-items: center;
+                margin-left: 0;
+            }
+
+            .contact-info {
+                flex: 1;
+                margin-right: 20px;
+
+                @include sm {
+                    margin-right: 0;
+                }
+
+                @include mid {
+                    margin-right: 0;
+                }
+
+
+                .navigation {
+                    padding: 30px 0;
+
+                    .menu-links {
+                        @include text-s;
+                        color: $gray-600;
+                        text-decoration: none;
+                        transition: color 0.25s ease-in-out;
+
+                        &:hover,
+                        &:active,
+                        &:focus,
+                        .active {
+                            color: $theme;
+                            text-decoration: none;
+                        }
+
+                        i {
+                            margin-right: 5px;
+                        }
+
+                        i.fa-sharp.fa-solid.fa-angles-right {
+                            font-size: 10px;
+                            margin-left: 20px;
+                            margin-right: 20px;
+                        }
+                    }
+                }
+
+                .contact-content {
+                    display: flex;
+                    flex-direction: column;
+
+
+                    .content-item {
+                        display: flex;
+                        margin-top: 50px;
+
+
+
+                        img {
+                            margin-right: 20px;
+                            margin-bottom: 70px;
+                        }
+
+                        .contact-text {
+                            max-width: 290px;
+
+                            .content-head {
+                                font-weight: bolder;
+                                font-size: 24px;
+                            }
+
+                            p {
+                                font-size: 16px;
+                                color: $gray-700;
+                            }
+                        }
+                    }
+
+                    button {
+                        background-color: transparent;
+                        font-weight: bold;
+                        color: $theme;
+                        border: none;
+
+                        i {
+                            margin-left: 10px;
+                        }
+                    }
+                }
+            }
+
+
+            .contact-form-container {
+                flex: 1;
+                margin-top: 50px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                padding: 20px;
+                width: 50%;
+                max-width: 800px;
+                border-radius: 8px;
+                align-self: center;
+                z-index: 1;
+
+                @include sm {
+                    position: static;
+                    width: 100%;
+                    padding: 0;
+                    margin-top: 20px;
+                }
+
+                @include mid {
+                    position: static;
+                    width: 100%;
+                    padding: 0;
+                    margin-top: 20px;
+                }
+
+                h2 {
+                    margin-top: 20px;
+                    margin-bottom: 50px;
+                    margin-right: 50px;
+                }
+
+                .contact-form {
+                    margin-top: 30px;
+                    background-color: white;
+                    padding: 60px;
+                    width: 636px;
+                    height: auto;
+                    border-radius: 8px;
+
+                    @include sm {
+                        width: 100%;
+                        padding: 20px;
+                    }
+
+                    @include mid {
+                        width: 100%;
+                        padding: 20px;
+                    }
+
+
+                    .input-group {
+                        margin-bottom: 25px;
+
+
+
+                        input {
+                            width: 491px;
+                            height: 52px;
+                            padding: 10px;
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 0.5rem !important;
+                            border: 0.063rem solid $gray-400;
+
+                            &::placeholder {
+                                opacity: 0.4;
+                            }
+
+                            &.input-validation-error {
+                                border: 0.063rem solid $danger;
+                                color: $danger;
+
+                                &::placeholder {
+                                    color: $danger;
+                                }
+                            }
+                        }
+
+                        label {
+                            display: block;
+                            margin-bottom: 0.188rem;
+                            font-weight: 700;
+                            color: black;
+                        }
+
+                        span {
+                            display: block;
+                            color: red;
+                            margin-top: 5px;
+
+                            &.field-validation-error {
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                @include text-s;
+                                color: $danger;
+                            }
+                        }
+
+                        textarea {
+                            padding: 1rem;
+                            border-radius: 0.5rem !important;
+                            border: 0.063rem solid $gray-400;
+                            resize: none;
+                            width: 492px;
+                            height: 199px;
+                            width: 100%;
+                            padding: 10px;
+
+                            &::placeholder {
+                                opacity: 0.4;
+                            }
+
+                            &.input-validation-error {
+                                border: 0.063rem solid $danger;
+                                color: $danger;
+
+                                &::placeholder {
+                                    color: $danger;
+                                }
+                            }
+                        }
+
+                        select {
+                            width: 491px;
+                            height: 52px;
+                            padding: 10px;
+                            width: 100%;
+                            padding: 10px;
+                            border: 1px solid $gray-400;
+                            color: $gray-500;
+                            border-radius: 8px !important;
+                        }
+
+                        @include sm {
+                            width: 100%;
+                        }
+
+                        @include mid {
+                            width: 100%;
+                        }
+                    }
+
+                    .btn-theme {
+                        margin-top: 30px;
+                        background-color: $theme;
+                        @include theme-shadow;
+                        font-size: 16px;
+                        padding: 10px 20px;
+                        cursor: pointer;
+                        transition: background-color 0.25s ease-in-out;
+                        width: 229px;
+                        height: 52px;
+
+                        &:hover {
+                            background-color: darken($theme, 10%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .map {
+        position: absolute;
+        width: 100%;
+        height: auto;
+        display: block;
+        margin-top: 0px;
+        z-index: 0;
+    }
+}

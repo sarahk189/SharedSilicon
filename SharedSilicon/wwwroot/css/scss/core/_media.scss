@@ -21,3 +21,30 @@
         @content
     }
 }
+
+
+//Egen gjorda mixins
+
+@mixin sm {
+    @media(max-width: 390px) {
+        @content
+    }
+}
+
+@mixin mid {
+    @media(min-width: 376px) and (max-width: 1350px) {
+        @content
+    }
+}
+
+@mixin responsive {
+    @include sm {
+        @content;
+    }
+
+    @include mid {
+        @content;
+    }
+
+   
+}
