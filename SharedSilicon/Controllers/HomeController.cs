@@ -21,4 +21,4 @@ public class HomeController : Controller
         return View("~/Views/Shared/Sections/_Subscribe.cshtml", viewModel);
     }
 }
-
+ 

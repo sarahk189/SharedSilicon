@@ -1,4 +1,4 @@
-﻿namespace SharedSilicon.ViewModels
+﻿namespace SharedSilicon.ViewModels 
 {
     public class HomeViewModel
     {
