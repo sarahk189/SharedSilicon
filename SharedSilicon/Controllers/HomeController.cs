@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SharedSilicon.ViewModels;
 
 
 namespace SharedSilicon.Controllers
@@ -13,12 +14,13 @@ namespace SharedSilicon.Controllers
         }
 
 
-    [HttpPost]
-    public IActionResult Subscribe(SubscribeViewModel viewModel)
-    {
-        if (ModelState.IsValid)
-            return RedirectToAction("Success");
-        return View("~/Views/Shared/Sections/_Subscribe.cshtml", viewModel);
+        [HttpPost]
+        public IActionResult Subscribe(SubscribeViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+                return RedirectToAction("Success");
+            return View("~/Views/Shared/Sections/_Subscribe.cshtml", viewModel);
+        }
     }
 }
  
