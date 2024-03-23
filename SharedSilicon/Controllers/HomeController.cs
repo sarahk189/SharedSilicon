@@ -1,16 +1,16 @@
-using SharedSilicon.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SharedSilicon.Controllers;
 
-public class HomeController : Controller
+namespace SharedSilicon.Controllers
 {
-    [Route("/")]
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        var viewModel = new SubscribeViewModel();
-        return View(viewModel);
-    }
+        //[Route("/")]
+        public IActionResult Index()
+        {
+            //var viewModel = new SubscribeViewModel();
+            return View();
+        }
 
 
     [HttpPost]
