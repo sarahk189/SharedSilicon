@@ -1,0 +1,70 @@
+﻿@import '../core/_media.scss';
+@import '../core/_colors.scss';
+
+
+.showcase {
+    .container {
+        display: flex;
+        padding-bottom: 3rem;
+
+        .content {
+            flex: 1;
+            max-width: 85%;
+
+            .title {
+                display: flex;
+                margin-bottom: 50px;
+                margin-top: 40px;
+                height: 30%;
+                line-height: 4.5rem;
+                width: 50%;
+            } 
+
+            p {
+                display: flex;
+                width: 100%;
+            }
+
+            a {
+                max-width: 60%;
+                margin-bottom: 10%;
+                margin-top: 10%;
+            }
+
+            .logo-text {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .rows {
+                justify-content: space-evenly;
+                align-items: center;
+
+
+                .logo {
+                    margin-top: 5%;
+                    margin-left: 10px;
+                    padding: 10px;
+                    justify-content: center;
+
+                    &:hover {
+                        background-color: $gray-200;
+                        border-radius: 5%;
+                    }
+                }
+            }
+        }
+
+        .calender {
+            flex: 1;
+            display: none;
+            position: relative;
+            margin: 0px;
+            max-width: 50%;
+
+            @include md {
+                display: inline-block;
+            }
+        }
+    }
+}
