@@ -8,10 +8,10 @@ namespace SharedSilicon.Controllers;
 
 public class HomeController : Controller
 {
-    //[Route("/")]
+    [Route("/")]
     public IActionResult Index()
     {
-        //var viewModel = new SubscribeViewModel();
+        var viewModel = new SubscribeViewModel();
         return View();
     }
 
