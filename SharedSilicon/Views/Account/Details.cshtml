@@ -1,5 +1,6 @@
 ﻿@using SharedSilicon.ViewModels
 @model AccountDetailsViewModel
+@inject SignInManager<UserEntity> _signInManager
 @{
     ViewData["Title"] = $"Account Details for {Model.BasicInfo.FirstName} {Model.BasicInfo.LastName}";
 } 
