@@ -8,14 +8,15 @@ public class CourseEntity
     public int Id { get; set; }
     public int CourseDetailsId { get; set; }
     public string Title { get; set; } = null!;
-    public string Description { get; set; } = null!;
-    public string? ImageName { get; set; }
-    public bool? IsBestSeller { get; set; }
+    public string? ImageUrl { get; set; }
+    public bool BestBadgeUrl { get; set; }
+    public bool BookmarkUrl {  get; set; } 
     public int Hours { get; set; }
-    public decimal OriginalPrice { get; set; }
-    public decimal DiscountPrice { get; set; }
-    public decimal LikesInPercent { get; set; }
-    public decimal LikesInNumbers { get; set; }
+    public decimal? Price { get; set; }
+    public decimal? OldPrice { get; set; }
+    public decimal? RedPrice { get; set; }
+    public decimal? RatingPercentage { get; set; }
+    public decimal? RatingCount { get; set; }
     public virtual CourseDetailsEntity CourseDetails { get; set; } = null!;
     public ICollection<CourseAuthorEntity> Authors { get; set; } = new List<CourseAuthorEntity>();
     public ICollection<UserEntity> Users { get; set; } = new List<UserEntity>();
