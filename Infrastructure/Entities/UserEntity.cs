@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Infrastructure.Entities;
 
-public class UserEntity
+public class UserEntity : IdentityUser
 {
 	[Key]
 	public int Id { get; set; }
