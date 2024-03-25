@@ -1,0 +1,86 @@
+﻿@using SharedSilicon.ViewModels
+@model SubscribeViewModel
+
+
+<section class="subscribe"> 
+    <div class="container">
+        <div class="text">
+            <h2>Don't Want to Miss Anything?</h2>
+            <img src="/Images/arrows.svg" alt="arrow swirling downwards">
+        </div>
+        <form method="post" asp-controller="Home" asp-action="Subscribe">
+            <div class="grid">
+                <div class="signup">
+                    <h5>Sign up for Newsletters</h5>
+                </div>
+                <div class="signup-check1">
+                    <div class="checkbox">
+                        <input asp-for="Form.Newsletter" type="checkbox" />
+                        <label asp-for="Form.Newsletter"></label>
+                    </div>
+                    <div class="checkbox">
+                        <input asp-for="Form.EventUpdates" type="checkbox" />
+                        <label asp-for="Form.EventUpdates"></label>
+                    </div>
+                </div>
+                <div class="signup-check2">
+                    <div class="checkbox">
+                        <input asp-for="Form.AdvertisingUpdates" type="checkbox" />
+                        <label asp-for="Form.AdvertisingUpdates"></label>
+                    </div>
+                    <div class="checkbox">
+                        <input asp-for="Form.StartupsWeekly" type="checkbox" />
+                        <label asp-for="Form.StartupsWeekly"></label>
+                    </div>
+                </div>
+                <div class="signup-check3">
+                    <div class="checkbox">
+                        <input asp-for="Form.WeekInReview" type="checkbox" />
+                        <label asp-for="Form.WeekInReview"></label>
+                    </div>
+                    <div class="checkbox">
+                        <input asp-for="Form.Podcasts" type="checkbox" />
+                        <label asp-for="Form.Podcasts"></label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="subscribe-form">
+                <div class="input-group-span">
+                    <span asp-validation-for="Form.Email" class="text-danger"></span>
+                    <div class="input-group">
+                        <input type="text" id="email-signup" asp-for="Form.Email" placeholder="Your Email">
+                        <i class="fa-light fa-envelope"></i>
+                        <button class="btn-theme-s" type="submit">Subscribe*</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <span class="information">
+            @if (ViewData["Status"]?.ToString() == "Success")
+            {
+                <span class="alert alert-success">Thank you for subscribing!</span>
+            }
+            else if (ViewData["Status"]?.ToString() == "AlreadyExists")
+            {
+                <span class="alert alert-warning">You are already subscribed.</span>
+            }
+            else if (ViewData["Status"]?.ToString() == "InvalidEmail")
+            {
+                <span class="alert alert-danger">Please enter a valid email address.</span>
+            }
+            else if (ViewData["Status"]?.ToString() == "Unauthorized")
+            {
+                <span class="alert alert-danger">Unables to fullfill request due to authorization. Please contact web admin.</span>
+            }
+            else if (ViewData["Status"]?.ToString() == "ConnectionFailed")
+            {
+                <span class="alert alert-danger">Unables to contact the server. Please try again later.</span>
+            }
+            else
+            {
+                <span class="alert">* Yes, I agree to the terms and privacy policy.</span>
+            }
+        </span>
+    </div>
+</section>
