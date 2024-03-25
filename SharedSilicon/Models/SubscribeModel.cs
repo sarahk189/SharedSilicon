@@ -12,7 +12,7 @@ public class SubscribeModel
     public bool AdvertisingUpdates { get; set; } = false;
 
     [Display(Name = "Week in Review", Order = 2)]
-    public bool WeekInReview { get; set; } = false;
+    public bool WeekInReview { get; set; } = false; 
 
     [Display(Name = "Event Updates", Order = 3)]
     public bool EventUpdates { get; set; } = false;
