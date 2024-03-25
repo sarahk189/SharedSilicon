@@ -24,12 +24,12 @@ public class ContactController : Controller
 		TempData["MessageSent"] = "Your message has been sent!";
 		ViewData["Title"] = "Contact us";
 
-		// Skapa en ny instans av ContactViewModel
+		
 		var viewModel = new ContactViewModel();
 
 		ModelState.Clear();
 
-		// Returnera den nya instansen till vyn
+		
 		return View(viewModel);
 	}
 }
