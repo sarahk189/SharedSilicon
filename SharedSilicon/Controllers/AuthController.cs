@@ -30,8 +30,14 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     [HttpPost]
     public async Task<IActionResult> SignUp(SignUpViewModel viewModel)
     {
-        if (ModelState.IsValid )
+        if (ModelState.IsValid)
         {
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.SelectMany(x => x.Value.Errors.Select(p => p.ErrorMessage)).ToList();
+                // Nu kan du inspektera 'errors'-listan i din debugger för att se vilka felmeddelanden som finns
+            }
             var exists = await _userManager.Users.AnyAsync(x => x.Email == viewModel.Form.Email);
             if (exists)
             {
@@ -65,7 +71,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     {
 
         if (_signInManager.IsSignedIn(User))
-            return RedirectToAction("Index", "Account");    
+            return RedirectToAction("Index", "Account/Details");    
         
         //return View();
         var viewModel = new SignInViewModel();
