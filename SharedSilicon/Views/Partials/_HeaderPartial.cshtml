@@ -1,6 +1,7 @@
 ﻿@{
     var isContactPage = (ViewContext.RouteData.Values["Controller"].ToString() == "Contact" && ViewContext.RouteData.Values["Action"].ToString() == "Index");
 }
+@inject SignInManager<UserEntity> _signInManager
 
 <header class="@(isContactPage ? "contact-header" : "")">
     <div class="container">
@@ -23,8 +24,12 @@
         </div>
 
         <div class="account-buttons hide">
-            <a class="btn-gray" asp-controller="Auth" asp-action="SignIn"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
-            <a class="btn-theme" asp-controller="Auth" asp-action="SignUp"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
+
+          
+                <a class="btn-gray" asp-controller="Auth" asp-action="SignIn"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
+                <a class="btn-theme" asp-controller="Auth" asp-action="SignUp"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
+            
+        
         </div>
         <button onclick="toggleMenu()" class="btn-mobile">
             <i class="fa-regular fa-bars"></i>
