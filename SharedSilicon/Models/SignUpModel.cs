@@ -38,6 +38,7 @@ public class SignUpModel
     [Display(Name = "I agree to the terms and conditions", Order = 5)]
     [Required(ErrorMessage = "Agree god dammit")]
     [CheckboxRequired(ErrorMessage = "You must accept to proceed")]
+    [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to the terms and conditions.")]
     public bool TermsAndConditions { get; set; } = false;
 
 }

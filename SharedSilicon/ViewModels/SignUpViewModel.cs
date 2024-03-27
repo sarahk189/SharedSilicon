@@ -10,8 +10,8 @@ public class SignUpViewModel
     public SignUpModel Form { get; set; } = new SignUpModel();
 
 
-    [Display(Name = "Terms and Conditions")]
-    [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to the terms and conditions.")]
+    //[Display(Name = "Terms and Conditions")]
+    //[Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to the terms and conditions.")]
     public bool TermsAndConditions { get; set; } = false; 
 
     public SignUpViewModel()

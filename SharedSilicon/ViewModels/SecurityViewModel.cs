@@ -1,11 +1,12 @@
-﻿using SharedSilicon.Models;
+﻿using SharedSilicon.Helpers;
+using SharedSilicon.Models;
 
 namespace SharedSilicon.ViewModels
 {
     public class SecurityViewModel
     {
         public string Title { get; set; } = "Security";
-         
+
         public ChangePasswordModel Password { get; set; } = new ChangePasswordModel()
         {
             ProfileImage = "images/contactDetailsImages/profile_image.svg",
@@ -14,7 +15,10 @@ namespace SharedSilicon.ViewModels
             Email = "sarah.kriborg@domain.com"
         };
 
-        //[RequiredCheckbox(ErrorMessage = "Your must agree to delete account to continue.")]
+        public string CurrentPassword { get; set; } = null!;
+        public string NewPassword { get; set; } = null!;
+
+        [CheckboxRequired(ErrorMessage = "Your must agree to delete account to continue.")]
         public bool DeleteAccount { get; set; } = false;
     }
 

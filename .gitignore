@@ -364,3 +364,9 @@ FodyWeavers.xsd
 
 site.css
 site.min.css
+
+#ignore migration folder
+migrations/*
+
+/Migrations/
+*.Designer.cs
