@@ -18,7 +18,7 @@ public class AccountController : Controller
     }
 
     #region Details
-    [Route("account/details")]
+    [Route("/account/details")]
     public async Task <IActionResult> Details()
     {
         var claims = HttpContext.User.Identities.FirstOrDefault();

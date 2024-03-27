@@ -71,8 +71,8 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     {
 
         if (_signInManager.IsSignedIn(User))
-            return RedirectToAction("Index", "account/details");    
-        
+            return RedirectToAction("Details", "Account");
+
         //return View();
         var viewModel = new SignInViewModel();
         return View(viewModel);
@@ -89,8 +89,8 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
             var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
             if (result.Succeeded)
             {
-				return RedirectToAction("Index", "account/details");
-			}
+                return RedirectToAction("Details", "Account");
+            }
                 
         }
 
@@ -125,21 +125,15 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 
     [Route("/account/details")]
     [HttpGet]
-    public async Task <IActionResult> Account()
+    public async Task<IActionResult> Details()
     {
-
         if (!_signInManager.IsSignedIn(User))
-            return RedirectToAction("SignIn", "Account");
-
+            return RedirectToAction("Details", "Account");
 
         var userEntity = await _userManager.GetUserAsync(User);
 
-
         var viewModel = new AccountDetailsViewModel();
-        return View(viewModel);
-        
+        return View("~/Views/Account/Details.cshtml", viewModel);
     }
-
-
 
 }
