@@ -4,23 +4,26 @@ using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
 using SharedSilicon.Models;
+using System.Net;
 
 namespace SharedSilicon.Controllers;
 
 [Authorize]
-public class AccountController : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager) : Controller
 {
-    private readonly UserManager<UserEntity> _userManager;
-
-    public AccountController(UserManager<UserEntity> userManager)
-    {
-        _userManager = userManager;
-    }
+    private readonly UserManager<UserEntity> _userManager = userManager;
+    private readonly SignInManager<UserEntity> _signInManager = signInManager;
 
     #region Details
+    [HttpGet]
     [Route("/account/details")]
     public async Task <IActionResult> Details()
     {
+        if (!_signInManager.IsSignedIn(User))
+        {
+            return RedirectToAction("SignIn", "Auth");
+        }
+        var userEntity = await _userManager.GetUserAsync(User);
         var claims = HttpContext.User.Identities.FirstOrDefault();
         var viewModel = await PopulateViewModelAsync();
         //viewModel.BasicInfo = _accountService.GetBasicInfo();
@@ -32,12 +35,13 @@ public class AccountController : Controller
     public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        
+
         try
         {
             if (user != null)
             {
-                var address = user.Address;
+                var address = user.Address ?? new AddressEntity(); // If user.Address is null, create a new Address object
+
                 var viewModel = new AccountDetailsViewModel()
                 {
                     BasicInfo = new AccountDetailsBasicInfoModel
@@ -53,7 +57,7 @@ public class AccountController : Controller
                     {
                         Addressline_1 = address.AddressLine1,
                         Addressline_2 = address.AddressLine2!,
-                        PostalCode = address.PostalCode, 
+                        PostalCode = address.PostalCode,
                         City = address.City
                     }
                 };
@@ -66,33 +70,51 @@ public class AccountController : Controller
         }
         return null!;
     }
-
-    [HttpGet]
-    public IActionResult BasicInfo()
+    
+    [HttpPost]
+    public async Task<IActionResult> BasicInfo(AccountDetailsViewModel viewModel)
     {
+        if (!ModelState.IsValid)
+        {
+            return View("Details", viewModel);
+        }
 
-        return View();
+        var user = await _userManager.GetUserAsync(User);
+        if (user != null)
+        {
+            user.FirstName = viewModel.BasicInfo.FirstName;
+            user.LastName = viewModel.BasicInfo.LastName;
+            user.Email = viewModel.BasicInfo.Email;
+            user.PhoneNumber = viewModel.BasicInfo.Phone;
+            user.Biography = viewModel.BasicInfo.Biography;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(Details));
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+        }
+        return View("Details", viewModel);
     }
+    //_accountService.SaveBasicInfo(viewModel.BasicInfo);
+
 
     [HttpPost]
-    public IActionResult BasicInfo(AccountDetailsViewModel viewModel)
-    {
-        //_accountService.SaveBasicInfo(viewModel.BasicInfo);
-        return RedirectToAction(nameof(Details), viewModel);
-    }
-
-    [HttpGet]
-
-    public IActionResult AddressInfo()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult AddressInfo(AccountDetailsViewModel viewModel)
+    public IActionResult SaveAddressInfo(AccountDetailsViewModel viewModel)
     {
         //_accountService.SaveAddressInfo(viewModel.AddressInfo);
-        return RedirectToAction(nameof(Details), viewModel);
+        if (TryValidateModel(viewModel.AddressInfo))
+        {
+            return RedirectToAction(nameof(Details), viewModel);
+        }
+        return View("Details", viewModel);
     }
 
     #endregion

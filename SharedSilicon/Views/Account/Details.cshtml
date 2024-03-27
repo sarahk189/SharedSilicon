@@ -26,43 +26,43 @@
                     <h2>Account Details</h2>
                     <h5>Basic Info</h5>
 
-                <div class="content">
-                    <div id="form-firstname" class="input-group">
-                        <label asp-for=BasicInfo.FirstName></label>
-                        <span asp-validation-for="BasicInfo.FirstName"></span>
-                        <input type="text" asp-for="BasicInfo.FirstName" />
-                    </div>
+                    <div class="content">
+                        <div id="form-firstname" class="input-group">
+                            <label asp-for=BasicInfo.FirstName></label>
+                            <input type="text" asp-for="BasicInfo.FirstName" />
+                                <span asp-validation-for="BasicInfo.FirstName"></span>
+                        </div>
 
-                    <div id="form-lastname" class="input-group">
-                        <label asp-for=BasicInfo.LastName></label>
-                        <span asp-validation-for="BasicInfo.LastName"></span>
-                        <input type="text" asp-for="BasicInfo.LastName" />
-                    </div>
+                        <div id="form-lastname" class="input-group">
+                            <label asp-for=BasicInfo.LastName></label>
+                            <input type="text" asp-for="BasicInfo.LastName" />
+                            <span asp-validation-for="BasicInfo.LastName"></span>   
+                        </div>
 
-                    <div id="form-email" class="input-group">
-                        <label asp-for=BasicInfo.Email></label>
-                        <span asp-validation-for="BasicInfo.Email"></span>
-                        <input type="email" asp-for="BasicInfo.Email" />
-                    </div>
+                        <div id="form-email" class="input-group">
+                            <label asp-for=BasicInfo.Email></label>
+                            <input type="email" asp-for="BasicInfo.Email" />
+                            <span asp-validation-for="BasicInfo.Email"></span>
+                        </div>
 
-                    <div id="form-phone" class="input-group">
-                        <label asp-for=BasicInfo.Phone></label>
-                        <span asp-validation-for="BasicInfo.Phone"></span>
-                        <input type="tel" asp-for="BasicInfo.Phone" />
-                    </div>
+                        <div id="form-phone" class="input-group">
+                            <label asp-for=BasicInfo.Phone></label>
+                            <input type="tel" asp-for="BasicInfo.Phone" />
+                            <span asp-validation-for="BasicInfo.Phone"></span>
+                        </div>
 
-                    <div id="form-bio" class="input-group">
-                        <label asp-for=BasicInfo.Biography>Bio <span>(optional)</span></label>
-                        <span asp-validation-for="BasicInfo.Biography"></span>
-                        <textarea asp-for="BasicInfo.Biography"></textarea>
-                    </div>
+                        <div id="form-bio" class="input-group">
+                            <label asp-for=BasicInfo.Biography>Bio <span>(optional)</span></label>
+                            <textarea asp-for="BasicInfo.Biography"></textarea>
+                            <span asp-validation-for="BasicInfo.Biography"></span>
+                        </div>
 
-                    <div class="form-buttons">
-                        <button class="btn-gray" type="reset">Cancel</button>
-                        <button class="btn-theme" type="submit">Save changes</button>
-                    </div>
+                        <div class="form-buttons">
+                            <button class="btn-gray" type="reset">Cancel</button>
+                            <button class="btn-theme" type="submit">Save changes</button>
+                        </div>
 
-                </div>
+                    </div>
                 </form>
             </section>
             <hr />
