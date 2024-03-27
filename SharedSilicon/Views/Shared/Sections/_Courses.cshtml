@@ -1,0 +1,98 @@
+﻿@using System.Globalization
+@model SharedSilicon.ViewModels.CoursesViewModel
+
+
+
+@* Courses section *@
+
+
+
+<section class="courses-page">
+
+	@* Toolbar and navigation. *@
+	<div class="container">
+		<div class="toolbar">
+			<div>
+				<div class="navigation">
+					<a class="menu-links" asp-controller="Home" asp-action="Index"> <i class="fa-regular fa-house">  </i> Home  <i class="fa-sharp fa-solid fa-angles-right"></i></a>
+					<a class="menu-links" asp-controller="Courses" asp-action="Index">Courses</a>
+				</div>
+				<h1>Courses</h1>
+			</div>
+
+			<div class="dropdown-search">
+				<div class="dropdown">
+					<button class="dropbtn">All categories <i class="fa-solid fa-chevron-down"></i></button>
+					<ul class="dropdown-content">
+						<li><a class="menu-link" href="#">Category 1</a></li>
+						<li><a class="menu-link" href="#">Category 2</a></li>
+						<li><a class="menu-link" href="#">Category 3</a></li>
+					</ul>
+				</div>
+
+				<div class="search-courses">
+					<input type="text" placeholder="Search courses">
+					<i class="fa-regular fa-magnifying-glass"></i>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	@* Courses cards. *@
+	<div class="container">
+		<div class="courses-show">
+			@foreach (var course in Model.Courses)
+			{
+				<a class="courses" href="#">
+					<img src="@course.ImageUrl" alt="course image" />
+					@if (!string.IsNullOrEmpty(course.BestBadgeUrl))
+					{
+						<div class="bestbadge"> <img src="@course.BestBadgeUrl" alt="Green bestseller badge"> </div>
+					}
+					<div class="bookmark"> <img src="@course.BookmarkUrl" alt="Bookmark course badge"></div>
+					<h5>@course.Title</h5>
+					<p class="author">@course.Author<p>
+						<div class="price-container">
+								@if (course.RedPrice.HasValue)
+								{
+								<p class="price-red">$@course.RedPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+								}
+								@if (course.Price.HasValue)
+								{
+								<p class="price">$@course.Price.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+								}
+								@if (course.OldPrice.HasValue)
+								{
+								<p class="old-price"><del>$@course.OldPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</del></p>
+								}
+						</div>
+						<hr />
+					<p class="courses-time">
+						<i class="fa-light fa-clock"></i>@course.Hours hours <i class="fa-light fa-thumbs-up"></i> @course.RatingPercentage%  (@course.RatingCount)
+					</p>
+				</a>
+			}
+		</div>
+		<div class="carousel"> <img src="~/images/coursesImages/pagination.svg" alt="carousel-img">  </div>
+	</div>
+
+	<div class="banner">
+		<div class="container">
+			<div class="banner-text">
+				<p>Ready to get started?</p>
+				<h1>Take Your <span>Skills</span> to the Next Level</h1>
+				<button class="btn-theme">Work with us</button>
+			</div>
+
+			<div class="banner-image">
+				<img src="~/images/coursesImages/skillspic.svg" alt="illustration of woman with a laptop">
+			</div>
+		</div>
+
+	</div>
+
+
+</section>
+
