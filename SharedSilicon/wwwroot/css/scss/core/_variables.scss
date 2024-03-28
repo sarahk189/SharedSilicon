@@ -1,0 +1,59 @@
+﻿:root {
+
+    $transparent: transparent;
+    $white: #000000;
+
+    $gray-000: #FFFFFF;
+    $gray-100: #F3F6FF;
+    $gray-200: #EFF2FC;
+    $gray-300: #E2E5F1;
+    $gray-400: #D4D7E5;
+    $gray-500: #B4B7C9;
+    $gray-600: #9397AD;
+    $gray-700: #565973;
+    $gray-800: #33354D;
+    $gray-900: #0B0F19;
+
+    $black: #000000;
+    $danger: #EF4444;
+    $success: #22C55E;
+    $warning: #FFBA08;
+    $info: #4C82F7;
+
+    $theme: #6366F1;
+    $theme-secondary: #8B5CF6;
+    $theme-opacity: #6365f114;
+    $theme-gradient: linear-gradient(90deg, #6366F1 0%, #8B5CF6 50%, #D946EF 100%);
+    $theme-gradient-background: linear-gradient(-1deg, rgba(99, 101, 241, 0.10) 0%, rgba(216, 70, 239, 0.05) 45%, rgba(241, 244, 253, 0.07) 75%);
+}
+
+:root.dark {
+
+    $transparent: transparent;
+    $white: #000000;
+
+    $gray-000: #0B0F19;
+    $gray-100: #33354D;
+    $gray-200: #565973;
+    $gray-300: #9397AD;
+    $gray-400: #B4B7C9;
+    $gray-500: #D4D7E5;
+    $gray-600: #E2E5F1;
+    $gray-700: #EFF2FC;
+    $gray-800: #F3F6FF;
+    $gray-900: #FFFFFF;
+
+    $black: #FFFFFF;
+    $danger: #EF4444;
+    $success: #22C55E;
+    $warning: #FFBA08;
+    $info: #4C82F7;
+
+    $theme: #6366F1;
+    $theme-secondary: #8B5CF6;
+    $theme-opacity: #6365f114;
+    $theme-gradient: linear-gradient(90deg, #6366F1 0%, #8B5CF6 50%, #D946EF 100%);
+    $theme-gradient-background: linear-gradient(-1deg, rgba(99, 101, 241, 0.10) 0%, rgba(216, 70, 239, 0.05) 45%, rgba(241, 244, 253, 0.07) 75%);
+}
+
+

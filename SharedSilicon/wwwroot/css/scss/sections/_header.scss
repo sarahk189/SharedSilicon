@@ -1,8 +1,7 @@
-@import '../core/_colors.scss';
 
 header {
     padding: 15px 0;
-    background-color: $gray-000;
+    /*background-color: --gray-000;*/
     background-color: #ff0000;
 
     .container {
@@ -11,8 +10,7 @@ header {
         grid-template-columns: 1fr auto;
         grid-template-areas: "logo mobile";
         gap: 40px;
-        background-color: $gray-000;
-        background-color: #ff0000;
+
 
         @include lg {
             grid-template-columns: auto 1fr auto auto;
