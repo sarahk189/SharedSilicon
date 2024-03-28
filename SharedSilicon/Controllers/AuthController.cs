@@ -110,17 +110,15 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     }
 
 
-	[Route("/signout")]
-	[HttpGet]
-	public new async Task <IActionResult> SignOut()
-	{
+    [Route("/signout")]
+    [HttpGet]
+    public new async Task<IActionResult> SignOut()
+    {
 
-		await _signInManager.SignOutAsync();
-		return RedirectToAction("Index", "Home");
-		//var viewModel = new SignInViewModel();
-		//return View(viewModel);
-	}
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Signin", "Auth");
 
+    }
 
 
     //[Route("/account/details")]
