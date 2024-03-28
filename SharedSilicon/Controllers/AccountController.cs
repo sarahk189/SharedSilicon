@@ -258,6 +258,4 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
         return View (viewModel);
     }
     #endregion
-
-
 }
