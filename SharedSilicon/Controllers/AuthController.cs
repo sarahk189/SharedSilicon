@@ -33,11 +33,6 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         if (ModelState.IsValid)
         {
 
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.SelectMany(x => x.Value.Errors.Select(p => p.ErrorMessage)).ToList();
-                // Nu kan du inspektera 'errors'-listan i din debugger för att se vilka felmeddelanden som finns
-            }
             var exists = await _userManager.Users.AnyAsync(x => x.Email == viewModel.Form.Email);
             if (exists)
             {
@@ -116,9 +111,8 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 	{
 
 		await _signInManager.SignOutAsync();
-		return RedirectToAction("Index", "Home");
-		//var viewModel = new SignInViewModel();
-		//return View(viewModel);
+		return RedirectToAction("Signin", "Auth");
+		
 	}
 
 
