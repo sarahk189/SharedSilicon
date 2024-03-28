@@ -8,10 +8,15 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubscribeController(DataContext context) : ControllerBase
+    public class SubscribeController : ControllerBase
     {
 
-        private readonly DataContext _context = context;
+        private readonly DataContext _context;
+
+        public SubscribeController(DataContext context)
+        {
+            _context = context;
+        }
 
         #region CREATE
 

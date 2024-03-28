@@ -1,6 +1,6 @@
-@WebApi_HostAddress = https://localhost:5001
+@WebApi_HostAddress = https://localhost:7152
 
-GET {{WebApi_HostAddress}}/api/subscribe
+GET {{WebApi_HostAddress}}/api/courses
 Accept: application/json
 
 ###
