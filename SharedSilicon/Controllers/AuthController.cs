@@ -123,17 +123,17 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 
 
 
-    [Route("/account/details")]
-    [HttpGet]
-    public async Task<IActionResult> Details()
-    {
-        if (!_signInManager.IsSignedIn(User))
-            return RedirectToAction("Details", "Account");
+    //[Route("/account/details")]
+    //[HttpGet]
+    //public async Task<IActionResult> Details()
+    //{
+    //    if (!_signInManager.IsSignedIn(User))
+    //        return RedirectToAction("Details", "Account");
 
-        var userEntity = await _userManager.GetUserAsync(User);
+    //    var userEntity = await _userManager.GetUserAsync(User);
 
-        var viewModel = new AccountDetailsViewModel();
-        return View("~/Views/Account/Details.cshtml", viewModel);
-    }
+    //    var viewModel = new AccountDetailsViewModel();
+    //    return View("~/Views/Account/Details.cshtml", viewModel);
+    //}
 
 }
