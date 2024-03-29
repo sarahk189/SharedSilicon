@@ -112,7 +112,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 	{
 
 		await _signInManager.SignOutAsync();
-		return RedirectToAction("Index", "Home");
+		return RedirectToAction("SignIn", "Auth");
 		//var viewModel = new SignInViewModel();
 		//return View(viewModel);
 	}
