@@ -4,9 +4,6 @@ namespace SharedSilicon.Models;
 
 public class AccountDetailsBasicInfoModel
 {
-
-    [DataType(DataType.ImageUrl)]
-    public string? ProfileImage { get; set; }
      
     [DataType(DataType.Text)]
     [Display(Name = "First name", Prompt = "Enter your first name", Order = 0)]

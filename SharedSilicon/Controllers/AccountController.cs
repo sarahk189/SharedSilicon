@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
 using SharedSilicon.Models;
+using System.Net;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SharedSilicon.Controllers;
 
@@ -44,7 +46,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
                 var address = user.Address ?? new AddressEntity();
 
                 var viewModel = new AccountDetailsViewModel()
-                {
+                {   
                     BasicInfo = new AccountDetailsBasicInfoModel
                     {
                         FirstName = user.FirstName,
@@ -160,11 +162,37 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
     #endregion
 
     #region Security
+    [HttpGet]
+    [Route("/account/security")]
+    public async Task<IActionResult> Security()
+    {
+        if (!_signInManager.IsSignedIn(User))
+        {
+            return RedirectToAction("SignIn", "Auth");
+        }
+        var userEntity = await _userManager.GetUserAsync(User);
+        var claims = HttpContext.User.Identities.FirstOrDefault();
+
+        var viewModel = new SecurityViewModel
+        {
+            Password = new ChangePasswordModel
+            {
+                FirstName = userEntity.FirstName,
+                LastName = userEntity.LastName,
+                Email = userEntity.Email,
+                ProfileImage = userEntity.ProfileImage
+            }
+        };
+
+        return View(viewModel);
+    }
+
+
+
+    [HttpPost]
     [Route("/account/security")]
     public async Task<IActionResult> Security(SecurityViewModel viewModel)
     {
-
-        // Get the currently logged in user
         var user = await _userManager.GetUserAsync(User);
 
         if (user == null)
@@ -172,30 +200,63 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
             return NotFound();
         }
 
-        // Change the user's password
-        var result = await _userManager.ChangePasswordAsync(user, viewModel.CurrentPassword, viewModel.NewPassword);
+        // Check if the current password or new password is null
+        if (string.IsNullOrEmpty(viewModel.Password.CurrentPassword) || string.IsNullOrEmpty(viewModel.Password.NewPassword))
+        {
+            ModelState.AddModelError(string.Empty, "Password cannot be null or empty");
+            return View(viewModel);
+        }
+
+        var result = await _userManager.ChangePasswordAsync(user, viewModel.Password.CurrentPassword, viewModel.Password.NewPassword);
 
         if (!result.Succeeded)
         {
-            // Handle case where password change failed
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
             return View(viewModel);
         }
-
         return View(viewModel);
+    }
+
+    [HttpPost]
+    [Route("/account/delete")]
+    public async Task<IActionResult> DeleteAccount(SecurityViewModel viewModel)
+    {
+        if (viewModel.DeleteAccount)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("SignUp", "Auth");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+        }
+        return View("Security", viewModel);
     }
     #endregion
 
     #region MyCourses
+    [HttpGet]
     [Route("/account/mycourses")]
     public IActionResult SavedCourses(SavedCoursesViewModel viewModel)
     {
         return View(viewModel);
     }
     #endregion
-
-
 }
