@@ -122,12 +122,12 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 
 
 
-    [Route("/auth/details")]
-    [HttpGet]
-    public async Task<IActionResult> Details()
-    {
-        if (!_signInManager.IsSignedIn(User))
-            return RedirectToAction("Details", "Account");
+    //[Route("/auth/details")]
+    //[HttpGet]
+    //public async Task<IActionResult> Details()
+    //{
+    //    if (!_signInManager.IsSignedIn(User))
+    //        return RedirectToAction("Details", "Account");
 
     //    var userEntity = await _userManager.GetUserAsync(User);
 
