@@ -117,7 +117,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 
 
 
-    [Route("/account/details")]
+    [Route("/auth/details")]
     [HttpGet]
     public async Task<IActionResult> Details()
     {
