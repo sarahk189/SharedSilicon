@@ -6,7 +6,7 @@ public class CourseEntity
 {
     [Key]
     public int Id { get; set; }
-    public int CourseDetailsId { get; set; }
+    //public int CourseDetailsId { get; set; }
     public string Title { get; set; } = null!;
     public string? ImageUrl { get; set; }
     public bool BestBadgeUrl { get; set; }

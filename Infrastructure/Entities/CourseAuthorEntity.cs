@@ -6,7 +6,7 @@ namespace Infrastructure.Entities;
 public class CourseAuthorEntity
 {
     [Key]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public int CourseId { get; set; }
     public string AuthorImageUrl { get; set; } = null!;
     public string FirstName { get; set; } = null!;

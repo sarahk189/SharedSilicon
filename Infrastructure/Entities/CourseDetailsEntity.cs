@@ -6,7 +6,7 @@ namespace Infrastructure.Entities;
 public class CourseDetailsEntity
 {
     [Key]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public int CourseId { get; set; }
     public decimal? NumberOfReviews { get; set; }
     public bool? Digital { get; set; }
@@ -21,5 +21,6 @@ public class CourseDetailsEntity
     public string? ProgramDetailFour { get; set; }
     public string? ProgramDetailFive { get; set; }
     public virtual CourseEntity Course { get; set; } = null!;
+    public virtual CourseAuthorEntity Author { get; set; } = null!;
 
 }

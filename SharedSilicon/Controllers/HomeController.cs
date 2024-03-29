@@ -9,6 +9,7 @@ namespace SharedSilicon.Controllers;
 
 public class HomeController : Controller
 {
+    [HttpGet]
     [Route("/")]
     public IActionResult Index()
     {

@@ -4,94 +4,119 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class SubscribeController(DataContext context) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SubscribeController : ControllerBase
+
+    #region CREATE
+
+    [HttpPost]
+    public async Task<IActionResult> Create(string email)
     {
-
-        private readonly DataContext _context;
-
-        public SubscribeController(DataContext context)
+        if (!string.IsNullOrEmpty(email))
         {
-            _context = context;
-        }
+            if (!await context.Subscribe.AnyAsync(x => x.Email == email))
 
-        #region CREATE
-
-        [HttpPost]
-        public async Task<IActionResult> Create(string email)
-        {
-            if (!string.IsNullOrEmpty(email))
             {
-                if (!await _context.Subscribe.AnyAsync(x => x.Email == email))
-
+                try
                 {
-                    try
+                    var subscribeEntity = new SubscribeEntity
                     {
-                        var subscribeEntity = new SubscribeEntity
-                        {
-                            Email = email,
-                            Subscribed = DateTime.Now
-                        };
+                        Email = email,
+                        Subscribed = DateTime.Now
+                    };
 
-                        _context.Subscribe.Add(subscribeEntity);
-                        await _context.SaveChangesAsync();
+                    context.Subscribe.Add(subscribeEntity);
+                    await context.SaveChangesAsync();
 
-                        return Created("", null);
-                    }
-                    catch 
-                    { 
-                        return Problem("Unable to create subscription.");
-                    }
+                    return Created("", null);
                 }
-
-                return Conflict("Your email address is already subscribed.");
+                catch 
+                { 
+                    return Problem("Unable to create subscription.");
+                }
             }
 
-            return BadRequest();
-
+            return Conflict("Your email address is already subscribed.");
         }
-        #endregion
 
-        #region READ
+        return BadRequest("You must enter an valid email address.");
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            return Ok();
-
-        }
-        
-        
-
-        [HttpGet]
-        public IActionResult GetOne()
-        {
-            return Ok();
-
-        }
-        #endregion
-
-        #region UPDATE
-
-        [HttpPut]
-        public IActionResult Update()
-        {
-            return Ok();
-
-        }
-        #endregion
-
-        #region DELETE
-
-        [HttpPost]
-        public IActionResult Delete()
-        {
-            return Ok();
-
-        }
-        #endregion
     }
+    #endregion
+
+    #region READ
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var subscribers = await context.Subscribe.ToListAsync();
+        if (subscribers.Count != 0)
+        {
+            return Ok(subscribers);
+        }
+
+        return NotFound();
+
+    }
+    
+    
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOne(int id)
+    {
+
+        var subscriber = await context.Subscribe.FirstOrDefaultAsync(x => x.Id == id);
+        if(subscriber != null)
+        {
+            return Ok(subscriber);
+        }
+
+        return NotFound();
+        
+
+    }
+    #endregion
+
+    #region UPDATE
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateOne(int id, string email)
+    {
+        var subscriber = await context.Subscribe.FirstOrDefaultAsync(x => x.Id == id);
+        if (subscriber != null)
+        {
+
+            subscriber.Email = email;
+            context.Subscribe.Update(subscriber);
+            await context.SaveChangesAsync();
+
+            return Ok(subscriber);
+        }
+
+        return NotFound();
+
+    }
+    #endregion
+
+    #region DELETE
+
+    [HttpDelete("{id}")]
+    public async Task <IActionResult> DeleteOne(int id)
+    {
+        var subscriber = await context.Subscribe.FirstOrDefaultAsync(x => x.Id == id);
+        if (subscriber != null)
+        {
+            context.Subscribe.Remove(subscriber);
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
+        return NotFound();
+
+    }
+    #endregion
 }
