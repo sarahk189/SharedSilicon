@@ -7,13 +7,7 @@ namespace SharedSilicon.ViewModels
     {
         public string Title { get; set; } = "Security";
 
-        public ChangePasswordModel Password { get; set; } = new ChangePasswordModel()
-        {
-            ProfileImage = "images/contactDetailsImages/profile_image.svg",
-            FirstName = "Sarah",
-            LastName = "Kriborg",
-            Email = "sarah.kriborg@domain.com"
-        };
+        public ChangePasswordModel Password { get; set; } = new ChangePasswordModel();
 
         public string CurrentPassword { get; set; } = null!;
         public string NewPassword { get; set; } = null!;
