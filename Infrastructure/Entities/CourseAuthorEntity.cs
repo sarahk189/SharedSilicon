@@ -6,7 +6,7 @@ namespace Infrastructure.Entities;
 public class CourseAuthorEntity
 {
     [Key]
-    public int Id { get; set; }
+    public Guid id { get; set; }
     public int CourseId { get; set; }
     public string AuthorImageUrl { get; set; } = null!;
     public string FirstName { get; set; } = null!;
@@ -15,7 +15,7 @@ public class CourseAuthorEntity
     public string? Description { get; set; }
     public int? NumberOfSubscribers { get; set; }
     public int? NumberOfFollowers { get; set; }
-    public virtual ICollection<CourseEntity> Courses { get; set; } = new List<CourseEntity>();
+    //public virtual ICollection<CourseEntity> Courses { get; set; } = new List<CourseEntity>();
 
 
 }

@@ -63,6 +63,7 @@ public class CoursesController(DataContext context) : ControllerBase
 								Description = createCourseDto.Author.Description,
 								NumberOfSubscribers = createCourseDto.Author.NumberOfSubscribers,
 								NumberOfFollowers = createCourseDto.Author.NumberOfFollowers,
+								CourseId = createCourseDto.Course.Id,
 							}
                         },
 						

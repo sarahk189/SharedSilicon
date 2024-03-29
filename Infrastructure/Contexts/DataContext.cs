@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,6 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
 	public DbSet<CourseDetailsEntity> CoursesDetails { get; set;} = null!;
 	public DbSet<CourseAuthorEntity> CoursesAuthor { get; set;} = null!;
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
-	{
-		modelBuilder.Entity<CourseDetailsEntity>()
-			.HasOne(cd => cd.Course)
-			.WithOne(c => c.CourseDetails)
-			.HasForeignKey<CourseDetailsEntity>(cd => cd.CourseId);
-	}
+
 
 }
