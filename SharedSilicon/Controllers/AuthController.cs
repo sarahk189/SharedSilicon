@@ -8,13 +8,14 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace SharedSilicon.Controllers;
 
-public class AuthController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, HttpClient httpClient) : Controller
+public class AuthController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, HttpClient httpClient, IConfiguration configuration) : Controller
 {
     private readonly UserManager<UserEntity> _userManager = userManager;
     private readonly SignInManager<UserEntity> _signInManager = signInManager;
     private readonly HttpClient _httpClient = httpClient;
+    private readonly IConfiguration _configuration = configuration;
 
-	[Route("/signup")]
+    [Route("/signup")]
     [HttpGet]
     public IActionResult SignUp()
     {
@@ -90,6 +91,22 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
             var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
             if (result.Succeeded)
             {
+                //var content = new FormUrlEncodedContent(viewModel.Form);
+
+                //var response = await _httpClient.PostAsync($"https://localhost:7152/api/Auth/token?key={_configuration["ApiKey:Secret"]}", content);
+                //if (response.IsSuccessStatusCode)
+                //{
+                //    var token = await response.Content.ReadAsStringAsync();
+                //    var cookieOptions = new CookieOptions
+                //    {
+                //        HttpOnly = true,
+                //        Secure = true,
+                //        Expires = DateTime.Now.AddDays(1)
+                //    };
+
+                //    response.cookies.Append("AccessToken", token, cookieOptions);
+                //}
+
 
                 return RedirectToAction("Details", "Account");
             }

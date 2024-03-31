@@ -43,7 +43,7 @@ public class AuthController(DataContext dataContext, IConfiguration configuratio
     //            var token = tokenHandler.CreateToken(tokenDescriptor);
     //            var tokenString = tokenHandler.WriteToken(token);
 
-    //            return Ok(new { Token = tokenString });
+    //            return Ok(tokenString);
 
     //        }
     //        return Unauthorized();
