@@ -1,8 +1,7 @@
 
 header {
     padding: 15px 0;
-    /*background-color: --gray-000;*/
-    background-color: #ff0000;
+    background-color: var(--gray-000);
 
     .container {
         display: grid;
@@ -32,10 +31,19 @@ header {
             nav {
                 display: flex;
                 gap: 15px;
+             
+                a {
+                    color: var(--gray-900);
+
+                    &:hover {
+                        color: var(--theme);
+                    }
+                }
             }
         }
 
         .btn-switch {
+            color: var(--gray-900);
             grid-area: switch;
             display: none;
 

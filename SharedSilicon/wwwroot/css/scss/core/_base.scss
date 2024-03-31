@@ -28,4 +28,5 @@ h6, .h6 { @include h6; }
     height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr auto;
+    background-color: var(--gray-000);
 }
