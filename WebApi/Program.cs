@@ -10,6 +10,7 @@ builder.Services.AddHttpClient();
 //builder.Services.RegisterJwt(builder.Configuration);
 
 
+
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
 var app = builder.Build();

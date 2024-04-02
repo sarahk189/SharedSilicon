@@ -4,28 +4,38 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using SharedSilicon.Models;
+using WebApi.Dtos;
+using WebApi.Filters;
+
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[UseApiKey]
 public class SubscribeController(DataContext context) : ControllerBase
 {
 
     #region CREATE
 
     [HttpPost]
-    public async Task<IActionResult> Create(string email)
+    public async Task<IActionResult> Create([FromBody] SubscriberDto input)
     {
-        if (!string.IsNullOrEmpty(email))
+        if (!string.IsNullOrEmpty(input.Email))
         {
-            if (!await context.Subscribe.AnyAsync(x => x.Email == email))
+            if (!await context.Subscribe.AnyAsync(x => x.Email == input.Email))
 
             {
                 try
                 {
                     var subscribeEntity = new SubscribeEntity
                     {
-                        Email = email,
+                        Email = input.Email,
+                        Newsletter = input.Newsletter,
+                        AdvertisingUpdates = input.AdvertisingUpdates,
+                        WeekInReview = input.WeekInReview,
+                        EventUpdates = input.EventUpdates,
+                        StartupsWeekly = input.StartupsWeekly,
                         Subscribed = DateTime.Now
                     };
 
