@@ -6,11 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 using SharedSilicon.Models;
 using WebApi.Dtos;
+using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[UseApiKey]
 public class SubscribeController(DataContext context) : ControllerBase
 {
 
