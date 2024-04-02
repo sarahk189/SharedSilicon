@@ -1,14 +1,21 @@
 ﻿@using Infrastructure.Entities
-
+@model CoursesViewModel
 
 @{
 	ViewData["Title"] = "Courses";
 }
-@model IEnumerable<CourseEntity>
+@* @model IEnumerable<CourseEntity> *@
 
-@foreach (var course in Model)
+@foreach (var course in Model.Courses)
 {
 	<div>@course.Title</div>
 }
+@* 
+@foreach (var course in Model)
+{
+    <div>
+        <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">@course.Title</a>
+    </div>
+} *@
 
-@* <partial name="~/Views/Shared/Sections/_Courses.cshtml" /> *@
+<partial name="~/Views/Shared/Sections/_Courses.cshtml" />

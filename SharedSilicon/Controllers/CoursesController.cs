@@ -1,4 +1,5 @@
-﻿using Infrastructure.Entities;
+﻿using Infrastructure.Dtos;
+using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using Newtonsoft.Json;
@@ -22,15 +23,15 @@ public class CoursesController : Controller
         //var viewModel = new CoursesViewModel();
         //return View(viewModel);
     }
-
-	[HttpGet("{id}")]
-	public async Task<IActionResult> Details(int id)
+    [Route("Courses/Details/{id}")]
+	//[HttpGet("Details/{id}")]
+	public async Task<IActionResult> CourseDetails(int id)
 	{
 		using var http = new HttpClient();
 		var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}");
 		var json = await response.Content.ReadAsStringAsync();
-		var data = JsonConvert.DeserializeObject<CourseDetailsEntity>(json);
+		var data = JsonConvert.DeserializeObject<CourseDetailsDto>(json);
 
-		return View("_SingleCourse", data);
+		return View("CourseDetails",data);
 	}
 }

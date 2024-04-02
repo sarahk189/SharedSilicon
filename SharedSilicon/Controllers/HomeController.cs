@@ -53,4 +53,9 @@ public class HomeController : Controller
         return View(viewModel);
     }
 
+    public IActionResult Error404()
+    {
+        return View("Error404/Index");
+    }
+
 }

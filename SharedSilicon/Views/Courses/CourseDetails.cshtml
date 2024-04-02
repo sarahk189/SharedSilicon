@@ -1,0 +1,24 @@
+﻿@model Infrastructure.Dtos.CourseDetailsDto
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+
+
+@if (Model  != null)
+{
+    <div>
+        <a asp-controller="Courses" asp-action="CourseDetails" asp-route-id="@Model.CourseId">@Model.Course.CourseDetails</a>
+    </div>
+    <partial name="~/Views/Shared/Sections/_SingleCourse.cshtml" />    
+}
+else
+{
+    <div>Ingen kurs tillgänglig</div>
+}
+
+@* <partial name="~/Views/Shared/Sections/_SingleCourse.cshtml" /> *@
+
+
+@* @Html.Partial("~/Views/Shared/Sections/_SingleCourse.cshtml", Model) *@
