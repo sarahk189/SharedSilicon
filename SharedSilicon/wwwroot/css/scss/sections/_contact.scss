@@ -7,30 +7,6 @@
     background-color: var(--gray-100);
     position: relative;
 
-    h1 {
-        color: var(--gray-900);
-    }
-
-    p {
-        color: var(--gray-800);
-    }
-
-    h2 {
-        color: var(--gray-900);
-    }
-
-    label {
-        color: var(--gray-900);
-    }
-
-    span {
-        color: var(--gray-900);
-    }
-
-    input {
-        background-color: var(--gray-100);
-    }
-
     .container {
         display: flex;
         flex-direction: column;
@@ -210,7 +186,7 @@
                         }
 
                         input {
-                            background-color: var(--gray-100);
+                            background-color: var(--gray-000);
                             width: 491px;
                             height: 52px;
                             padding: 10px;
@@ -258,7 +234,7 @@
 
                         textarea {
                             color: var(--gray-900);
-                            background-color: var(--gray-100);
+                            background-color: var(--gray-000);
                             padding: 1rem;
                             border-radius: 0.5rem !important;
                             border: 0.063rem solid var(--gray-400);
@@ -290,7 +266,7 @@
                             padding: 10px;
                             border: 1px solid var(--gray-400);
                             color: var(--gray-500);
-                            background-color: var(--gray-100);
+                            background-color: var(--gray-000);
                             border-radius: 8px !important;
                         }
 

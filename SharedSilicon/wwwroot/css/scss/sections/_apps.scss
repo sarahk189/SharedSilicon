@@ -1,16 +1,17 @@
 ﻿.apps {
-    background-color: $gray-200;
+    background-color: var(--gray-100);
 
     .container {
         justify-content: center;
         text-align: center;
+        background-color: var(--gray-100);
 
         @include md {
             display: flex;
             justify-content: space-evenly;
             text-align: left;
             padding: 50px 0;
-        } 
+        }
 
         .iphone {
             display: none;
@@ -49,7 +50,7 @@
                     position: relative;
                     top: -.5vh;
                 }
-
+                //reminder to self: byta ut dessa två mot ljusa bilder i .cshtml
                 .app-type {
                     display: flex;
 

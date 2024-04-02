@@ -47,6 +47,10 @@ header {
             grid-area: switch;
             display: none;
 
+            label{
+                color: var(--gray-900);               
+            }
+
             @include lg {
                 display: block;
             }
