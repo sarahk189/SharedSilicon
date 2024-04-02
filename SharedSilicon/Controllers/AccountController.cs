@@ -5,6 +5,7 @@ using Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
 using SharedSilicon.Models;
 using System.Net;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SharedSilicon.Controllers;
 
@@ -15,6 +16,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
     private readonly SignInManager<UserEntity> _signInManager = signInManager;
 
     #region Details
+    //If signed in, directs to the account details page
     [HttpGet]
     [Route("/account/details")]
     public async Task <IActionResult> Details()
@@ -40,13 +42,12 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
         {
             if (user != null)
             {
-                var address = user.Address ?? new AddressEntity(); // If user.Address is null, create a new Address object
+                var address = user.Address ?? new AddressEntity();
 
                 var viewModel = new AccountDetailsViewModel()
-                {
+                {   
                     BasicInfo = new AccountDetailsBasicInfoModel
                     {
-                        ProfileImage = user.ProfileImage,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email!,
@@ -70,28 +71,35 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
         }
         return null!;
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> BasicInfo(AccountDetailsViewModel viewModel)
+    public async Task<IActionResult> SaveBasicInfo(AccountDetailsViewModel viewModel)
     {
-        if (!ModelState.IsValid)
+        if (!TryValidateModel(viewModel.BasicInfo, nameof(viewModel.BasicInfo)))
         {
-            return View("Details", viewModel);
-        }
+            var user = await _userManager.GetUserAsync(User);
 
-        var user = await _userManager.GetUserAsync(User);
-        if (user != null)
-        {
-            user.FirstName = viewModel.BasicInfo.FirstName;
-            user.LastName = viewModel.BasicInfo.LastName;
-            user.Email = viewModel.BasicInfo.Email;
-            user.PhoneNumber = viewModel.BasicInfo.Phone;
-            user.Biography = viewModel.BasicInfo.Biography;
+            if (user != null)
+            {
+                if (viewModel.BasicInfo != null)
+                {
+                    user.FirstName = viewModel.BasicInfo.FirstName;
+                    user.LastName = viewModel.BasicInfo.LastName;
+                    user.Email = viewModel.BasicInfo.Email;
+                    user.PhoneNumber = viewModel.BasicInfo.Phone!;
+                    user.Biography = viewModel.BasicInfo.Biography!;
+                }
 
+                
+
+            }
             var result = await _userManager.UpdateAsync(user);
+
+
             if (result.Succeeded)
             {
                 return RedirectToAction(nameof(Details));
+
             }
             else
             {
@@ -103,63 +111,151 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
         }
         return View("Details", viewModel);
     }
-    //_accountService.SaveBasicInfo(viewModel.BasicInfo);
-
 
     [HttpPost]
-    public IActionResult SaveAddressInfo(AccountDetailsViewModel viewModel)
+    public async Task<IActionResult> SaveAddressInfo(AccountDetailsViewModel viewModel)
     {
-        //_accountService.SaveAddressInfo(viewModel.AddressInfo);
-        if (TryValidateModel(viewModel.AddressInfo))
+        if (!TryValidateModel(viewModel.AddressInfo, nameof(viewModel.AddressInfo)))
         {
-            return RedirectToAction(nameof(Details), viewModel);
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user.Address != null)
+            {
+                user.Address.AddressLine1 = viewModel.AddressInfo.Addressline_1;
+                user.Address.AddressLine2 = viewModel.AddressInfo.Addressline_2!;
+                user.Address.PostalCode = viewModel.AddressInfo.PostalCode;
+                user.Address.PostalCode = viewModel.AddressInfo.City;
+
+                var updated = await _userManager.UpdateAsync(user);
+                if (updated.Succeeded)
+                {
+                    return RedirectToAction(nameof(Details));
+                }
+                else
+                {
+                    foreach (var error in updated.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }            
+            }
+            else
+            {
+                user.Address = new AddressEntity()
+                {
+                    AddressLine1 = viewModel.AddressInfo.Addressline_1,
+                    AddressLine2 = viewModel.AddressInfo.Addressline_2!,
+                    PostalCode = viewModel.AddressInfo.PostalCode,
+                    City = viewModel.AddressInfo.City
+                };
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Details));
+                }
+            }
         }
-        return View("Details", viewModel);
+        return View("Details", "Account");
     }
 
     #endregion
 
     #region Security
+    [HttpGet]
     [Route("/account/security")]
-    public /*async Task<IActionResult>*/ IActionResult Security(SecurityViewModel viewModel)
+    public async Task<IActionResult> Security()
     {
+        if (!_signInManager.IsSignedIn(User))
+        {
+            return RedirectToAction("SignIn", "Auth");
+        }
+        var userEntity = await _userManager.GetUserAsync(User);
+        var claims = HttpContext.User.Identities.FirstOrDefault();
 
-        //// Get the currently logged in user
-        //var user = await _userManager.GetUserAsync(User);
-
-        //if (user == null)
-        //{
-        //    // Handle case where user is not logged in
-        //    return NotFound();
-        //}
-
-        //// Change the user's password
-        //var result = await _userManager.ChangePasswordAsync(user,viewModel.CurrentPassword, viewModel.NewPassword);
-
-        //if (!result.Succeeded)
-        //{
-        //    // Handle case where password change failed
-        //    foreach (var error in result.Errors)
-        //    {
-        //        ModelState.AddModelError(string.Empty, error.Description);
-        //    }
-        //    return View(viewModel);
-        //}
-
-        //// Handle case where password change succeeded
-        //// ...
+        var viewModel = new SecurityViewModel
+        {
+            Password = new ChangePasswordModel
+            {
+                FirstName = userEntity.FirstName,
+                LastName = userEntity.LastName,
+                Email = userEntity.Email,
+                ProfileImage = userEntity.ProfileImage
+            }
+        };
 
         return View(viewModel);
+    }
+
+
+
+    [HttpPost]
+    [Route("/account/security")]
+    public async Task<IActionResult> Security(SecurityViewModel viewModel)
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        // Check if the current password or new password is null
+        if (string.IsNullOrEmpty(viewModel.Password.CurrentPassword) || string.IsNullOrEmpty(viewModel.Password.NewPassword))
+        {
+            ModelState.AddModelError(string.Empty, "Password cannot be null or empty");
+            return View(viewModel);
+        }
+
+        var result = await _userManager.ChangePasswordAsync(user, viewModel.Password.CurrentPassword, viewModel.Password.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(viewModel);
+        }
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [Route("/account/delete")]
+    public async Task<IActionResult> DeleteAccount(SecurityViewModel viewModel)
+    {
+        if (viewModel.DeleteAccount)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("SignUp", "Auth");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+        }
+        return View("Security", viewModel);
     }
     #endregion
 
     #region MyCourses
+    [HttpGet]
     [Route("/account/mycourses")]
     public IActionResult SavedCourses(SavedCoursesViewModel viewModel)
     {
         return View (viewModel);
     }
     #endregion
-
-
 }

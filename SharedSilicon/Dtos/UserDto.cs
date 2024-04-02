@@ -9,6 +9,5 @@
         public string Password { get; set; } = null!;
         public string? Phone { get; set; }
         public string? Biography { get; set; }
-        public string? ProfileImage { get; set; }
     }
 }
