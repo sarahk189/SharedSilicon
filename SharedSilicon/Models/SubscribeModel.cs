@@ -23,6 +23,7 @@ public class SubscribeModel
     [Display(Name = "Podcasts", Order = 5)]
     public bool Podcasts { get; set; } = false;
 
+    [Required]
     [Display(Name = "Email address", Prompt = "Enter your email address", Order = 6)]
     [DataType(DataType.EmailAddress)]
     [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]{2,}$", ErrorMessage = "Email must be in the format of x@x.xx")]
