@@ -13,10 +13,18 @@ public class CoursesController : Controller
     {
         using var http = new HttpClient();
         var response = await http.GetAsync("https://localhost:7152/api/courses");
-        var json = await response.Content.ReadAsStringAsync();
-        var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
-
-        return View(data);
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
+            return View(data);
+        }
+        else
+        {
+            // Log the status code and the reason for failure
+            Console.WriteLine($"Request failed with status code: {response.StatusCode}, reason: {response.ReasonPhrase}");
+            return View("Error");
+        }
 
         //ViewData["Title"] = "Courses";
 
