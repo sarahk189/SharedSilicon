@@ -3,8 +3,6 @@ using Infrastructure.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-using SharedSilicon.Models;
 using WebApi.Dtos;
 using WebApi.Filters;
 
