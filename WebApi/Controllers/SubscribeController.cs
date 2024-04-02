@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using SharedSilicon.Models;
+using WebApi.Dtos;
 
 namespace WebApi.Controllers;
 
@@ -16,7 +17,7 @@ public class SubscribeController(DataContext context) : ControllerBase
     #region CREATE
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] SubscribeModel input)
+    public async Task<IActionResult> Create([FromBody] SubscriberDto input)
     {
         if (!string.IsNullOrEmpty(input.Email))
         {

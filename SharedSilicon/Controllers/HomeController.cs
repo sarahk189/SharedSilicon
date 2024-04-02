@@ -24,7 +24,7 @@ public class HomeController(HttpClient http) : Controller
 
     [HttpPost]
     [Route("/")]
-    public async Task<IActionResult>Subscribe(SubscribeViewModel viewModel)
+    public async Task<IActionResult> Subscribe(SubscribeViewModel viewModel)
     {
         if (ModelState.IsValid)
         {
@@ -57,5 +57,6 @@ public class HomeController(HttpClient http) : Controller
         }
         return View("Index", viewModel);
     }
+
 
 }
