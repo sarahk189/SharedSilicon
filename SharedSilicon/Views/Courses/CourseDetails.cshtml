@@ -9,7 +9,9 @@
 @if (Model  != null)
 {
     <div>
-        <a asp-controller="Courses" asp-action="CourseDetails" asp-route-id="@Model.CourseId">@Model.Course.CourseDetails</a>
+        <p>@Model.CourseDescription</p>
+        <p>@Model.WhatYoullLearn</p>
+        <p>@Model.ProgramDetailOne</p>
     </div>
     <partial name="~/Views/Shared/Sections/_SingleCourse.cshtml" />    
 }
