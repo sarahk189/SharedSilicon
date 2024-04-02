@@ -1,45 +1,63 @@
+
 header {
     padding: 15px 0;
+    background-color: var(--gray-000);
 
     .container {
         display: grid;
         align-items: center;
         grid-template-columns: 1fr auto;
-        grid-template-areas:  "logo mobile";
+        grid-template-areas: "logo mobile";
         gap: 40px;
-        
+
+
         @include lg {
             grid-template-columns: auto 1fr auto auto;
-            grid-template-areas:  "logo menu switch buttons";
+            grid-template-areas: "logo menu switch buttons";
         }
 
-        #logo { grid-area: logo; }
+        #logo {
+            grid-area: logo;
+        }
 
-        #menu { 
-            grid-area: menu; 
+        #menu {
+            grid-area: menu;
             display: none;
 
             @include lg {
                 display: block;
             }
-            
+
             nav {
                 display: flex;
                 gap: 15px;
+             
+                a {
+                    color: var(--gray-900);
+
+                    &:hover {
+                        color: var(--theme);
+                    }
+                }
             }
         }
-        
-        .btn-switch { 
-            grid-area: switch; 
+
+        .btn-switch {
+            color: var(--gray-900);
+            grid-area: switch;
             display: none;
+
+            label{
+                color: var(--gray-900);               
+            }
 
             @include lg {
                 display: block;
             }
         }
 
-        .account-buttons { 
-            grid-area: buttons; 
+        .account-buttons {
+            grid-area: buttons;
             display: none;
             gap: 15px;
 
@@ -49,7 +67,7 @@ header {
         }
 
         .btn-mobile {
-            grid-area: mobile; 
+            grid-area: mobile;
             display: block;
 
             @include lg {

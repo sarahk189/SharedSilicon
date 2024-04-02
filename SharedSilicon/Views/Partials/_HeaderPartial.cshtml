@@ -1,11 +1,17 @@
 ﻿@{
     var isContactPage = (ViewContext.RouteData.Values["Controller"].ToString() == "Contact" && ViewContext.RouteData.Values["Action"].ToString() == "Index");
 }
+@{
+    var themeMode = Context.Request.Cookies["ThemeMode"] ?? "light";
+    var isDark = (themeMode == "dark") ? true : false;
+}
 @inject SignInManager<UserEntity> _signInManager
 
 <header class="@(isContactPage ? "contact-header" : "")">
     <div class="container">
-        <a id="logo" asp-controller="Home" asp-action="Index"><img src="/images/siliconLogo.svg" alt="logotype for Silicon"></a>
+        <a id="logo" asp-controller="Home" asp-action="Index">
+            <img src="/images/@(isDark ? "siliconLogoDark.svg" : "siliconLogo.svg")" alt="logotype for Silicon">
+        </a>
         <div id="menu" class="hide">
             <nav>
                 <a class="menu-link" asp-controller="Home" asp-action="Index" asp-fragment="overview">Overview</a>
@@ -14,22 +20,19 @@
 
             </nav>
         </div>
+
         <div class="btn-switch">
             <label>Light</label>
             <label class="switch" for="switch-mode">
-                <input type="checkbox" id="switch-mode" />
+                <input type="checkbox" id="switch-mode" checked="@isDark" />
                 <div class="slider round"></div>
             </label>
             <label>Dark</label>
         </div>
 
         <div class="account-buttons hide">
-
-          
                 <a class="btn-gray" asp-controller="Auth" asp-action="SignIn"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></a>
-                <a class="btn-theme" asp-controller="Auth" asp-action="SignUp"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>
-            
-        
+                <a class="btn-theme" asp-controller="Auth" asp-action="SignUp"><i class="fa-regular fa-user"></i><span>Sign Up</span></a>                
         </div>
         <button onclick="toggleMenu()" class="btn-mobile">
             <i class="fa-regular fa-bars"></i>

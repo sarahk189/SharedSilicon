@@ -1,12 +1,22 @@
 .error-404 {
+    
     .container {
-        margin-top: 100px;
+     
+        padding-top: 100px;
         display: flex;
         justify-content: center;
         align-items: center;
 
         .content {
             text-align: center;
+
+            h1 {
+                color: var(--gray-900);
+            }
+
+            p {
+                color: var(--gray-900);
+            }
         }
 
         nav {
@@ -29,6 +39,10 @@
             nav {
                 .btn-theme {
                     width: 200px;
+
+                    a {
+                        color: white;
+                    }
                 }
             }
         }
