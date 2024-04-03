@@ -7,7 +7,7 @@ public class CourseEntity
     [Key]
     public int Id { get; set; }
     public int CourseDetailsId { get; set; }
-	public int AuthorId { get; set; }
+	public Guid AuthorId { get; set; }
 	public string Title { get; set; } = null!;
     //public string Author { get; set; } = null!;
     public string? ImageUrl { get; set; }

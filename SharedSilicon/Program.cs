@@ -9,7 +9,8 @@ builder.Services.AddRouting(x => x.LowercaseUrls = true);
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),
+b => b.MigrationsAssembly("Infrastructure")));
 builder.Services.AddDefaultIdentity<UserEntity>(x =>
 {
     x.User.RequireUniqueEmail = true;

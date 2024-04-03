@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using SharedSilicon.ViewModels
+@using static SharedSilicon.Models.CoursesModel
 @model SavedCoursesViewModel
 @{
     ViewData["Title"] = $"Account Details for {Model.AccountInfo.FirstName} {Model.AccountInfo.LastName}";
@@ -30,8 +31,8 @@
 						{
 							<div class="bestbadge"> <img src="@myCourse.BestBadgeUrl" alt="Green bestseller badge"> </div>
 						}
-						<div class="bookmark"> <img src="@myCourse.BookmarkUrl" alt="Bookmark course badge"></div>
-						<h5>@myCourse.Title</h5>
+                        <div class="bookmark" data-course-id="@myCourse."> <img src="@myCourse.BookmarkUrl" alt="Bookmark course badge"></div>
+                        <h5>@myCourse.Title</h5>
 						<p class="author">@myCourse.Author<p>
 							<div class="price-container">
 									@if (myCourse.RedPrice.HasValue)

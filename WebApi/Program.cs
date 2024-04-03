@@ -11,8 +11,8 @@ builder.Services.AddHttpClient();
 
 
 
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
-
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),
+b => b.MigrationsAssembly("Infrastructure"))); 
 var app = builder.Build();
 
 
