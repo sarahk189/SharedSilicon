@@ -370,3 +370,4 @@ migrations/*
 
 /Migrations/
 *.Designer.cs
+/SharedSilicon/Views/Shared/Sections/_Error404.cshtml

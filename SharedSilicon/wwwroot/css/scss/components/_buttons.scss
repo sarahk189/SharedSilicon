@@ -40,14 +40,14 @@
 
 .btn-gray { 
     @include button;
-    background: $gray-200;
-    color: $gray-800;
+    background: var(--gray-200);
+    color: var(--gray-800);
     border: none;
 
     &:hover {
         text-decoration: none;
-        background: $gray-700;
-        color: $white;
+        background: var(--gray-700);
+        color: var (--gray-000);
     } 
 }
 
@@ -118,6 +118,7 @@
     }
 }
 
+
 .btn-social {
     @include text-xl;
     display: flex;
@@ -126,12 +127,12 @@
     border-radius: 8px;
     width: 44px;
     height: 44px;
-    background-color: $gray-200;
-    color: $gray-800;
+    background-color: var(--gray-200);
+    color: var(--gray-800);
 
     &:hover {
         text-decoration: none;
-        background: $gray-700;
-        color: $white;
-    } 
+        background-color: var(--gray-700);
+        color: var(--white);     
+    }
 }

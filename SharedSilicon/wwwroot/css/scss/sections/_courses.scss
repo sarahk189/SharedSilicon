@@ -1,6 +1,5 @@
 .courses-page {
     padding: 50px 0;
-
     //Toolbar and navigation.
     .container {
         display: flex;
@@ -63,6 +62,11 @@
             justify-content: flex-end;
             margin-top: 50px;
 
+            input {
+                background-color: var(--gray-000);
+                color: var(--gray-900);
+            }
+
             @include sm {
                 flex-direction: column;
                 align-items: stretch;
@@ -79,11 +83,14 @@
             position: relative;
             display: inline-block;
             margin-right: 25px;
+            background-color: var(--gray-000);
+            color: var(--gray-900);
         }
 
         .dropbtn {
             @include button;
-            background-color: #ffff;
+            background-color: var(--gray-000);
+            color: var(--gray-900);
             width: 240px;
             height: 44px;
             border: 1px solid $gray-400;
@@ -108,10 +115,14 @@
             box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
             z-index: 1;
             padding: 0;
+            background-color: var(--gray-000);
+            color: var(--gray-900);
         }
 
         .dropdown-content li {
             padding: 10px;
+            background-color: var(--gray-000);
+            color: var(--gray-900);
         }
 
         .dropdown-content li a {
@@ -136,6 +147,10 @@
                 height: 100%;
                 padding-right: 40px;
                 border: none;
+                background-color: var(--gray-000);
+                color: var(--gray-900);
+
+
 
                 &::placeholder {
                     color: $gray-400;
@@ -152,10 +167,9 @@
             }
         }
     }
-
-
     //Courses cards.
     .container {
+
 
 
         .courses-show {
@@ -167,7 +181,7 @@
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 20px;
-            }           
+            }
 
             @include mid {
                 display: grid;
@@ -303,7 +317,7 @@
             flex-direction: row;
             display: flex;
             justify-content: space-between;
-            background-color: $gray-100;
+            background-color: var(--gray-100);
             border-radius: 8px;
             padding: 20px;
             align-items: center;
@@ -335,7 +349,7 @@
 
             p {
                 @include text-lead;
-                color: $gray-700;
+                color: var(--gray-700);
                 margin-bottom: 20px;
             }
 
@@ -349,10 +363,3 @@
         }
     }
 }
-
-
-
-
-
-
-
