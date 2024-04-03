@@ -1,1 +1,15 @@
-﻿<partial name="~/Views/Shared/Sections/_Courses.cshtml" />
+﻿@* @using Infrastructure.Entities *@
+@model IEnumerable<Infrastructure.Entities.CourseEntity>
+
+@{
+	ViewData["Title"] = "Courses";
+}
+
+
+@foreach (var course in Model)
+{
+	<div>@course.Title</div>
+}
+
+
+<partial name="~/Views/Shared/Sections/_Courses.cshtml model = Model" />

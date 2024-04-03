@@ -7,6 +7,7 @@ public class CourseDetailsEntity
 {
     [Key]
     public Guid Id { get; set; }
+   
     public int CourseId { get; set; }
     public decimal? NumberOfReviews { get; set; }
     public bool? Digital { get; set; }
@@ -20,6 +21,9 @@ public class CourseDetailsEntity
     public string? ProgramDetailThree { get; set; }
     public string? ProgramDetailFour { get; set; }
     public string? ProgramDetailFive { get; set; }
-    public virtual CourseEntity Course { get; set; } = null!;
+	public string? ProgramDetailSix { get; set; }
+	public virtual ICollection <CourseEntity> Courses { get; set; } = new List<CourseEntity>();
+	public virtual CourseAuthorEntity Author { get; set; } = null!;
+    
 
 }

@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
-@model SharedSilicon.ViewModels.CoursesViewModel
+@* @model SharedSilicon.ViewModels.CoursesViewModel *@
+@model IEnumerable<Infrastructure.Entities.CourseEntity>
 
 
 
@@ -43,15 +44,17 @@
 	@* Courses cards. *@
 	<div class="container">
 		<div class="courses-show">
-			@foreach (var course in Model.Courses)
+			@foreach (var course in Model)
 			{
 				<a class="courses" href="#">
 					<img src="@course.ImageUrl" alt="course image" />
-					@if (!string.IsNullOrEmpty(course.BestBadgeUrl))
+					@if (course.BestBadgeUrl)
 					{
-						<div class="bestbadge"> <img src="@course.BestBadgeUrl" alt="Green bestseller badge"> </div>
+						<div class="bestbadge">
+							<img src="@course.BestBadgeUrl" alt="Green bestseller badge">
+						</div>
 					}
-					<div class="bookmark"> <img src="@course.BookmarkUrl" alt="Bookmark course badge"></div>
+					<div class="bookmark" data-course-id="@course.Id"> <img src="@course.BookmarkUrl" alt="Bookmark course badge"></div>
 					<h5>@course.Title</h5>
 					<p class="author">@course.Author<p>
 						<div class="price-container">

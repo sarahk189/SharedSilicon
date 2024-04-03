@@ -1,55 +1,66 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
 using SharedSilicon.ViewModels;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 
 
 namespace SharedSilicon.Controllers;
 
-public class HomeController : Controller
+public class HomeController(HttpClient http) : Controller
 {
+    private readonly HttpClient _http = http;
+
+    [HttpGet]
     [Route("/")]
     public IActionResult Index()
     {
         var viewModel = new SubscribeViewModel();
-        return View();
+        return View(viewModel);
     }
 
 
     [HttpPost]
-    public async Task <IActionResult> Subscribe(SubscribeViewModel viewModel)
+    [Route("/")]
+    public async Task<IActionResult> Subscribe(SubscribeViewModel viewModel)
     {
         if (ModelState.IsValid)
         {
-            //    try
-            //    {
-            //        var content = new StringContent/JsonConverter.SerializeObject(viewModel), Encoding.Utf8, "application/json");
-            //        var response = await _http.PostAsync("https:...", content);
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(viewModel.Form), Encoding.UTF8, "application/json");
+                var response = await _http.PostAsync("https://localhost:7152/api/Subscribe?key=Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh", content);
 
-            //        if (response.ISSuccessStatusCode)
-            //        {
-            //            ViewData["Status"] = "Success";
-            //        }
-            //        else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
-            //        {
-            //            ViewData["Status"] = "AlreadyExists";
-            //        }
-            //        else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            //        {
-            //            ViewData["Status"] = "Unauhorized";
-            //        }
-            //    }
-            //    catch
-            //    {
-            //        ViewData["Status"] = "ConnectionFailed";
-            //    }
-            //}
-            //else
-            //{
-            //    ViewData["Status"] = "Invalid";
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewData["Status"] = "Success";
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    ViewData["Status"] = "AlreadyExists";
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    ViewData["Status"] = "Unauhorized";
+                }
+            }
+            catch
+            {
+                ViewData["Status"] = "ConnectionFailed";
+            }
         }
-        return View(viewModel);
+        else
+        {
+            ViewData["Status"] = "Invalid";
+        }
+        return View("Index", viewModel);
     }
+
+    //public IActionResult Error404()
+    //{
+    //    return View("Error404/Index");
+    //}
 
 }

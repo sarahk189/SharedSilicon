@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRouting(x => x.LowercaseUrls = true);
 
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+builder.Services.AddHttpClient();
+
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),
+b => b.MigrationsAssembly("Infrastructure")));
 builder.Services.AddDefaultIdentity<UserEntity>(x =>
 {
     x.User.RequireUniqueEmail = true;
@@ -24,7 +27,7 @@ var app = builder.Build();
 
 
 app.UseHsts();
-app.UseStatusCodePagesWithReExecute("/error", "?statusCode={0}");
+app.UseStatusCodePagesWithReExecute("/Error404", "?statusCode={0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
