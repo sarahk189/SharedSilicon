@@ -1,19 +1,16 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Filters;
+
 
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+
 public class CoursesController(DataContext context) : ControllerBase
 {
 
@@ -92,17 +89,53 @@ public class CoursesController(DataContext context) : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var courses = await context.Courses.ToListAsync();
-        return Ok(courses);
-    }
+		var courseDtos = courses.Select(course => new CourseDto
+
+		{
+			Id = course.Id,
+			Title = course.Title,
+			ImageUrl = course.ImageUrl,
+			BestBadgeUrl = course.BestBadgeUrl,
+			BookmarkUrl = course.BookmarkUrl,
+			Hours = course.Hours,
+			Price = course.Price,
+			OldPrice = course.OldPrice,
+			RedPrice = course.RedPrice,
+			RatingPercentage = course.RatingPercentage,
+			RatingCount = course.RatingCount
+
+		}).ToList();
+
+		return Ok(courseDtos);
+	}
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
-        var courseEntity = await context.Courses.FirstOrDefaultAsync(x => x.Id == id);
-        if (courseEntity != null)
-        {
-            return Ok(courseEntity);
-        }
+		var course = await context.Courses
+	  .Include(c => c.CourseDetails)
+	  .Include(c => c.CourseDetails.Author)
+	  .FirstOrDefaultAsync(x => x.Id == id);
+		if (course != null)
+		{
+			var courseDetailsDto = new CourseDetailsDto
+			{
+				NumberOfReviews = course.CourseDetails.NumberOfReviews,
+				Digital = course.CourseDetails.Digital,
+				CourseDescription = course.CourseDetails.CourseDescription,
+				WhatYoullLearn = course.CourseDetails.WhatYoullLearn,
+				NumberOfArticles = course.CourseDetails.NumberOfArticles,
+				NumberOfDownloads = course.CourseDetails.NumberOfDownloads,
+				Certificate = course.CourseDetails.Certificate,
+				ProgramDetailOne = course.CourseDetails.ProgramDetailOne,
+				ProgramDetailTwo = course.CourseDetails.ProgramDetailTwo,
+				ProgramDetailThree = course.CourseDetails.ProgramDetailThree,
+				ProgramDetailFour = course.CourseDetails.ProgramDetailFour,
+				ProgramDetailFive = course.CourseDetails.ProgramDetailFive
+				
+			};
+			return Ok(courseDetailsDto);
+		}
 
         return NotFound();
         

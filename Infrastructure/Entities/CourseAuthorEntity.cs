@@ -15,7 +15,7 @@ public class CourseAuthorEntity
     public string? Description { get; set; }
     public int? NumberOfSubscribers { get; set; }
     public int? NumberOfFollowers { get; set; }
-    //public virtual ICollection<CourseEntity> Courses { get; set; } = new List<CourseEntity>();
+    public virtual ICollection<CourseEntity> Courses { get; set; } = new List<CourseEntity>();
 
 
 }

@@ -21,8 +21,9 @@ public class CourseDetailsEntity
     public string? ProgramDetailThree { get; set; }
     public string? ProgramDetailFour { get; set; }
     public string? ProgramDetailFive { get; set; }
-    public virtual CourseEntity Course { get; set; } = null!;
-    public virtual CourseAuthorEntity Author { get; set; } = null!;
+	public string? ProgramDetailSix { get; set; }
+	public virtual ICollection <CourseEntity> Courses { get; set; } = new List<CourseEntity>();
+	public virtual CourseAuthorEntity Author { get; set; } = null!;
     
 
 }

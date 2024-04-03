@@ -26,7 +26,7 @@ var app = builder.Build();
 
 
 app.UseHsts();
-app.UseStatusCodePagesWithReExecute("/Home/Error404", "?statusCode={0}");
+app.UseStatusCodePagesWithReExecute("/Error404", "?statusCode={0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

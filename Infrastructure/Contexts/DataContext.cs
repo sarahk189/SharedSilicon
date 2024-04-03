@@ -12,6 +12,7 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
 	public DbSet<AddressEntity> Addresses { get; set; } = null!;
 	public DbSet<SubscribeEntity> Subscribe { get; set; } = null!;
 	public DbSet<CourseEntity> Courses { get; set; } = null!;
+	public DbSet<SavedCourseEntity> SavedCourses { get; set; } = null!;
 	public DbSet<CourseDetailsEntity> CoursesDetails { get; set;} = null!;
 	public DbSet<CourseAuthorEntity> CoursesAuthor { get; set;} = null!;
 

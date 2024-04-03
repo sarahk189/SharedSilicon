@@ -1,7 +1,5 @@
-﻿using Infrastructure.Dtos;
-using Infrastructure.Entities;
+﻿using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
-
 using Newtonsoft.Json;
 
 
@@ -12,19 +10,17 @@ public class CoursesController : Controller
     public async Task <IActionResult> Index()
     {
         using var http = new HttpClient();
-        var response = await http.GetAsync("https://localhost:7152/api/courses");
-        if (response.IsSuccessStatusCode)
-        {
-            var json = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
-            return View(data);
-        }
-        else
-        {
-            // Log the status code and the reason for failure
-            Console.WriteLine($"Request failed with status code: {response.StatusCode}, reason: {response.ReasonPhrase}");
-            return View("Error");
-        }
+        var response = await http.GetAsync("https://localhost:7152/api/courses");       
+        var json = await response.Content.ReadAsStringAsync();
+        var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
+
+
+
+
+
+
+        return View(data);
+      
 
         //ViewData["Title"] = "Courses";
 
@@ -38,7 +34,7 @@ public class CoursesController : Controller
 		using var http = new HttpClient();
 		var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}");
 		var json = await response.Content.ReadAsStringAsync();
-		var data = JsonConvert.DeserializeObject<CourseDetailsDto>(json);
+		var data = JsonConvert.DeserializeObject<CourseDetailsEntity>(json);
 
 		return View("CourseDetails",data);
 	}
