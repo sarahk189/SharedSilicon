@@ -8,6 +8,9 @@ namespace Infrastructure.Entities;
 
 public class CategoryEntity
 {
-    public string CategoryName { get; set; } = null!; 
-    public int CategoryId { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; } = null!; 
+    
+    public virtual ICollection <FilterCategoryEntity> FilterCategory { get; set; } = new List<FilterCategoryEntity>();
+
 }

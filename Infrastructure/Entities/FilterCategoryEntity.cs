@@ -13,7 +13,7 @@ public class FilterCategoryEntity
     public int CategoryId { get; set; }
     public int CourseId { get; set; }
 
-    public ICollection<CategoryEntity> Categories { get; set; } = new List<CategoryEntity>();
+    public virtual CategoryEntity Category { get; set; }
+    public virtual CourseEntity Course { get; set; }
 
-    public ICollection<CourseEntity> Courses { get; set; } = new List<CourseEntity>();  
 }

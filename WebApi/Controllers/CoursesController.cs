@@ -50,8 +50,18 @@ public class CoursesController(DataContext context) : ControllerBase
 							FirstName = createCourseDto.Author.FirstName,
 							LastName = createCourseDto.Author.LastName,
 							Headline = createCourseDto.Author.Headline
-						}
+						},
 						
+						FilterCategory = new List<FilterCategoryEntity>
+						{ 
+							new FilterCategoryEntity
+							{
+                                Category = new CategoryEntity
+								{
+									Name = createCourseDto.CategoryName.Name
+								}
+							}
+						}
                     };
 
                 await context.Courses.AddAsync(courseEntity);
