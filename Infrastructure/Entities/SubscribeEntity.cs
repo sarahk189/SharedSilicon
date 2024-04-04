@@ -7,6 +7,7 @@ public class SubscribeEntity
     [Key]
     public int Id { get; set; }
 
+    public Guid UserId { get; set; }
     public bool Newsletter { get; set; } = false;
     public bool AdvertisingUpdates { get; set; } = false;
     public bool WeekInReview { get; set; } = false;

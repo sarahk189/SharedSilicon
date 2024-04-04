@@ -41,33 +41,17 @@ public class CoursesController(DataContext context) : ControllerBase
 						CourseDetails = new CourseDetailsEntity
 						{
 							NumberOfReviews = createCourseDto.CourseDetails.NumberOfReviews,
-							Digital = createCourseDto.CourseDetails.Digital,
-							CourseDescription = createCourseDto.CourseDetails.CourseDescription,
-							WhatYoullLearn = createCourseDto.CourseDetails.WhatYoullLearn,
-							NumberOfArticles = createCourseDto.CourseDetails.NumberOfArticles,
-							NumberOfDownloads = createCourseDto.CourseDetails.NumberOfDownloads,
-							Certificate = createCourseDto.CourseDetails.Certificate,
-							ProgramDetailOne = createCourseDto.CourseDetails.ProgramDetailOne,
-							ProgramDetailTwo = createCourseDto.CourseDetails.ProgramDetailTwo,
-							ProgramDetailThree = createCourseDto.CourseDetails.ProgramDetailThree,
-							ProgramDetailFour = createCourseDto.CourseDetails.ProgramDetailFour,
-							ProgramDetailFive = createCourseDto.CourseDetails.ProgramDetailFive,
-
-							Author = new CourseAuthorEntity
-							{
-
-								AuthorImageUrl = createCourseDto.Author.AuthorImageUrl,
-								FirstName = createCourseDto.Author.FirstName,
-								LastName = createCourseDto.Author.LastName,
-								Headline = createCourseDto.Author.Headline,
-								Description = createCourseDto.Author.Description,
-								NumberOfSubscribers = createCourseDto.Author.NumberOfSubscribers,
-								NumberOfFollowers = createCourseDto.Author.NumberOfFollowers,
-								CourseId = createCourseDto.Course.Id,
-							}
+							Digital = createCourseDto.CourseDetails.Digital
                         },
+
+						Author = new CourseAuthorEntity
+						{
+							AuthorImageUrl = createCourseDto.Author.AuthorImageUrl,
+							FirstName = createCourseDto.Author.FirstName,
+							LastName = createCourseDto.Author.LastName,
+							Headline = createCourseDto.Author.Headline
+						}
 						
-                        
                     };
 
                 await context.Courses.AddAsync(courseEntity);
@@ -91,8 +75,7 @@ public class CoursesController(DataContext context) : ControllerBase
         var courses = await context.Courses.ToListAsync();
 		var courseDtos = courses.Select(course => new CourseDto
 
-		{
-			Id = course.Id,
+		{ 
 			Title = course.Title,
 			ImageUrl = course.ImageUrl,
 			BestBadgeUrl = course.BestBadgeUrl,
@@ -114,7 +97,7 @@ public class CoursesController(DataContext context) : ControllerBase
     {
 		var course = await context.Courses
 	  .Include(c => c.CourseDetails)
-	  .Include(c => c.CourseDetails.Author)
+	  .Include(c => c.Author)
 	  .FirstOrDefaultAsync(x => x.Id == id);
 		if (course != null)
 		{
@@ -122,20 +105,18 @@ public class CoursesController(DataContext context) : ControllerBase
 			{
 				NumberOfReviews = course.CourseDetails.NumberOfReviews,
 				Digital = course.CourseDetails.Digital,
-				CourseDescription = course.CourseDetails.CourseDescription,
-				WhatYoullLearn = course.CourseDetails.WhatYoullLearn,
-				NumberOfArticles = course.CourseDetails.NumberOfArticles,
-				NumberOfDownloads = course.CourseDetails.NumberOfDownloads,
-				Certificate = course.CourseDetails.Certificate,
-				ProgramDetailOne = course.CourseDetails.ProgramDetailOne,
-				ProgramDetailTwo = course.CourseDetails.ProgramDetailTwo,
-				ProgramDetailThree = course.CourseDetails.ProgramDetailThree,
-				ProgramDetailFour = course.CourseDetails.ProgramDetailFour,
-				ProgramDetailFive = course.CourseDetails.ProgramDetailFive
-				
 			};
-			return Ok(courseDetailsDto);
-		}
+            
+            var courseAuthorDto = new CourseAuthorDto
+			{
+				AuthorImageUrl = course.Author.AuthorImageUrl,
+				FirstName = course.Author.FirstName,
+				LastName = course.Author.LastName,
+				Headline = course.Author.Headline
+			};
+            return Ok(new {CourseDetails = courseDetailsDto,CourseAuthor = courseAuthorDto });
+
+        }
 
         return NotFound();
         
