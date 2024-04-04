@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class NewMigrationSarah : Migration
+    public partial class DatabaseUpdate2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,6 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     AddressLine1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddressLine2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -46,8 +45,8 @@ namespace Infrastructure.Migrations
                 name: "CoursesAuthor",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AuthorImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -59,11 +58,26 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CoursesDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NumberOfReviews = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Digital = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoursesDetails", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subscribe",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Newsletter = table.Column<bool>(type: "bit", nullable: false),
                     AdvertisingUpdates = table.Column<bool>(type: "bit", nullable: false),
                     WeekInReview = table.Column<bool>(type: "bit", nullable: false),
@@ -101,34 +115,13 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CoursesDetails",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
-                    NumberOfReviews = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Digital = table.Column<bool>(type: "bit", nullable: true),
-                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CoursesDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CoursesDetails_CoursesAuthor_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "CoursesAuthor",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Courses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseDetailsId = table.Column<int>(type: "int", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BestBadgeUrl = table.Column<bool>(type: "bit", nullable: false),
@@ -138,8 +131,7 @@ namespace Infrastructure.Migrations
                     OldPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     RedPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     RatingPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    RatingCount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    CourseDetailsId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RatingCount = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,11 +143,11 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Courses_CoursesDetails_CourseDetailsId1",
-                        column: x => x.CourseDetailsId1,
+                        name: "FK_Courses_CoursesDetails_CourseDetailsId",
+                        column: x => x.CourseDetailsId,
                         principalTable: "CoursesDetails",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,7 +162,6 @@ namespace Infrastructure.Migrations
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: true),
-                    CourseEntityId = table.Column<int>(type: "int", nullable: true),
                     SubscribeEntityId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -194,11 +185,6 @@ namespace Infrastructure.Migrations
                         name: "FK_AspNetUsers_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Courses_CourseEntityId",
-                        column: x => x.CourseEntityId,
-                        principalTable: "Courses",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Subscribe_SubscribeEntityId",
@@ -232,8 +218,8 @@ namespace Infrastructure.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -277,8 +263,8 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -356,11 +342,6 @@ namespace Infrastructure.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_CourseEntityId",
-                table: "AspNetUsers",
-                column: "CourseEntityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_SubscribeEntityId",
                 table: "AspNetUsers",
                 column: "SubscribeEntityId");
@@ -378,14 +359,9 @@ namespace Infrastructure.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_CourseDetailsId1",
+                name: "IX_Courses_CourseDetailsId",
                 table: "Courses",
-                column: "CourseDetailsId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CoursesDetails_AuthorId",
-                table: "CoursesDetails",
-                column: "AuthorId");
+                column: "CourseDetailsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SavedCourses_CourseId",
@@ -426,19 +402,19 @@ namespace Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "Courses");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Subscribe");
 
             migrationBuilder.DropTable(
-                name: "CoursesDetails");
+                name: "CoursesAuthor");
 
             migrationBuilder.DropTable(
-                name: "CoursesAuthor");
+                name: "CoursesDetails");
         }
     }
 }

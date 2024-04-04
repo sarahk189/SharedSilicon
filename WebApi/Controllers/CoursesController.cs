@@ -41,18 +41,16 @@ public class CoursesController(DataContext context) : ControllerBase
 						CourseDetails = new CourseDetailsEntity
 						{
 							NumberOfReviews = createCourseDto.CourseDetails.NumberOfReviews,
-							Digital = createCourseDto.CourseDetails.Digital,
-
-							Author = new CourseAuthorEntity
-							{
-
-								AuthorImageUrl = createCourseDto.Author.AuthorImageUrl,
-								FirstName = createCourseDto.Author.FirstName,
-								LastName = createCourseDto.Author.LastName,
-								Headline = createCourseDto.Author.Headline,
-								CourseId = createCourseDto.Course.Id,
-							}
+							Digital = createCourseDto.CourseDetails.Digital
                         },
+
+						Author = new CourseAuthorEntity
+						{
+							AuthorImageUrl = createCourseDto.Author.AuthorImageUrl,
+							FirstName = createCourseDto.Author.FirstName,
+							LastName = createCourseDto.Author.LastName,
+							Headline = createCourseDto.Author.Headline
+						}
 						
                     };
 
@@ -77,8 +75,7 @@ public class CoursesController(DataContext context) : ControllerBase
         var courses = await context.Courses.ToListAsync();
 		var courseDtos = courses.Select(course => new CourseDto
 
-		{
-			Id = course.Id,
+		{ 
 			Title = course.Title,
 			ImageUrl = course.ImageUrl,
 			BestBadgeUrl = course.BestBadgeUrl,
@@ -100,7 +97,7 @@ public class CoursesController(DataContext context) : ControllerBase
     {
 		var course = await context.Courses
 	  .Include(c => c.CourseDetails)
-	  .Include(c => c.CourseDetails.Author)
+	  .Include(c => c.Author)
 	  .FirstOrDefaultAsync(x => x.Id == id);
 		if (course != null)
 		{
@@ -108,10 +105,18 @@ public class CoursesController(DataContext context) : ControllerBase
 			{
 				NumberOfReviews = course.CourseDetails.NumberOfReviews,
 				Digital = course.CourseDetails.Digital,
-				
 			};
-			return Ok(courseDetailsDto);
-		}
+            
+            var courseAuthorDto = new CourseAuthorDto
+			{
+				AuthorImageUrl = course.Author.AuthorImageUrl,
+				FirstName = course.Author.FirstName,
+				LastName = course.Author.LastName,
+				Headline = course.Author.Headline
+			};
+            return Ok(new {CourseDetails = courseDetailsDto,CourseAuthor = courseAuthorDto });
+
+        }
 
         return NotFound();
         
