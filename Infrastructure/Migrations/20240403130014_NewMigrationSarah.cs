@@ -51,10 +51,7 @@ namespace Infrastructure.Migrations
                     AuthorImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Headline = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfSubscribers = table.Column<int>(type: "int", nullable: true),
-                    NumberOfFollowers = table.Column<int>(type: "int", nullable: true)
+                    Headline = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,17 +108,6 @@ namespace Infrastructure.Migrations
                     CourseId = table.Column<int>(type: "int", nullable: false),
                     NumberOfReviews = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Digital = table.Column<bool>(type: "bit", nullable: true),
-                    CourseDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WhatYoullLearn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfArticles = table.Column<int>(type: "int", nullable: true),
-                    NumberOfDownloads = table.Column<int>(type: "int", nullable: true),
-                    Certificate = table.Column<bool>(type: "bit", nullable: true),
-                    ProgramDetailOne = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProgramDetailTwo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProgramDetailThree = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProgramDetailFour = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProgramDetailFive = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProgramDetailSix = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>

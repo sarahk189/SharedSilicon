@@ -42,16 +42,6 @@ public class CoursesController(DataContext context) : ControllerBase
 						{
 							NumberOfReviews = createCourseDto.CourseDetails.NumberOfReviews,
 							Digital = createCourseDto.CourseDetails.Digital,
-							CourseDescription = createCourseDto.CourseDetails.CourseDescription,
-							WhatYoullLearn = createCourseDto.CourseDetails.WhatYoullLearn,
-							NumberOfArticles = createCourseDto.CourseDetails.NumberOfArticles,
-							NumberOfDownloads = createCourseDto.CourseDetails.NumberOfDownloads,
-							Certificate = createCourseDto.CourseDetails.Certificate,
-							ProgramDetailOne = createCourseDto.CourseDetails.ProgramDetailOne,
-							ProgramDetailTwo = createCourseDto.CourseDetails.ProgramDetailTwo,
-							ProgramDetailThree = createCourseDto.CourseDetails.ProgramDetailThree,
-							ProgramDetailFour = createCourseDto.CourseDetails.ProgramDetailFour,
-							ProgramDetailFive = createCourseDto.CourseDetails.ProgramDetailFive,
 
 							Author = new CourseAuthorEntity
 							{
@@ -60,14 +50,10 @@ public class CoursesController(DataContext context) : ControllerBase
 								FirstName = createCourseDto.Author.FirstName,
 								LastName = createCourseDto.Author.LastName,
 								Headline = createCourseDto.Author.Headline,
-								Description = createCourseDto.Author.Description,
-								NumberOfSubscribers = createCourseDto.Author.NumberOfSubscribers,
-								NumberOfFollowers = createCourseDto.Author.NumberOfFollowers,
 								CourseId = createCourseDto.Course.Id,
 							}
                         },
 						
-                        
                     };
 
                 await context.Courses.AddAsync(courseEntity);
@@ -122,16 +108,6 @@ public class CoursesController(DataContext context) : ControllerBase
 			{
 				NumberOfReviews = course.CourseDetails.NumberOfReviews,
 				Digital = course.CourseDetails.Digital,
-				CourseDescription = course.CourseDetails.CourseDescription,
-				WhatYoullLearn = course.CourseDetails.WhatYoullLearn,
-				NumberOfArticles = course.CourseDetails.NumberOfArticles,
-				NumberOfDownloads = course.CourseDetails.NumberOfDownloads,
-				Certificate = course.CourseDetails.Certificate,
-				ProgramDetailOne = course.CourseDetails.ProgramDetailOne,
-				ProgramDetailTwo = course.CourseDetails.ProgramDetailTwo,
-				ProgramDetailThree = course.CourseDetails.ProgramDetailThree,
-				ProgramDetailFour = course.CourseDetails.ProgramDetailFour,
-				ProgramDetailFive = course.CourseDetails.ProgramDetailFive
 				
 			};
 			return Ok(courseDetailsDto);
