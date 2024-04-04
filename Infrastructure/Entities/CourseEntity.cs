@@ -20,4 +20,6 @@ public class CourseEntity
     public decimal? RatingCount { get; set; }
     public virtual CourseDetailsEntity CourseDetails { get; set; } = null!;
 	public virtual CourseAuthorEntity Author { get; set; } = null!;
- }
+
+    public ICollection<SavedCourseEntity> SavedCourses { get; set; } = new List<SavedCourseEntity>();
+}

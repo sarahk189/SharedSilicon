@@ -13,5 +13,5 @@ public class CourseAuthorEntity
     public string LastName { get; set; } = null!;
     public string? Headline { get; set; }
 
-
+    public ICollection<CourseEntity> Courses { get; set; } = new List<CourseEntity>();
 }
