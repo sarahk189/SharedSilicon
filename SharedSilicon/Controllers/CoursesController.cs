@@ -15,10 +15,6 @@ public class CoursesController : Controller
         var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
 
 
-
-
-
-
         return View(data);
       
 

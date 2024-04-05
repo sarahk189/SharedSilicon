@@ -1,47 +1,49 @@
-﻿ @model Infrastructure.Entities.CourseDetailsEntity
-
+﻿ @* @model Infrastructure.Entities.CourseDetailsEntity *@
+ @model IEnumerable<Infrastructure.Entities.CourseDetailsEntity>
 @{
     ViewData["Title"] = "Single Course";
 }
 
 
 <section class="single-course">
-    <div class="top-content">
-        <img class="laptop" src="images/laptop-single-course.png" />
-        <div class="container">
-            <p class="seeding">
-                <a><i class="fa-regular fa-house"></i> Home <i class="fa-regular fa-chevrons-right arrows"></i> Courses <i class="fa-regular fa-chevrons-right arrows"></i> Fullstack Web Developer Course from Scratch </a>
-            </p>
-            <div class="small-btns">
-                <p class="green-btn">Best Seller</p>
-                <p class="white-btn">Digital</p>
-            </div>
-            <h1>Fullstack Web Delevoper Course from Scratch</h1>
-            <p class="text-under">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae minus saepe ullam totam, expedita optio!</p>
-            <div class="smol-things">
-                <div>
-                    <i class="fa-solid fa-star star"></i>
-                    <i class="fa-solid fa-star star"></i>
-                    <i class="fa-solid fa-star star"></i>
-                    <i class="fa-solid fa-star star"></i>
-                    <i class="fa-regular fa-star blank-star"></i>
+    @foreach (var course in Model)
+        {
+        <div class="top-content">
+            <img class="@course.Course.ImageUrl" src="" />
+            <div class="container">
+                <p class="seeding">
+                    <a><i class="fa-regular fa-house"></i> Home <i class="fa-regular fa-chevrons-right arrows"></i> Courses <i class="fa-regular fa-chevrons-right arrows"></i>@course.Course.Title</a>
+                </p>
+                <div class="small-btns">
+                    <p class="green-btn">Best Seller</p>
+                    <p class="white-btn">Digital</p>
                 </div>
-                <p>(1.2K reviews)</p>
-                <span></span>
-                <i class="fa-regular fa-thumbs-up little-icon"></i>
-                <p>5K likes</p>
-                <span></span>
-                <i class="fa-regular fa-clock little-icon"></i>
-                <p>148 hours</p>
-            </div>
-            <div class="albert">
-                <img class="smol-img-albert" src="images/happt-man-single-course.png" />
-                <div class="albert-text">
-                    <p class="created">Created by</p>
-                    <p>Albert Flores</p>
+                <h1> @course.Course.Title</h1>
+                <p class="text-under">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae minus saepe ullam totam, expedita optio!</p>
+                <div class="smol-things">
+                    <div>
+                        <i class="fa-solid fa-star star"></i>
+                        <i class="fa-solid fa-star star"></i>
+                        <i class="fa-solid fa-star star"></i>
+                        <i class="fa-solid fa-star star"></i>
+                        <i class="fa-regular fa-star blank-star"></i>
+                    </div>
+                    <p>("@course.NumberOfReviews"K reviews)</p>
+                    <span></span>
+                    <i class="fa-regular fa-thumbs-up little-icon"></i>
+                    <p>"@course.Course.RatingCount"K likes</p>
+                    <span></span>
+                    <i class="fa-regular fa-clock little-icon"></i>
+                    <p>"@course.Course.Hours" hours</p>
+                </div>
+                <div class="albert">
+                    <img class="smol-img-albert" src="@course.Course.Author.AuthorImageUrl" />
+                    <div class="albert-text">
+                        <p class="created">Created by</p>
+                        <p>@course.Course.Author.FirstName @course.Course.Author.LastName</p>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
     <div class="description">
         <div class="container">
@@ -118,22 +120,23 @@
                     </div>
                 </div>
             </div>
-            <div class="big-albert">
-                <img class="albert-big" src="images/happt-man-single-course.png" />
-                <img class="blu-background" src="images/pattern-single-course.png" />           
-                <div class="halfscreen">
+                <div class="big-albert">
+                    <img class="albert-big" src="@course.Course.Author.AuthorImageUrl" />
+                    <img class="blu-background" src="images/pattern-single-course.png" />
+                    <div class="halfscreen">
 
-                    <p class="learn">Learn from the best</p>
-                    <h2>Albert Flores</h2>
-                    <p>
-                        Dolor ipsum amet cursus quisque porta adipiscing. Lorem convallis malesuada sed maecenas. Ac dui at vitae mauris cursus in nullam porta sem. Quis pellentesque elementum ac bibendum. Nunc aliquam in tortor facilisis. Vulputate eget risus, metus phasellus. Pellentesque faucibus amet, eleifend diam quam condimentum convallis ultricies placerat. Duis habitasse placerat amet, odio pellentesque rhoncus, feugiat at. Eget pellentesque tristique felis magna fringilla.
-                    </p>
-                    <div class="other-btns">
-                        <p class="red-btn"><i class="fa-brands fa-youtube"></i> 240K subscribers</p>
-                        <p class="blu-btn"><i class="fa-brands fa-facebook-f"></i> 180K followers</p>
+                        <p class="learn">@course.Course.Author.Headline</p>
+                        <h2>@course.Course.Author.FirstName @course.Course.Author.LastName</h2>
+                        <p>
+                            Dolor ipsum amet cursus quisque porta adipiscing. Lorem convallis malesuada sed maecenas. Ac dui at vitae mauris cursus in nullam porta sem. Quis pellentesque elementum ac bibendum. Nunc aliquam in tortor facilisis. Vulputate eget risus, metus phasellus. Pellentesque faucibus amet, eleifend diam quam condimentum convallis ultricies placerat. Duis habitasse placerat amet, odio pellentesque rhoncus, feugiat at. Eget pellentesque tristique felis magna fringilla.
+                        </p>
+                        <div class="other-btns">
+                            <p class="red-btn"><i class="fa-brands fa-youtube"></i> 240K subscribers</p>
+                            <p class="blu-btn"><i class="fa-brands fa-facebook-f"></i> 180K followers</p>
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
+    }
 </section>
