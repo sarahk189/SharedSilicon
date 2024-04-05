@@ -23,6 +23,20 @@ public class CoursesController(DataContext context) : ControllerBase
 		{
 			if (!await context.Courses.AnyAsync(x => x.Title == createCourseDto.Course.Title))
 			{
+				var categoryEntity = await context.Categories
+					.FirstOrDefaultAsync(c => c.Name == createCourseDto.CategoryName.Name);
+
+				if (categoryEntity == null)
+				{
+					categoryEntity = new CategoryEntity
+					{
+						Name = createCourseDto.CategoryName.Name
+					};
+
+					await context.Categories.AddAsync(categoryEntity);
+					await context.SaveChangesAsync();
+				}
+
 				var courseEntity = new CourseEntity
 				{
 					Title = createCourseDto.Course.Title,
@@ -42,14 +56,12 @@ public class CoursesController(DataContext context) : ControllerBase
 						LastName = createCourseDto.Course.Author.LastName,
 						Headline = createCourseDto.Course.Author.Headline
 					},
+
 					FilterCategory = new List<FilterCategoryEntity>
 				{
 					new FilterCategoryEntity
 					{
-						Category = new CategoryEntity
-						{
-							Name = createCourseDto.CategoryName.Name
-						}
+						Category = categoryEntity
 					}
 				}
 				};
@@ -79,17 +91,20 @@ public class CoursesController(DataContext context) : ControllerBase
 		return BadRequest();
 	}
 
-#endregion region
+	#endregion region
 
 
-#region READ
-[HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var courses = await context.Courses.ToListAsync();
+	#region READ
+	[HttpGet]
+	public async Task<IActionResult> GetAll()
+	{
+		var courses = await context.Courses
+			.Include(c => c.CourseDetails)
+			.Include(c => c.Author)
+			.ToListAsync();
+
 		var courseDtos = courses.Select(course => new CourseDto
-
-		{ 
+		{
 			Title = course.Title,
 			ImageUrl = course.ImageUrl,
 			BestBadgeUrl = course.BestBadgeUrl,
@@ -99,44 +114,67 @@ public class CoursesController(DataContext context) : ControllerBase
 			OldPrice = course.OldPrice,
 			RedPrice = course.RedPrice,
 			RatingPercentage = course.RatingPercentage,
-			RatingCount = course.RatingCount
-
-		}).ToList();
-
-		return Ok(courseDtos);
-	}
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOne(int id)
-    {
-		var course = await context.Courses
-	  .Include(c => c.CourseDetails)
-	  .Include(c => c.Author)
-	  .FirstOrDefaultAsync(x => x.Id == id);
-		if (course != null)
-		{
-			var courseDetailsDto = new CourseDetailsDto
+			RatingCount = course.RatingCount,
+			CourseDetails = new CourseDetailsDto
 			{
 				NumberOfReviews = course.CourseDetails.NumberOfReviews,
-				Digital = course.CourseDetails.Digital,
-			};
-            
-            var courseAuthorDto = new CourseAuthorDto
+				Digital = course.CourseDetails.Digital
+			},
+			Author = new CourseAuthorDto
 			{
 				AuthorImageUrl = course.Author.AuthorImageUrl,
 				FirstName = course.Author.FirstName,
 				LastName = course.Author.LastName,
 				Headline = course.Author.Headline
+			}
+		}).ToList();
+
+		return Ok(courseDtos);
+	}
+
+	[HttpGet("{id}")]
+	public async Task<IActionResult> GetOne(int id)
+	{
+		var course = await context.Courses
+			.Include(c => c.CourseDetails)
+			.Include(c => c.Author)
+			.FirstOrDefaultAsync(x => x.Id == id);
+
+		if (course != null)
+		{
+			var courseDto = new CourseDto
+			{
+				Title = course.Title,
+				ImageUrl = course.ImageUrl,
+				BestBadgeUrl = course.BestBadgeUrl,
+				BookmarkUrl = course.BookmarkUrl,
+				Hours = course.Hours,
+				Price = course.Price,
+				OldPrice = course.OldPrice,
+				RedPrice = course.RedPrice,
+				RatingPercentage = course.RatingPercentage,
+				RatingCount = course.RatingCount,
+				CourseDetails = new CourseDetailsDto
+				{
+					NumberOfReviews = course.CourseDetails.NumberOfReviews,
+					Digital = course.CourseDetails.Digital
+				},
+				Author = new CourseAuthorDto
+				{
+					AuthorImageUrl = course.Author.AuthorImageUrl,
+					FirstName = course.Author.FirstName,
+					LastName = course.Author.LastName,
+					Headline = course.Author.Headline
+				}
 			};
-            return Ok(new {CourseDetails = courseDetailsDto,CourseAuthor = courseAuthorDto });
 
-        }
+			return Ok(courseDto);
+		}
 
-        return NotFound();
-        
-    }
+		return NotFound();
+	}
 
-    #endregion region
+	#endregion region
 
 
 }
