@@ -15,71 +15,76 @@ public class CoursesController(DataContext context) : ControllerBase
 {
 
 
-    #region CREATE
-    [HttpPost]
-    public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
-    {
-        if (ModelState.IsValid)
-        {
-           if (!await context.Courses.AnyAsync(x => x.Title == createCourseDto.Course.Title))
-            {
-                               
-                    var courseEntity = new CourseEntity
-                    {
-						Title = createCourseDto.Course.Title,
-						ImageUrl = createCourseDto.Course.ImageUrl,
-						BestBadgeUrl = createCourseDto.Course.BestBadgeUrl,
-						BookmarkUrl = createCourseDto.Course.BookmarkUrl,
-						Hours = createCourseDto.Course.Hours,
-						Price = createCourseDto.Course.Price,
-						OldPrice = createCourseDto.Course.OldPrice,
-						RedPrice = createCourseDto.Course.RedPrice,
-						RatingPercentage = createCourseDto.Course.RatingPercentage,
-						RatingCount = createCourseDto.Course.RatingCount,
-
-
-						CourseDetails = new CourseDetailsEntity
+	#region CREATE
+	[HttpPost]
+	public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
+	{
+		if (ModelState.IsValid)
+		{
+			if (!await context.Courses.AnyAsync(x => x.Title == createCourseDto.Course.Title))
+			{
+				var courseEntity = new CourseEntity
+				{
+					Title = createCourseDto.Course.Title,
+					ImageUrl = createCourseDto.Course.ImageUrl,
+					BestBadgeUrl = createCourseDto.Course.BestBadgeUrl,
+					BookmarkUrl = createCourseDto.Course.BookmarkUrl,
+					Hours = createCourseDto.Course.Hours,
+					Price = createCourseDto.Course.Price,
+					OldPrice = createCourseDto.Course.OldPrice,
+					RedPrice = createCourseDto.Course.RedPrice,
+					RatingPercentage = createCourseDto.Course.RatingPercentage,
+					RatingCount = createCourseDto.Course.RatingCount,
+					Author = new CourseAuthorEntity
+					{
+						AuthorImageUrl = createCourseDto.Author.AuthorImageUrl,
+						FirstName = createCourseDto.Author.FirstName,
+						LastName = createCourseDto.Author.LastName,
+						Headline = createCourseDto.Author.Headline
+					},
+					FilterCategory = new List<FilterCategoryEntity>
+					{
+						new FilterCategoryEntity
 						{
-							NumberOfReviews = createCourseDto.CourseDetails.NumberOfReviews,
-							Digital = createCourseDto.CourseDetails.Digital
-                        },
-
-						Author = new CourseAuthorEntity
-						{
-							AuthorImageUrl = createCourseDto.Author.AuthorImageUrl,
-							FirstName = createCourseDto.Author.FirstName,
-							LastName = createCourseDto.Author.LastName,
-							Headline = createCourseDto.Author.Headline
-						},
-						
-						FilterCategory = new List<FilterCategoryEntity>
-						{ 
-							new FilterCategoryEntity
+							Category = new CategoryEntity
 							{
-                                Category = new CategoryEntity
-								{
-									Name = createCourseDto.CategoryName.Name
-								}
+								Name = createCourseDto.CategoryName.Name
 							}
 						}
-                    };
+					}
+				};
 
-                await context.Courses.AddAsync(courseEntity);
-                await context.SaveChangesAsync();
+				await context.Courses.AddAsync(courseEntity);
+				await context.SaveChangesAsync();
 
-                return Created("", null);
-                           
-            }
-            return Conflict();
-        }
-        return BadRequest();
-    }
+				var courseDetailsEntity = new CourseDetailsEntity
+				{
+					NumberOfReviews = createCourseDto.CourseDetails.NumberOfReviews,
+					Digital = createCourseDto.CourseDetails.Digital,
+					CourseId = courseEntity.Id
+				};
 
-    #endregion region
+				await context.CoursesDetails.AddAsync(courseDetailsEntity);
+				await context.SaveChangesAsync();
+
+				courseEntity.CourseDetailsId = courseDetailsEntity.Id;
+
+				context.Courses.Update(courseEntity);
+				await context.SaveChangesAsync();
+
+				return Created("", null);
+			}
+			return Conflict();
+		}
+		return BadRequest();
+	}
 
 
-    #region READ
-    [HttpGet]
+	#endregion region
+
+
+	#region READ
+	[HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var courses = await context.Courses.ToListAsync();

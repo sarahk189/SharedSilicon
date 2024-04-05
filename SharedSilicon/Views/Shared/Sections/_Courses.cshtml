@@ -46,7 +46,8 @@
 		<div class="courses-show">
 			@foreach (var course in Model)
 			{
-				<a class="courses" href="#">
+				<a class="courses" asp-controller="Courses" asp-action="CourseDetails" asp-route-id="@course.Id">
+
 					<img src="@course.ImageUrl" alt="course image" />
 					@if (course.BestBadgeUrl)
 					{

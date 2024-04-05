@@ -1,4 +1,6 @@
 ﻿using Infrastructure.Entities;
+using Infrastructure.Dtos;
+using SharedSilicon.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -30,8 +32,44 @@ public class CoursesController : Controller
 		using var http = new HttpClient();
 		var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}");
 		var json = await response.Content.ReadAsStringAsync();
-		var data = JsonConvert.DeserializeObject<CourseDetailsEntity>(json);
+		var entity = JsonConvert.DeserializeObject<CourseDetailsEntity>(json);
 
-		return View("CourseDetails",data);
+		var dto = new Infrastructure.Dtos.CourseDetailsDto
+		{
+			NumberOfReviews = entity.NumberOfReviews,
+			Digital = entity.Digital
+		};
+
+		if (entity.Course == null)
+		{
+			return NotFound();
+		}
+		var courseDto = new Infrastructure.Dtos.CourseDto
+		{
+			Title = entity.Course.Title,
+			ImageUrl = entity.Course.ImageUrl,
+			BestBadgeUrl = entity.Course.BestBadgeUrl,
+			BookmarkUrl = entity.Course.BookmarkUrl,
+			Hours = entity.Course.Hours,
+			Price = entity.Course.Price,
+			OldPrice = entity.Course.OldPrice,
+			RedPrice = entity.Course.RedPrice,
+			RatingPercentage = entity.Course.RatingPercentage,
+			RatingCount = entity.Course.RatingCount,
+			CourseDetails = new Infrastructure.Dtos.CourseDetailsDto
+			{
+				NumberOfReviews = entity.Course.CourseDetails.NumberOfReviews,
+				Digital = entity.Course.CourseDetails.Digital
+			},
+			Author = new Infrastructure.Dtos.CourseAuthorDto
+			{
+				AuthorImageUrl = entity.Course.Author.AuthorImageUrl,
+				FirstName = entity.Course.Author.FirstName,
+				LastName = entity.Course.Author.LastName,
+				Headline = entity.Course.Author.Headline
+			}
+		};
+
+		return View("CourseDetails", courseDto);
 	}
 }
