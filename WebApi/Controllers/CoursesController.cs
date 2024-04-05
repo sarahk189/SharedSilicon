@@ -37,21 +37,21 @@ public class CoursesController(DataContext context) : ControllerBase
 					RatingCount = createCourseDto.Course.RatingCount,
 					Author = new CourseAuthorEntity
 					{
-						AuthorImageUrl = createCourseDto.Author.AuthorImageUrl,
-						FirstName = createCourseDto.Author.FirstName,
-						LastName = createCourseDto.Author.LastName,
-						Headline = createCourseDto.Author.Headline
+						AuthorImageUrl = createCourseDto.Course.Author.AuthorImageUrl,
+						FirstName = createCourseDto.Course.Author.FirstName,
+						LastName = createCourseDto.Course.Author.LastName,
+						Headline = createCourseDto.Course.Author.Headline
 					},
 					FilterCategory = new List<FilterCategoryEntity>
+				{
+					new FilterCategoryEntity
 					{
-						new FilterCategoryEntity
+						Category = new CategoryEntity
 						{
-							Category = new CategoryEntity
-							{
-								Name = createCourseDto.CategoryName.Name
-							}
+							Name = createCourseDto.CategoryName.Name
 						}
 					}
+				}
 				};
 
 				await context.Courses.AddAsync(courseEntity);
@@ -59,8 +59,8 @@ public class CoursesController(DataContext context) : ControllerBase
 
 				var courseDetailsEntity = new CourseDetailsEntity
 				{
-					NumberOfReviews = createCourseDto.CourseDetails.NumberOfReviews,
-					Digital = createCourseDto.CourseDetails.Digital,
+					NumberOfReviews = createCourseDto.Course.CourseDetails.NumberOfReviews,
+					Digital = createCourseDto.Course.CourseDetails.Digital,
 					CourseId = courseEntity.Id
 				};
 
@@ -79,12 +79,11 @@ public class CoursesController(DataContext context) : ControllerBase
 		return BadRequest();
 	}
 
+#endregion region
 
-	#endregion region
 
-
-	#region READ
-	[HttpGet]
+#region READ
+[HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var courses = await context.Courses.ToListAsync();

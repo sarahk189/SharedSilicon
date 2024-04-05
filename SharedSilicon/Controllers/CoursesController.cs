@@ -25,6 +25,7 @@ public class CoursesController : Controller
         //var viewModel = new CoursesViewModel();
         //return View(viewModel);
     }
+
     [Route("Courses/Details/{id}")]
 	//[HttpGet("Details/{id}")]
 	public async Task<IActionResult> CourseDetails(int id)
