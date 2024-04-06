@@ -11,7 +11,14 @@ builder.Services.AddHttpClient();
 
 
 
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+//builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("SqlServer"),
+        b => b.MigrationsAssembly("Infrastructure")
+    )
+);
 
 var app = builder.Build();
 
@@ -24,11 +31,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 //app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
 
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
