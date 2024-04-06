@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Infrastructure.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -93,7 +94,6 @@ public class CoursesController(DataContext context) : ControllerBase
 
 	#endregion region
 
-
 	#region READ
 	[HttpGet]
 	public async Task<IActionResult> GetAll()
@@ -176,5 +176,77 @@ public class CoursesController(DataContext context) : ControllerBase
 
 	#endregion region
 
+	#region UPDATE
+
+	[HttpPut("{id}")]
+	public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
+	{
+
+		if (!ModelState.IsValid)
+		{
+			return BadRequest(ModelState);
+		}
+
+		var course = await context.Courses
+			.Include(c => c.CourseDetails)
+			.Include(c => c.Author)
+			.FirstOrDefaultAsync(x => x.Id == id);
+
+		if (course != null)
+		{
+			course.Title = createCourseDto.Course.Title;
+			course.ImageUrl = createCourseDto.Course.ImageUrl;
+			course.BestBadgeUrl = createCourseDto.Course.BestBadgeUrl;
+			course.BookmarkUrl = createCourseDto.Course.BookmarkUrl;
+			course.Hours = createCourseDto.Course.Hours;
+			course.Price = createCourseDto.Course.Price;
+			course.OldPrice = createCourseDto.Course.OldPrice;
+			course.RedPrice = createCourseDto.Course.RedPrice;
+			course.RatingPercentage = createCourseDto.Course.RatingPercentage;
+			course.RatingCount = createCourseDto.Course.RatingCount;
+
+			course.Author.AuthorImageUrl = createCourseDto.Course.Author.AuthorImageUrl;
+			course.Author.FirstName = createCourseDto.Course.Author.FirstName;
+			course.Author.LastName = createCourseDto.Course.Author.LastName;
+			course.Author.Headline = createCourseDto.Course.Author.Headline;
+
+			course.CourseDetails.NumberOfReviews = createCourseDto.Course.CourseDetails.NumberOfReviews;
+			course.CourseDetails.Digital = createCourseDto.Course.CourseDetails.Digital;
+
+			context.Courses.Update(course);
+			await context.SaveChangesAsync();
+
+			return Ok(course);
+		}
+
+		return NotFound();
+	}
+
+
+
+
+
+	#endregion
+
+	#region DELETE
+	[HttpDelete("{id}")]
+	public async Task<IActionResult> DeleteOne(int id)
+	{
+		var course = await context.Courses
+			.Include(c => c.CourseDetails)
+			.Include(c => c.Author)
+			.FirstOrDefaultAsync(x => x.Id == id);
+
+		if (course != null)
+		{
+			context.Courses.Remove(course);
+			await context.SaveChangesAsync();
+
+			return Ok();
+		}
+
+		return NotFound();
+	}
+	#endregion
 
 }

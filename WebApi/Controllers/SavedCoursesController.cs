@@ -13,7 +13,7 @@ namespace WebApi.Controllers;
 public class SavedCoursesController(UserManager<UserEntity> userManager, DataContext context) : ControllerBase
 {
 
-	// GET: api/SavedCourses
+	#region READ
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<CourseEntity>>> GetSavedCourses()
 	{
@@ -27,7 +27,9 @@ public class SavedCoursesController(UserManager<UserEntity> userManager, DataCon
 		return savedCourses;
 	}
 
-	// POST: api/SavedCourses
+	#endregion
+
+	#region CREATE
 	[HttpPost]
 	public async Task<ActionResult> AddCourseToSavedCourses([FromBody] SavedCourseDto savedCourseDto)
 	{
@@ -52,8 +54,10 @@ public class SavedCoursesController(UserManager<UserEntity> userManager, DataCon
 
 		return NoContent();
 	}
+	#endregion
 
-	// DELETE: api/SavedCourses/{courseId}
+	#region DELETE
+
 	[HttpDelete("{courseId}")]
 	public async Task<ActionResult> RemoveCourseFromSavedCourses(int courseId)
 	{
@@ -72,4 +76,6 @@ public class SavedCoursesController(UserManager<UserEntity> userManager, DataCon
 
 		return NoContent();
 	}
+
+	#endregion
 }
