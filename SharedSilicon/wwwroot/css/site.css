@@ -879,7 +879,7 @@ footer .container .social-media {
 .single-course .top-content .container .seeding {
   margin-top: 2rem;
   font-size: small;
-  color: rgba(255, 255, 255, 0.767);
+  color: #e5e5e5;
   padding-bottom: 1.5rem;
 }
 .single-course .top-content .container .seeding .arrows {
@@ -904,7 +904,7 @@ footer .container .social-media {
   padding: 0px 15px 0px 15px;
 }
 .single-course .top-content h1 {
-  color: white;
+  color: #e5e5e5;
 }
 .single-course .top-content .text-under {
   color: rgba(255, 255, 255, 0.63);
@@ -958,7 +958,7 @@ footer .container .social-media {
   transform: translateY(30%);
 }
 .single-course .top-content .albert .albert-text {
-  color: white;
+  color: #e5e5e5;
 }
 .single-course .top-content .albert .albert-text .created {
   font-weight: 700;
