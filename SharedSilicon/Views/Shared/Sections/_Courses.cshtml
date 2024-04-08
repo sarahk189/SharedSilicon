@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
-@* @model SharedSilicon.ViewModels.CoursesViewModel *@
-@model IEnumerable<Infrastructure.Entities.CourseEntity>
+@model SharedSilicon.ViewModels.CoursesViewModel
+@* @model IEnumerable<Infrastructure.Entities.CourseEntity> *@
 
 
 
@@ -25,18 +25,27 @@
 				<div class="dropdown">
 					<button class="dropbtn">All categories <i class="fa-solid fa-chevron-down"></i></button>
 					<ul class="dropdown-content">
-						<li><a class="menu-link" href="#">Category 1</a></li>
+						@if (Model.Categories != null)
+						{
+							foreach (var category in Model.Categories)
+							{
+								<li><a class="menu-link" href="#">@category.Name</a></li>
+							}
+						}
+						@* <li><a class="menu-link" href="#">Category 1</a></li>
 						<li><a class="menu-link" href="#">Category 2</a></li>
-						<li><a class="menu-link" href="#">Category 3</a></li>
+						<li><a class="menu-link" href="#">Category 3</a></li> *@
 					</ul>
 				</div>
 
 				<div class="search-courses">
-					<input type="text" placeholder="Search courses">
+					<input id="searchQuery" name="searchQuery" placeholder="Search courses">
 					<i class="fa-regular fa-magnifying-glass"></i>
 				</div>
 			</div>
 		</div>
+
+		
 
 	</div>
 
@@ -44,9 +53,9 @@
 	@* Courses cards. *@
 	<div class="container">
 		<div class="courses-show">
-			@foreach (var course in Model)
+			@foreach (var course in Model.Courses)
 			{
-				<a class="courses" asp-controller="Courses" asp-action="CourseDetails" asp-route-id="@course.Id">
+				<a class="courses" asp-controller="Courses" asp-action="CourseDetails" @* asp-route-id="@course *@>
 
 					<img src="@course.ImageUrl" alt="course image" />
 					@if (course.BestBadgeUrl)
@@ -55,7 +64,11 @@
 							<img src="@course.BestBadgeUrl" alt="Green bestseller badge">
 						</div>
 					}
-					<div class="bookmark" data-course-id="@course.Id"> <img src="@course.BookmarkUrl" alt="Bookmark course badge"></div>
+
+					<div class="bookmark" @* data-course-id="@course.Id" *@ onclick="location.href='@Url.Action("Details", "Courses", new { id = "" })'">
+						<img src="@course.BookmarkUrl" alt="Bookmark course badge">
+					</div>
+					@* <div class="bookmark" data-course-id="@course.Id"> <img src="@course.BookmarkUrl" alt="Bookmark course badge"></div> *@
 					<h5>@course.Title</h5>
 					<p class="author">@course.Author<p>
 						<div class="price-container">
