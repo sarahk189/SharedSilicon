@@ -55,8 +55,7 @@
 		<div class="courses-show">
 			@foreach (var course in Model.Courses)
 			{
-				<a class="courses" asp-controller="Courses" asp-action="CourseDetails" @* asp-route-id="@course *@>
-
+				<a class="courses" asp-controller="Courses" asp-action="CourseDetails" asp-route-id="@course.Id">
 					<img src="@course.ImageUrl" alt="course image" />
 					@if (course.BestBadgeUrl)
 					{
@@ -67,6 +66,7 @@
                             }
 						</div>
 					}
+			
 					<div class="bookmark" data-course-id="@course.Id">
 						@if (course.BookmarkUrl)
 						{
@@ -74,7 +74,7 @@
 						}
 					</div>
 					<h5>@course.Title</h5>
-					<p class="author">@course.Author<p>
+					<p class="author">@course.Author</p>
 						<div class="price-container">
 								@if (course.RedPrice.HasValue)
 								{
@@ -95,6 +95,7 @@
 					</p>
 				</a>
 			}
+			
 		</div>
 		<div class="carousel"> <img src="~/images/coursesImages/pagination.svg" alt="carousel-img">  </div>
 	</div>
