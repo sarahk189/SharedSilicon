@@ -105,6 +105,7 @@ public class CoursesController(DataContext context) : ControllerBase
 
 		var courseDtos = courses.Select(course => new CourseDto
 		{
+			Id = course.Id,
 			Title = course.Title,
 			ImageUrl = course.ImageUrl,
 			BestBadgeUrl = course.BestBadgeUrl,
@@ -144,6 +145,7 @@ public class CoursesController(DataContext context) : ControllerBase
 		{
 			var courseDto = new CourseDto
 			{
+				Id = course.Id,
 				Title = course.Title,
 				ImageUrl = course.ImageUrl,
 				BestBadgeUrl = course.BestBadgeUrl,

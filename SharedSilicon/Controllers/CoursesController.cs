@@ -3,6 +3,7 @@ using Infrastructure.Dtos;
 using SharedSilicon.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using static SharedSilicon.Models.CoursesModel;
 
 
 namespace SharedSilicon.Controllers;
@@ -26,51 +27,20 @@ public class CoursesController : Controller
         //return View(viewModel);
     }
 
-    [Route("Courses/Details/{id}")]
-	//[HttpGet("Details/{id}")]
+	[Route("Courses/Details/{id}")]
+	[HttpGet("Details/{id}")]
 	public async Task<IActionResult> CourseDetails(int id)
 	{
 		using var http = new HttpClient();
 		var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}");
 		var json = await response.Content.ReadAsStringAsync();
-		var entity = JsonConvert.DeserializeObject<CourseDetailsEntity>(json);
+		var courseDto = JsonConvert.DeserializeObject<Infrastructure.Dtos.CourseDto>(json);
 
-		var dto = new Infrastructure.Dtos.CourseDetailsDto
-		{
-			NumberOfReviews = entity.NumberOfReviews,
-			Digital = entity.Digital
-		};
-
-		if (entity.Course == null)
+		if (courseDto == null)
 		{
 			return NotFound();
 		}
-		var courseDto = new Infrastructure.Dtos.CourseDto
-		{
-			Title = entity.Course.Title,
-			ImageUrl = entity.Course.ImageUrl,
-			BestBadgeUrl = entity.Course.BestBadgeUrl,
-			BookmarkUrl = entity.Course.BookmarkUrl,
-			Hours = entity.Course.Hours,
-			Price = entity.Course.Price,
-			OldPrice = entity.Course.OldPrice,
-			RedPrice = entity.Course.RedPrice,
-			RatingPercentage = entity.Course.RatingPercentage,
-			RatingCount = entity.Course.RatingCount,
-			CourseDetails = new Infrastructure.Dtos.CourseDetailsDto
-			{
-				NumberOfReviews = entity.Course.CourseDetails.NumberOfReviews,
-				Digital = entity.Course.CourseDetails.Digital
-			},
-			Author = new Infrastructure.Dtos.CourseAuthorDto
-			{
-				AuthorImageUrl = entity.Course.Author.AuthorImageUrl,
-				FirstName = entity.Course.Author.FirstName,
-				LastName = entity.Course.Author.LastName,
-				Headline = entity.Course.Author.Headline
-			}
-		};
 
-		return View("CourseDetails", courseDto);
+		return View("Sections/_SingleCourse", courseDto);
 	}
 }
