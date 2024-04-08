@@ -3,6 +3,7 @@ using Infrastructure.Dtos;
 using SharedSilicon.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using static SharedSilicon.Models.CoursesModel;
 using Infrastructure.Services;
 using SharedSilicon.ViewModels;
 

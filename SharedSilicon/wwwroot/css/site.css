@@ -869,18 +869,17 @@ footer .container .social-media {
   border: none;
 }
 
-.single-course .top-content .laptop {
-  width: 100%;
-  height: 40%;
-  overflow: hidden;
-  z-index: -1;
-  position: absolute;
-  top: 0;
+.single-course .top-content {
+  position: relative;
+  background-size: cover;
+}
+.single-course .top-content .container {
+  z-index: 2;
 }
 .single-course .top-content .container .seeding {
   margin-top: 2rem;
   font-size: small;
-  color: rgba(255, 255, 255, 0.767);
+  color: #e5e5e5;
   padding-bottom: 1.5rem;
 }
 .single-course .top-content .container .seeding .arrows {
@@ -905,7 +904,7 @@ footer .container .social-media {
   padding: 0px 15px 0px 15px;
 }
 .single-course .top-content h1 {
-  color: white;
+  color: #e5e5e5;
 }
 .single-course .top-content .text-under {
   color: rgba(255, 255, 255, 0.63);
@@ -959,7 +958,7 @@ footer .container .social-media {
   transform: translateY(30%);
 }
 .single-course .top-content .albert .albert-text {
-  color: white;
+  color: #e5e5e5;
 }
 .single-course .top-content .albert .albert-text .created {
   font-weight: 700;

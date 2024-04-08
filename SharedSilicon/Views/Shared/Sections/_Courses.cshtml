@@ -61,14 +61,18 @@
 					@if (course.BestBadgeUrl)
 					{
 						<div class="bestbadge">
-							<img src="@course.BestBadgeUrl" alt="Green bestseller badge">
+							@if (course.BestBadgeUrl)
+                            {
+                                <img src="~/images/coursesImages/bestsellerbadge.svg" alt="Green bestseller badge">
+                            }
 						</div>
 					}
-
-					<div class="bookmark" @* data-course-id="@course.Id" *@ onclick="location.href='@Url.Action("Details", "Courses", new { id = "" })'">
-						<img src="@course.BookmarkUrl" alt="Bookmark course badge">
+					<div class="bookmark" data-course-id="@course.Id">
+						@if (course.BookmarkUrl)
+						{
+							<img src="~/images/coursesImages/bookmark.svg" alt="Bookmark course badge" />
+						}
 					</div>
-					@* <div class="bookmark" data-course-id="@course.Id"> <img src="@course.BookmarkUrl" alt="Bookmark course badge"></div> *@
 					<h5>@course.Title</h5>
 					<p class="author">@course.Author<p>
 						<div class="price-container">
