@@ -27,20 +27,20 @@ public class CoursesController : Controller
         //return View(viewModel);
     }
 
-	[Route("Courses/Details/{id}")]
-	[HttpGet("Details/{id}")]
-	public async Task<IActionResult> CourseDetails(int id)
-	{
-		using var http = new HttpClient();
-		var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}");
-		var json = await response.Content.ReadAsStringAsync();
-		var courseDto = JsonConvert.DeserializeObject<Infrastructure.Dtos.CourseDto>(json);
+    [Route("Courses/Details/{id}")]
+    [HttpGet("Details/{id}")]
+    public async Task<IActionResult> CourseDetails(int id)
+    {
+        using var http = new HttpClient();
+        var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}");
+        var json = await response.Content.ReadAsStringAsync();
+        var courseDto = JsonConvert.DeserializeObject<Infrastructure.Dtos.CourseDto>(json);
 
-		if (courseDto == null)
-		{
-			return NotFound();
-		}
+        if (courseDto == null)
+        {
+            return NotFound();
+        }
 
-		return View("Sections/_SingleCourse", courseDto);
-	}
+        return View("Sections/_SingleCourse", courseDto);
+    }
 }
