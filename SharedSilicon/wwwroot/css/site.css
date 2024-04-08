@@ -869,13 +869,12 @@ footer .container .social-media {
   border: none;
 }
 
-.single-course .top-content .laptop {
-  width: 100%;
-  height: 40%;
-  overflow: hidden;
-  z-index: -1;
-  position: absolute;
-  top: 0;
+.single-course .top-content {
+  position: relative;
+  background-size: cover;
+}
+.single-course .top-content .container {
+  z-index: 2;
 }
 .single-course .top-content .container .seeding {
   margin-top: 2rem;
