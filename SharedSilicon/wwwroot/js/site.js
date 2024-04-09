@@ -1,23 +1,28 @@
-﻿const toggleMenu = () => {
-    document.getElementById('menu').classList.toggle('hide');
-    document.getElementById('account-buttons').classList.toggle('hide');
+﻿//const toggleMenu = () => {
+//    document.getElementById('menu').classList.toggle('hide');
+//    document.getElementById('account-buttons').classList.toggle('hide');
 
-}
+//}
 
-const checkScreenSize = () => {
-    if (window.innerwidth >= 1200) {
-        document.getElementById('menu').classList.remove('hide');
-        document.getElementById('account-buttons').classList.remove('hide');
-    } else {
-        if (!document.getElementById('menu').classList.contains('hide')) {
-            document.getElementById('menu').classList.add('hide');
-        }
-        if (!document.getElementById('account-buttons').classList.contains('hide'){
-            document.getElementById('account-buttons').classList.add('hide');
-        }
-    }
+//const checkScreenSize = () => {
+//    if (window.innerwidth >= 1200) {
+//        document.getElementById('menu').classList.remove('hide');
+//        document.getElementById('account-buttons').classList.remove('hide');
+//    } else {
+//        if (!document.getElementById('menu').classList.contains('hide')) {
+//            document.getElementById('menu').classList.add('hide');
+//        }
+//        if (!document.getElementById('account-buttons').classList.contains('hide')) {
+//            document.getElementById('account-buttons').classList.add('hide');
+//        }
+//    }
+//};
 
-};
+
+//window.addEventListener('resize', checkScreenSize);
+//checkScreenSize();
+
+//};
 
 document.querySelectorAll('.bookmark').forEach(bookmark => {
     bookmark.addEventListener('click', function (event) {
@@ -69,3 +74,4 @@ document.querySelectorAll('.bookmark').forEach(bookmark => {
 
 window.addEventListener('resize', checkScreenSize);)
 checkScreenSize();
+

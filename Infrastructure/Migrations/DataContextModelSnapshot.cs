@@ -68,6 +68,7 @@ namespace Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.ContactRequestEntity", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
