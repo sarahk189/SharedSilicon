@@ -10,14 +10,14 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[UseApiKey]
 public class SubscribeController(DataContext context) : ControllerBase
 {
 
     #region CREATE
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] SubscriberDto input)
+    [UseApiKey]
+    public async Task<IActionResult> Create(SubscriberDto input)
     {
         if (!string.IsNullOrEmpty(input.Email))
         {
@@ -111,7 +111,7 @@ public class SubscribeController(DataContext context) : ControllerBase
     #endregion
 
     #region DELETE
-
+    [UseApiKey]
     [HttpDelete("{id}")]
     public async Task <IActionResult> DeleteOne(int id)
     {

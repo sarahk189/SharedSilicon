@@ -58,9 +58,9 @@ public class HomeController(HttpClient http) : Controller
         return View("Index", viewModel);
     }
 
-    public IActionResult Error404()
-    {
-        return View("Error404/Index");
-    }
+    //public IActionResult Error404()
+    //{
+    //    return View("Error404/Index");
+    //}
 
 }

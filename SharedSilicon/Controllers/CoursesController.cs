@@ -1,45 +1,61 @@
-﻿using Infrastructure.Dtos;
-using Infrastructure.Entities;
+﻿using Infrastructure.Entities;
+using Infrastructure.Dtos;
+using SharedSilicon.Dtos;
 using Microsoft.AspNetCore.Mvc;
-
 using Newtonsoft.Json;
+using static SharedSilicon.Models.CoursesModel;
+using Infrastructure.Services;
+using SharedSilicon.ViewModels;
 
 
 namespace SharedSilicon.Controllers;
 
-public class CoursesController : Controller
+public class CoursesController(CategoryService categoryService, CourseService courseService) : Controller
 {
-    public async Task <IActionResult> Index()
-    {
-        using var http = new HttpClient();
-        var response = await http.GetAsync("https://localhost:7152/api/courses");
-        if (response.IsSuccessStatusCode)
-        {
-            var json = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
-            return View(data);
-        }
-        else
-        {
-            // Log the status code and the reason for failure
-            Console.WriteLine($"Request failed with status code: {response.StatusCode}, reason: {response.ReasonPhrase}");
-            return View("Error");
-        }
 
-        //ViewData["Title"] = "Courses";
+	private readonly CategoryService _categoryService = categoryService;
+	private readonly CourseService _courseService = courseService;
 
-        //var viewModel = new CoursesViewModel();
-        //return View(viewModel);
-    }
-    [Route("Courses/Details/{id}")]
-	//[HttpGet("Details/{id}")]
+	public async Task<IActionResult> Index()
+	{
+		var categories = await _categoryService.GetCategoriesAsync();
+		var courses = await _courseService.GetCoursesAsync();
+
+		var viewModel = new CoursesViewModel
+		{
+			Categories = categories,
+			Courses = courses
+		};
+
+		return View(viewModel);
+	}
+	//public async Task <IActionResult> Index()
+	//   {
+	//       using var http = new HttpClient();
+	//       var response = await http.GetAsync("https://localhost:7152/api/courses");       
+	//       var json = await response.Content.ReadAsStringAsync();
+	//       var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
+
+
+	//       return View(data);
+
+
+	//   }
+
+	[Route("Courses/Details/{id}")]
+	[HttpGet("Details/{id}")]
 	public async Task<IActionResult> CourseDetails(int id)
 	{
 		using var http = new HttpClient();
 		var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}");
 		var json = await response.Content.ReadAsStringAsync();
-		var data = JsonConvert.DeserializeObject<CourseDetailsDto>(json);
+		var courseDto = JsonConvert.DeserializeObject<Infrastructure.Dtos.CourseDto>(json);
 
-		return View("CourseDetails",data);
+		if (courseDto == null)
+		{
+			return NotFound();
+		}
+
+		return View("Sections/_SingleCourse", courseDto);
 	}
 }

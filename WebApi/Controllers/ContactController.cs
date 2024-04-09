@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Infrastructure.Contexts;
@@ -14,6 +14,7 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+
 public class ContactController(DataContext context) : ControllerBase
 {
 	private readonly DataContext _context = context;

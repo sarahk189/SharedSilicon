@@ -23,5 +23,8 @@ public class UserEntity : IdentityUser
 	public DateTime? Modified { get; set; }
 
 	public int? AddressId { get; set; }
-	public AddressEntity? Address { get; set; }
+	public virtual AddressEntity? Address { get; set; }
+
+    public virtual ICollection<SavedCourseEntity> SavedCourses { get; set; } = new List<SavedCourseEntity>();
+
 }

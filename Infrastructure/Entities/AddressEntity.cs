@@ -7,8 +7,6 @@ public class AddressEntity
 	[Key]
 	public int Id { get; set; }
 
-	[Required]
-	public int UserId { get; set; }
 	public string AddressLine1 { get; set; } = null!;
 
 	public string? AddressLine2 { get; set; }
@@ -16,5 +14,6 @@ public class AddressEntity
 	public string PostalCode { get; set; } = null!;
 	public string City { get; set; } = null!;
 
-	public ICollection<UserEntity> Users { get; set; } = [];
+    public ICollection<UserEntity> Users { get; set; } = new List<UserEntity>();
+
 }
