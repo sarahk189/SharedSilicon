@@ -4,6 +4,7 @@ using Infrastructure.Entities;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Filters;
 
 
 
@@ -11,14 +12,14 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-
 public class CoursesController(DataContext context) : ControllerBase
 {
 
 
 	#region CREATE
 	[HttpPost]
-	public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
+    [UseApiKey]
+    public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
 	{
 		if (ModelState.IsValid)
 		{
@@ -96,7 +97,8 @@ public class CoursesController(DataContext context) : ControllerBase
 
 	#region READ
 	[HttpGet]
-	public async Task<IActionResult> GetAll()
+    [UseApiKey]
+    public async Task<IActionResult> GetAll()
 	{
 		var courses = await context.Courses
 			.Include(c => c.CourseDetails)
@@ -134,7 +136,8 @@ public class CoursesController(DataContext context) : ControllerBase
 	}
 
 	[HttpGet("{id}")]
-	public async Task<IActionResult> GetOne(int id)
+    [UseApiKey]
+    public async Task<IActionResult> GetOne(int id)
 	{
 		var course = await context.Courses
 			.Include(c => c.CourseDetails)
@@ -181,7 +184,8 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region UPDATE
 
 	[HttpPut("{id}")]
-	public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
+    [UseApiKey]
+    public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
 	{
 
 		if (!ModelState.IsValid)
@@ -232,7 +236,8 @@ public class CoursesController(DataContext context) : ControllerBase
 
 	#region DELETE
 	[HttpDelete("{id}")]
-	public async Task<IActionResult> DeleteOne(int id)
+    [UseApiKey]
+    public async Task<IActionResult> DeleteOne(int id)
 	{
 		var course = await context.Courses
 			.Include(c => c.CourseDetails)

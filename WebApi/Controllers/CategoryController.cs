@@ -11,9 +11,6 @@ namespace WebApi.Controllers
     public class CategoryController(DataContext context) : ControllerBase
     {
 
-        
-
-
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
