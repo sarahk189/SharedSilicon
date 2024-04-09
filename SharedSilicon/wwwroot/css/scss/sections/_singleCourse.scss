@@ -1,22 +1,16 @@
 .single-course {
 
     .top-content {
-
-        .laptop {
-            width: 100%;
-            height: 40%;
-            overflow: hidden;
-            z-index: -1;
-            position: absolute;
-            top: 0;
-        }
+        position: relative;
+        background-size: cover;
 
         .container {
+            z-index: 2;
 
             .seeding {
                 margin-top: 2rem;
                 font-size: small;
-                color: rgba(255, 255, 255, 0.767);
+                color: #e5e5e5;
                 padding-bottom: 1.5rem;
 
                 .arrows {
@@ -48,7 +42,7 @@
         }
 
         h1 {
-            color: var(--white);
+            color: #e5e5e5;
         }
 
         .text-under {
@@ -112,7 +106,7 @@
             }
 
             .albert-text {
-                color: white;
+                color: #e5e5e5;
 
                 .created {
                     font-weight: 700;
@@ -133,14 +127,12 @@
 
                     h2 {
                         padding-top: 2.1rem;
-                        color: var(--gray-900);
                     }
 
                     .things-to-learn {
 
                         h3 {
                             padding-top: 2rem;
-                            color: var(--gray-900);
                         }
 
                         .what-what {
@@ -157,12 +149,11 @@
                 }
 
                 .this-includes {
-                    background-color: var(--gray-100);
                     width: 100%;
                     margin-top: 3rem;
                     margin-left: 8rem;
                     padding-left: 4rem;
-                    border: 1px solid var(--gray-500);
+                    border: 1px solid rgba(128, 124, 124, 0.37);
                     border-radius: 0.5rem;
                     padding: 1.5rem 3rem 2rem 2rem;
                     box-shadow: 0px 1px 1px rgba(3, 7, 18, 0.02), 0px 5px 4px rgba(3, 7, 18, 0.03), 0px 12px 9px rgba(3, 7, 18, 0.05);
@@ -237,7 +228,7 @@
 
             .halfscreen {
                 color: white;
-                background-color: #0B0F19;
+                background-color: rgb(27, 24, 54);
                 z-index: -2;
                 padding-top: 5rem;
                 padding-left: 5rem;

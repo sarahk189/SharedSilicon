@@ -1,15 +1,10 @@
 ﻿@* @using Infrastructure.Entities *@
-@model IEnumerable<Infrastructure.Entities.CourseEntity>
+@* @model IEnumerable<Infrastructure.Entities.CourseEntity> *@
+	@model SharedSilicon.ViewModels.CoursesViewModel
 
 @{
 	ViewData["Title"] = "Courses";
 }
 
 
-@foreach (var course in Model)
-{
-	<div>@course.Title</div>
-}
-
-
-<partial name="~/Views/Shared/Sections/_Courses.cshtml" model=Model />
+<partial name="~/Views/Shared/Sections/_Courses.cshtml" model="Model" />

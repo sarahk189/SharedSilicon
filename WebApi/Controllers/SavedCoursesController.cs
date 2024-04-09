@@ -13,12 +13,12 @@ namespace WebApi.Controllers;
 public class SavedCoursesController(UserManager<UserEntity> userManager, DataContext context) : ControllerBase
 {
 
-	// GET: api/SavedCourses
+	#region READ
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<CourseEntity>>> GetSavedCourses()
 	{
 		var user = await userManager.GetUserAsync(User);
-		var userId = int.Parse(user.Id);
+		var userId = user.Id;
 		var savedCourses = await context.SavedCourses
 			.Where(x => x.UserId == userId)
 			.Select(x => x.Course)
@@ -27,12 +27,14 @@ public class SavedCoursesController(UserManager<UserEntity> userManager, DataCon
 		return savedCourses;
 	}
 
-	// POST: api/SavedCourses
+	#endregion
+
+	#region CREATE
 	[HttpPost]
 	public async Task<ActionResult> AddCourseToSavedCourses([FromBody] SavedCourseDto savedCourseDto)
 	{
 		var user = await userManager.GetUserAsync(User);
-		var userId = int.Parse(user.Id);
+		var userId = user.Id;
 		var courseId = savedCourseDto.CourseId;
 		var course = await context.Courses.FindAsync(courseId);
 
@@ -52,13 +54,15 @@ public class SavedCoursesController(UserManager<UserEntity> userManager, DataCon
 
 		return NoContent();
 	}
+	#endregion
 
-	// DELETE: api/SavedCourses/{courseId}
+	#region DELETE
+
 	[HttpDelete("{courseId}")]
 	public async Task<ActionResult> RemoveCourseFromSavedCourses(int courseId)
 	{
 		var user = await userManager.GetUserAsync(User);
-		var userId = int.Parse(user.Id);
+		var userId = user.Id;
 		var savedCourse = await context.SavedCourses
 			.FirstOrDefaultAsync(x => x.UserId == userId && x.CourseId == courseId);
 
@@ -72,4 +76,6 @@ public class SavedCoursesController(UserManager<UserEntity> userManager, DataCon
 
 		return NoContent();
 	}
+
+	#endregion
 }
