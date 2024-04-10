@@ -26,7 +26,7 @@ public class ContactController(DataContext context) : ControllerBase
 
 		if (ModelState.IsValid)
 		{
-			if (string.IsNullOrEmpty(input.FullName) || string.IsNullOrEmpty(input.EmailAddress) || string.IsNullOrEmpty(input.Message))
+			if (string.IsNullOrEmpty(input.FullName) || string.IsNullOrEmpty(input.Email) || string.IsNullOrEmpty(input.Message))
 			{
 				return BadRequest("All fields are required.");
 			}
@@ -34,7 +34,7 @@ public class ContactController(DataContext context) : ControllerBase
 			var contactRequest = new ContactRequestEntity
 			{
 				FullName = input.FullName,
-				EmailAddress = input.EmailAddress,
+				EmailAddress = input.Email,
 				Message = input.Message
 			};
 

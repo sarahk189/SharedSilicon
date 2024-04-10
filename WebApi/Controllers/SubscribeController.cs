@@ -19,7 +19,7 @@ public class SubscribeController(DataContext context) : ControllerBase
     [UseApiKey]
     public async Task<IActionResult> Create(SubscriberDto input)
     {
-        if (!string.IsNullOrEmpty(input.Email))
+        if (ModelState.IsValid)
         {
             if (!await context.Subscribe.AnyAsync(x => x.Email == input.Email))
 
@@ -42,8 +42,11 @@ public class SubscribeController(DataContext context) : ControllerBase
 
                     return Created("", null);
                 }
-                catch 
-                { 
+                catch (DbUpdateException ex) 
+                {
+                    
+                    Console.WriteLine(ex.InnerException?.Message);
+
                     return Problem("Unable to create subscription.");
                 }
             }

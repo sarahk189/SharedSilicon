@@ -31,6 +31,7 @@ public class HomeController(HttpClient http) : Controller
             try
             {
                 var content = new StringContent(JsonConvert.SerializeObject(viewModel.Form), Encoding.UTF8, "application/json");
+                _http.DefaultRequestHeaders.Add("ApiKey", "Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh");
                 var response = await _http.PostAsync("https://localhost:7152/api/Subscribe?key=Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh", content);
 
                 if (response.IsSuccessStatusCode)
@@ -43,7 +44,11 @@ public class HomeController(HttpClient http) : Controller
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    ViewData["Status"] = "Unauhorized";
+                    ViewData["Status"] = "Unauthorized";
+                }
+                else
+                {
+                    ViewData["Status"] = "Error";
                 }
             }
             catch
@@ -57,10 +62,12 @@ public class HomeController(HttpClient http) : Controller
         }
         return View("Index", viewModel);
     }
+}
+
 
     //public IActionResult Error404()
     //{
     //    return View("Error404/Index");
     //}
 
-}
+

@@ -264,7 +264,6 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Newsletter = table.Column<bool>(type: "bit", nullable: false),
                     AdvertisingUpdates = table.Column<bool>(type: "bit", nullable: false),
                     WeekInReview = table.Column<bool>(type: "bit", nullable: false),
@@ -279,11 +278,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subscribe", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subscribe_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
