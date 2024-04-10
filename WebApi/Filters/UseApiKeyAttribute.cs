@@ -11,6 +11,8 @@ public class UseApiKeyAttribute : Attribute, IAsyncActionFilter
         var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
         var apiKey = config.GetValue<string>("ApiKey");
 
+       
+
         if (!context.HttpContext.Request.Query.TryGetValue("key", out var providedKey))
         {
             context.Result = new UnauthorizedResult();
@@ -25,4 +27,5 @@ public class UseApiKeyAttribute : Attribute, IAsyncActionFilter
 
         await next();
     }
+
 }
