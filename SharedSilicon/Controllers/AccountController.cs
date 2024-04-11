@@ -51,13 +51,14 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 
 				var viewModel = new AccountDetailsViewModel()
 				{
+					IsExternalAccount = user.IsExternalAccount,
 					BasicInfo = new AccountDetailsBasicInfoModel
 					{
 						FirstName = user.FirstName,
 						LastName = user.LastName,
 						Email = user.Email!,
 						Phone = user.PhoneNumber!,
-						Biography = user.Biography
+						Biography = user.Biography						
 					},
 					AddressInfo = new AccountDetailsAddressInfoModel
 					{

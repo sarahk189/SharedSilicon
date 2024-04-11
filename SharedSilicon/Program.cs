@@ -26,6 +26,14 @@ builder.Services.ConfigureApplicationCookie(x =>
     x.LoginPath = "/signin";
 });
 
+builder.Services.AddAuthentication().AddFacebook(x =>
+{
+    x.AppId = "371729882544755";
+    x.AppSecret = "e50bb2b0018b70f57a6f03f050699f1a";
+    x.Fields.Add("first_name");
+	x.Fields.Add("last_name");
+});
+
 var app = builder.Build();
 
 
@@ -35,6 +43,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+//app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
