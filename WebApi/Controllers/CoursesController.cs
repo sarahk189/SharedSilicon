@@ -101,8 +101,8 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region READ
 
 	[HttpGet]
-    [UseApiKey]
-    public async Task<IActionResult> GetAll()
+	[UseApiKey]
+	
 	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
 	{
 		var query = context.Courses

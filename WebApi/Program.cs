@@ -32,7 +32,7 @@ app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi"));
 
 
 app.UseHttpsRedirection();
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
