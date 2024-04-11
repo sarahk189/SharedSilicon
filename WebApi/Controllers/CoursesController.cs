@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Infrastructure.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region CREATE
 	[HttpPost]
     [UseApiKey]
+	[Authorize]
     public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
 	{
 		if (ModelState.IsValid)
@@ -185,6 +187,7 @@ public class CoursesController(DataContext context) : ControllerBase
 
 	[HttpPut("{id}")]
     [UseApiKey]
+	[Authorize]
     public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
 	{
 
@@ -237,6 +240,7 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region DELETE
 	[HttpDelete("{id}")]
     [UseApiKey]
+	[Authorize]
     public async Task<IActionResult> DeleteOne(int id)
 	{
 		var course = await context.Courses

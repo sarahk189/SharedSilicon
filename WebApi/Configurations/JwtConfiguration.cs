@@ -22,9 +22,9 @@ public static class JwtConfiguration
                 ValidateLifetime = true,
 
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jtw:Secret"]!)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
 
-                ClockSkew = TimeSpan.Zero,
+                ClockSkew = TimeSpan.Zero
             };
         });
                                                                           

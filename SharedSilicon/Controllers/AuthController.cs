@@ -5,6 +5,12 @@ using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Factories;
 using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace SharedSilicon.Controllers;
 
@@ -23,7 +29,6 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 		if (_signInManager.IsSignedIn(User))
 			return RedirectToAction("/details", "Account");
 
-		//return View();
         var viewModel = new SignUpViewModel();
         return View(viewModel);
     }
@@ -58,13 +63,9 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
             }
             
         }
-        //if (!ModelState.IsValid) 
-        //    return View(viewModel);
 
         return RedirectToAction("SignIn", "Auth");
     }
-
-
 
 
     [Route("/signin")]
@@ -75,7 +76,6 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         if (_signInManager.IsSignedIn(User))
             return RedirectToAction("Details", "Account");
 
-        //return View();
         var viewModel = new SignInViewModel();
         return View(viewModel);
     }
@@ -83,53 +83,67 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 
     [Route("/signin")]
     [HttpPost]
-    public async Task<IActionResult> SignIn(SignInViewModel viewModel)
+    public async Task<IActionResult> SignIn(SignInViewModel viewModel, string returnUrl)
     {
-       
+        ModelState.Remove("returnUrl"); // Remove returnUrl from the model state
+
+        if (string.IsNullOrEmpty(returnUrl))
+        {
+            returnUrl = "/Home/Index";
+        }
+        ViewData["ReturnUrl"] = returnUrl;
         if (ModelState.IsValid)
         {
             var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
+
             if (result.Succeeded)
             {
-                //var content = new FormUrlEncodedContent(viewModel.Form);
+                var login = new Dictionary<string, string>()
+                {
+                    { "Email", viewModel.Form.Email }, 
+                    { "Password", viewModel.Form.Password }
+                };
+                // Sign-in was successful, get the access token
+                var content = new StringContent(JsonConvert.SerializeObject(login), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync($"https://localhost:7152/api/Auth/token?key={_configuration["ApiKey:Secret"]}", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var token = await response.Content.ReadAsStringAsync();
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        Expires = DateTime.Now.AddDays(1)
+                    };
 
-                //var response = await _httpClient.PostAsync($"https://localhost:7152/api/Auth/token?key={_configuration["ApiKey:Secret"]}", content);
-                //if (response.IsSuccessStatusCode)
-                //{
-                //    var token = await response.Content.ReadAsStringAsync();
-                //    var cookieOptions = new CookieOptions
-                //    {
-                //        HttpOnly = true,
-                //        Secure = true,
-                //        Expires = DateTime.Now.AddDays(1)
-                //    };
+                    Response.Cookies.Append("AccessToken", token, cookieOptions);
 
-                //    response.cookies.Append("AccessToken", token, cookieOptions);
-                //}
-
+                }
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    // Logga eller inspektera 'error' för att se vad servern säger
+                }
 
                 return RedirectToAction("Details", "Account");
             }
-                
+            else
+            {
+                // Sign-in was not successful, add an error
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(viewModel);
+            }
         }
 
-
-        ViewData["ErrorMessage"] = "Incorrect email or password";
-            return View(viewModel);
-        
-
-        //var result = _authService.SignIn(viewModel.Form);
-        //if (result)
-        //    return RedirectToAction("Account", "Index");
-
-
-       
-
-       
+        // If we got this far, something failed, redisplay form
+        ViewData["StatusMessage"] = "Incorrect e-mail and password";
+        return View(viewModel);
     }
 
 
-	[Route("/signout")]
+
+
+    [Route("/signout")]
 	[HttpGet]
 	public new async Task <IActionResult> SignOut()
 	{
@@ -138,20 +152,5 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 		return RedirectToAction("Signin", "Auth");
 		
 	}
-
-
-
-    //[Route("/auth/details")]
-    //[HttpGet]
-    //public async Task<IActionResult> Details()
-    //{
-    //    if (!_signInManager.IsSignedIn(User))
-    //        return RedirectToAction("Details", "Account");
-
-    //    var userEntity = await _userManager.GetUserAsync(User);
-
-    //    var viewModel = new AccountDetailsViewModel();
-    //    return View("~/Views/Account/Details.cshtml", viewModel);
-    //}
 
 }
