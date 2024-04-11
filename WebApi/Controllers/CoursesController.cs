@@ -5,7 +5,7 @@ using Infrastructure.Factories;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
+using WebApi.Filters;
 
 
 
@@ -13,7 +13,6 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-
 public class CoursesController(DataContext context) : ControllerBase
 {
 
@@ -22,7 +21,8 @@ public class CoursesController(DataContext context) : ControllerBase
 
 	#region CREATE
 	[HttpPost]
-	public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
+    [UseApiKey]
+    public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
 	{
 		if (ModelState.IsValid)
 		{
@@ -101,6 +101,8 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region READ
 
 	[HttpGet]
+    [UseApiKey]
+    public async Task<IActionResult> GetAll()
 	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
 	{
 		var query = context.Courses
@@ -140,7 +142,8 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 	[HttpGet("{id}")]
-	public async Task<IActionResult> GetOne(int id)
+    [UseApiKey]
+    public async Task<IActionResult> GetOne(int id)
 	{
 		var course = await context.Courses
 			.Include(c => c.CourseDetails)
@@ -187,7 +190,8 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region UPDATE
 
 	[HttpPut("{id}")]
-	public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
+    [UseApiKey]
+    public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
 	{
 
 		if (!ModelState.IsValid)
@@ -238,7 +242,8 @@ public class CoursesController(DataContext context) : ControllerBase
 
 	#region DELETE
 	[HttpDelete("{id}")]
-	public async Task<IActionResult> DeleteOne(int id)
+    [UseApiKey]
+    public async Task<IActionResult> DeleteOne(int id)
 	{
 		var course = await context.Courses
 			.Include(c => c.CourseDetails)

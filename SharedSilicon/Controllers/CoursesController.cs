@@ -36,53 +36,26 @@ public class CoursesController(CategoryService categoryService, CourseService co
 	//       var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
 
 
-	//       return View(data);
+    //       return View(data);
 
 
-	//   }
+    //   }
 
+    [Route("Courses/Details/{id}")]
+    [HttpGet("Details/{id}")]
+    public async Task<IActionResult> CourseDetails(int id)
+    {
+        using var http = new HttpClient();
+        var apiKey = "Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh";
+        var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}?key={apiKey}");
+        var json = await response.Content.ReadAsStringAsync();
+        var courseDto = JsonConvert.DeserializeObject<Infrastructure.Dtos.CourseDto>(json);
 
+        if (courseDto == null)
+        {
+            return NotFound();
+        }
 
-
-	//[Route("Courses/Details/{id}")]
-	//[HttpGet("Details/{id}")]
-	//public async Task<IActionResult> CourseDetails(int id)
-	//{
-	//    try
-	//    {
-	//        var courseDto = await _courseService.GetCourseAsync(id);
-	//        return View("Sections/_SingleCourse", courseDto);
-	//    }
-	//    catch (Exception)
-	//    {
-
-	//        return RedirectToAction("Error", "Home");
-	//    }
-	//}
-
-
-
-
-	//[Route("Courses/Details/{id}")]
-	//[HttpGet("Details/{id}")]
-	//public async Task<IActionResult> CourseDetails(int id)
-	//{
-	//	using var http = new HttpClient();
-	//	var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}");
-	//	var json = await response.Content.ReadAsStringAsync();
-	//	var courseDto = JsonConvert.DeserializeObject<Infrastructure.Dtos.CourseDto>(json);
-
-	//	if (courseDto == null)
-	//	{
-	//		return NotFound();
-	//	}
-
-	//	return View("Sections/_SingleCourse", courseDto);
-	//}
-
-
-	
-
-
-
+        return View("Sections/_SingleCourse", courseDto);
+    }
 }

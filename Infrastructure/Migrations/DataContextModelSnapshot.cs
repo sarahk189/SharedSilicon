@@ -277,10 +277,6 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("Unsubscribed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UsersId")
                         .HasColumnType("nvarchar(450)");
 
