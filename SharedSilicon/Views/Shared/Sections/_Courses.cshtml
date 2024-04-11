@@ -1,5 +1,5 @@
-﻿@using System.Globalization
-@model SharedSilicon.ViewModels.CoursesViewModel
+﻿@* @using System.Globalization *@
+@model SharedSilicon.ViewModels.CourseIndexViewModel
 @* @model IEnumerable<Infrastructure.Entities.CourseEntity> *@
 
 
@@ -22,20 +22,18 @@
 			</div>
 
 			<div class="dropdown-search">
-				<div class="dropdown">
-					<button class="dropbtn">All categories <i class="fa-solid fa-chevron-down"></i></button>
-					<ul class="dropdown-content">
+				<div class="select">
+					<div class="dropbtn">All categories <i class="fa-solid fa-chevron-down"></i></div>
+					<div class="select-options">
+						<div class="option" data-value="all">All Categories</div>
 						@if (Model.Categories != null)
 						{
-							foreach (var category in Model.Categories)
+							@foreach (var category in Model.Categories)
 							{
-								<li><a class="menu-link" href="#">@category.Name</a></li>
+								<div class="option" data-value="@category.Name">@category.Name</div>
 							}
 						}
-						@* <li><a class="menu-link" href="#">Category 1</a></li>
-						<li><a class="menu-link" href="#">Category 2</a></li>
-						<li><a class="menu-link" href="#">Category 3</a></li> *@
-					</ul>
+					</div>
 				</div>
 
 				<div class="search-courses">
@@ -45,58 +43,70 @@
 			</div>
 		</div>
 
-		
+
 
 	</div>
 
 
 	@* Courses cards. *@
 	<div class="container">
+		@if (Model.Courses !=null)
+		{
 		<div class="courses-show">
+
 			@foreach (var course in Model.Courses)
 			{
-				<a class="courses" asp-controller="Courses" asp-action="CourseDetails" asp-route-id="@course.Id">
-					<img src="@course.ImageUrl" alt="course image" />
-					@if (course.BestBadgeUrl)
-					{
-						<div class="bestbadge">
-							@if (course.BestBadgeUrl)
-                            {
-                                <img src="~/images/coursesImages/bestsellerbadge.svg" alt="Green bestseller badge">
-                            }
-						</div>
-					}
-			
-					<div class="bookmark" data-course-id="@course.Id">
-						@if (course.BookmarkUrl)
+				<div class="course">
+					<div class="courses" onclick="location.href='@Url.Action("Details", "Courses", new { id = course.Id})'">
+
+						
+
+						@if (course.BestBadgeUrl)
 						{
-							<img src="~/images/coursesImages/bookmark.svg" alt="Bookmark course badge" />
+							<div class="bestbadge">
+								
+								
+									<img src="~/images/coursesImages/bestsellerbadge.svg" alt="Green bestseller badge">
+							</div>
+							
 						}
-					</div>
-					<h5>@course.Title</h5>
-					<p class="author">@course.Author</p>
+							<a  asp-action="Save" asp-controller="Courses" asp-route-id="@course.Id" class="btn btn-circle bookmark"><i class="fa-regular fa-bookmark"></i></a>
+					
+
+							<img src="@course.ImageUrl" alt="course image" />
+
+
+						<h5>@course.Title</h5>
+						<p class="author">@course.Author</p>
 						<div class="price-container">
 								@if (course.RedPrice.HasValue)
 								{
-								<p class="price-red">$@course.RedPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
-								}
-								@if (course.Price.HasValue)
-								{
-								<p class="price">$@course.Price.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+									<p class="price-red">$@course.RedPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
 								}
 								@if (course.OldPrice.HasValue)
 								{
-								<p class="old-price"><del>$@course.OldPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</del></p>
+									<p class="old-price"><del>$@course.OldPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</del></p>
+								}
+								@if (!course.RedPrice.HasValue && !course.OldPrice.HasValue && course.Price.HasValue)
+								{
+									<p class="price">$@course.Price.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
 								}
 						</div>
 						<hr />
-					<p class="courses-time">
-						<i class="fa-light fa-clock"></i>@course.Hours hours <i class="fa-light fa-thumbs-up"></i> @course.RatingPercentage%  (@course.RatingCount)
-					</p>
-				</a>
+						<p class="courses-time">
+							<i class="fa-light fa-clock"></i>@course.Hours hours <i class="fa-light fa-thumbs-up"></i> @course.RatingPercentage%  (@course.RatingCount)
+						</p>
+					</div>
+					
+				</div>
 			}
-			
+
+
 		</div>
+
+		}
+
+
 		<div class="carousel"> <img src="~/images/coursesImages/pagination.svg" alt="carousel-img">  </div>
 	</div>
 
@@ -117,4 +127,3 @@
 
 
 </section>
-

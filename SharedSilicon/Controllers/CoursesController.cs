@@ -1,20 +1,16 @@
-﻿using Infrastructure.Entities;
-using Infrastructure.Dtos;
-using SharedSilicon.Dtos;
+﻿using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using static SharedSilicon.Models.CoursesModel;
-using Infrastructure.Services;
 using SharedSilicon.ViewModels;
 using System.Net.Http.Headers;
 using System.Net.WebSockets;
+
 
 
 namespace SharedSilicon.Controllers;
 
 public class CoursesController(CategoryService categoryService, CourseService courseService, IConfiguration configuration, HttpClient http) : Controller
 {
-
 	private readonly CategoryService _categoryService = categoryService;
 	private readonly CourseService _courseService = courseService;
     private readonly IConfiguration _configuration = configuration;
@@ -45,12 +41,18 @@ public class CoursesController(CategoryService categoryService, CourseService co
 
 		//return View(viewModel);
 	}
-    //public async Task <IActionResult> Index()
-    //   {
-    //       using var http = new HttpClient();
-    //       var response = await http.GetAsync("https://localhost:7152/api/courses");       
-    //       var json = await response.Content.ReadAsStringAsync();
-    //       var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
+
+
+
+
+
+
+	//public async Task <IActionResult> Index()
+	//   {
+	//       using var http = new HttpClient();
+	//       var response = await http.GetAsync("https://localhost:7152/api/courses");       
+	//       var json = await response.Content.ReadAsStringAsync();
+	//       var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
 
 
     //       return View(data);

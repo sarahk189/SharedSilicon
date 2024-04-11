@@ -1,6 +1,5 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Factories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
