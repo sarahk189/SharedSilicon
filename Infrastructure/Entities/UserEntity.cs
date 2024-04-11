@@ -27,4 +27,6 @@ public class UserEntity : IdentityUser
 
     public virtual ICollection<SavedCourseEntity> SavedCourses { get; set; } = new List<SavedCourseEntity>();
 
+	public bool IsExternalAccount { get; set; } = false;
+
 }

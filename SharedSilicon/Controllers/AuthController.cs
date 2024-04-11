@@ -5,6 +5,7 @@ using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Factories;
 using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace SharedSilicon.Controllers;
 
@@ -153,5 +154,64 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     //    var viewModel = new AccountDetailsViewModel();
     //    return View("~/Views/Account/Details.cshtml", viewModel);
     //}
+
+
+    #region External Account | Facebook
+
+    [HttpGet]
+    public IActionResult Facebook(string provider)
+    {
+        var authProps = _signInManager.ConfigureExternalAuthenticationProperties("Facebook", Url.Action("FacebookCallback"));
+        return new ChallengeResult("Facebook", authProps);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> FacebookCallback()
+    {
+        var info = await _signInManager.GetExternalLoginInfoAsync();    
+        if (info != null)
+        {
+            var userEntity = new UserEntity
+            {
+                FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName)!,
+                LastName = info.Principal.FindFirstValue(ClaimTypes.Surname)!,
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email)!,
+                UserName = info.Principal.FindFirstValue(ClaimTypes.Email)!,
+                IsExternalAccount = true
+            };
+
+            var user = await _userManager.FindByEmailAsync(userEntity.Email);
+            if (user == null)
+            {
+                var result = await _userManager.CreateAsync(userEntity);
+                if (result.Succeeded)
+                {
+                    user = await _userManager.FindByEmailAsync(userEntity.Email);
+                }
+            }
+
+            if (user != null)
+            {
+                if (user.FirstName != userEntity.FirstName || user.LastName != userEntity.LastName || user.Email != userEntity.Email)
+                {
+                    user.FirstName = userEntity.FirstName;
+                    user.LastName = userEntity.LastName;
+                    user.Email = userEntity.Email;                 
+
+                    await _userManager.UpdateAsync(user);
+                } 
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+                if (HttpContext.User != null)
+                    return RedirectToAction("Details", "Account");
+            }                     
+        }
+        ModelState.AddModelError("InvalidFacebookAuthentication", "danger|Failed to authenticate with Facebook");
+        ViewData["StatusMessage"] = "danger|Failed to authenticate with Facebook";
+        return RedirectToAction("SignIn", "Auth");
+
+    }
+
+    #endregion
 
 }
