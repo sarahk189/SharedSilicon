@@ -1,9 +1,11 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Infrastructure.Entities;
+using Infrastructure.Factories;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 
 
@@ -14,6 +16,8 @@ namespace WebApi.Controllers;
 
 public class CoursesController(DataContext context) : ControllerBase
 {
+
+	
 
 
 	#region CREATE
@@ -95,43 +99,45 @@ public class CoursesController(DataContext context) : ControllerBase
 	#endregion region
 
 	#region READ
+
 	[HttpGet]
-	public async Task<IActionResult> GetAll()
+	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
 	{
-		var courses = await context.Courses
-			.Include(c => c.CourseDetails)
-			.Include(c => c.Author)
-			.ToListAsync();
+		var query = context.Courses
+			.Include(x => x.FilterCategory)
+			.ThenInclude(x => x.Category)
+			.AsQueryable();
 
-		var courseDtos = courses.Select(course => new CourseDto
+		if (!string.IsNullOrWhiteSpace(category) && category != "all")
+			query = query.Where(x => x.FilterCategory.Any(fc => fc.Category.Name == category));
+
+		if (!string.IsNullOrEmpty(searchQuery))
+			query = query.Where(x => x.Title.Contains(searchQuery) || 
+			x.Author.FirstName.Contains(searchQuery)||
+			x.Author.LastName.Contains(searchQuery));
+
+
+
+
+		query = query.OrderByDescending(x => x.Id);
+
+
+
+		var courses = await query.ToListAsync();
+		var courseDtos = courses.Select(CourseFactory.Create).ToList();
+
+		var response = new CourseResult
 		{
-			Id = course.Id,
-			Title = course.Title,
-			ImageUrl = course.ImageUrl,
-			BestBadgeUrl = course.BestBadgeUrl,
-			BookmarkUrl = course.BookmarkUrl,
-			Hours = course.Hours,
-			Price = course.Price,
-			OldPrice = course.OldPrice,
-			RedPrice = course.RedPrice,
-			RatingPercentage = course.RatingPercentage,
-			RatingCount = course.RatingCount,
-			CourseDetails = new CourseDetailsDto
-			{
-				NumberOfReviews = course.CourseDetails.NumberOfReviews,
-				Digital = course.CourseDetails.Digital
-			},
-			Author = new CourseAuthorDto
-			{
-				AuthorImageUrl = course.Author.AuthorImageUrl,
-				FirstName = course.Author.FirstName,
-				LastName = course.Author.LastName,
-				Headline = course.Author.Headline
-			}
-		}).ToList();
+			Succeeded = true,
+			Courses = courseDtos,
+		};
 
-		return Ok(courseDtos);
+		return Ok(response);
 	}
+
+
+
+
 
 	[HttpGet("{id}")]
 	public async Task<IActionResult> GetOne(int id)
@@ -252,3 +258,6 @@ public class CoursesController(DataContext context) : ControllerBase
 	#endregion
 
 }
+
+
+
