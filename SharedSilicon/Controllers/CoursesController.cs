@@ -20,6 +20,8 @@ public class CoursesController(CategoryService categoryService, CourseService co
     private readonly IConfiguration _configuration = configuration;
     private readonly HttpClient _http = http;
 
+	
+
 	public async Task<IActionResult> Index()
 	{
 		if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
@@ -54,7 +56,7 @@ public class CoursesController(CategoryService categoryService, CourseService co
 	//};
 
 	//return View(viewModel);
-}
+
 
 
 
