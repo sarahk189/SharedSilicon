@@ -1,7 +1,9 @@
-﻿using Infrastructure.Services;
+﻿using Infrastructure.Dtos;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SharedSilicon.ViewModels;
 using System.Net.Http.Headers;
 using System.Net.WebSockets;
 using static SharedSilicon.Models.CoursesModel;
@@ -18,31 +20,41 @@ public class CoursesController(CategoryService categoryService, CourseService co
     private readonly IConfiguration _configuration = configuration;
     private readonly HttpClient _http = http;
 
-    public async Task<IActionResult> Index()
+	public async Task<IActionResult> Index()
 	{
-        if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
-        {
-            _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _http.GetAsync($"https://localhost:7152/api/Courses?key={_configuration["ApiKey:Secret"]}");
-            if (response.IsSuccessStatusCode) 
-            {
-                var data = await response.Content.ReadAsStringAsync();
-                var courses = JsonConvert.DeserializeObject<IEnumerable<Course>>(data);
-                return View(courses);
-            }
-        }
-        return View();
-  //      var categories = await _categoryService.GetCategoriesAsync();
-		//var courses = await _courseService.GetCoursesAsync();
+		if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
+		{
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+			var response = await _http.GetAsync($"https://localhost:7152/api/Courses?key={_configuration["ApiKey:Secret"]}");
+			if (response.IsSuccessStatusCode)
+			{
+				var data = await response.Content.ReadAsStringAsync();
+				var courses = JsonConvert.DeserializeObject<IEnumerable<CourseDto>>(data);
 
-		//var viewModel = new CoursesViewModel
-		//{
-		//	Categories = categories,
-		//	Courses = courses
-		//};
+				var categories = await _categoryService.GetCategoriesAsync();
 
-		//return View(viewModel);
+				var viewModel = new CourseIndexViewModel
+				{
+					Categories = categories,
+					Courses = courses
+				};
+
+				return View(viewModel);
+			}
+		}
+		return View();
 	}
+	//      var categories = await _categoryService.GetCategoriesAsync();
+	//var courses = await _courseService.GetCoursesAsync();
+
+	//var viewModel = new CoursesViewModel
+	//{
+	//	Categories = categories,
+	//	Courses = courses
+	//};
+
+	//return View(viewModel);
+}
 
 
 
