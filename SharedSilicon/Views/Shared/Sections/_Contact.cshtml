@@ -47,13 +47,13 @@
 
 					<div class="input-group">
 						<label asp-for="FullName"></label>
-						<span asp-validation-for="FullName"></span>
+						<span asp-validation-for="FullName" class="error-message"></span>
 						<input asp-for="FullName" />
 					</div>
 
 					<div class="input-group">
 						<label asp-for="EmailAddress"></label>
-						<span asp-validation-for="EmailAddress"></span>
+						<span asp-validation-for="EmailAddress" class="error-message"></span>
 						<input asp-for="EmailAddress" />
 					</div>
 
@@ -67,7 +67,7 @@
 
 					<div class="input-group">
 						<label asp-for="Message"></label>
-						<span asp-validation-for="Message"></span>
+						<span asp-validation-for="Message" class="error-message"></span>
 						<textarea asp-for="Message" rows="5"></textarea>
 					</div>
 
@@ -83,3 +83,5 @@
 	<img class="map" src="~/images/contactImages/Map.svg" alt="map with location" />
 
 </section>
+
+@await Html.PartialAsync("_ValidationScriptPartial")

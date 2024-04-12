@@ -17,9 +17,9 @@
             </div>
             <nav>
                 <a class="btn-theme-s" asp-controller="Account" asp-action="Details"><i class="fa-light fa-gear"></i> Account Details</a>
-                <a class="btn-transparent" asp-controller="Account" asp-action="Security"><i class="fa-light fa-lock"></i> Security</a>
-                <a class="btn-transparent" asp-controller="Account" asp-action="SavedCourses"><i class="fa-light fa-bookmark"></i> Saved Courses</a>
-                <a class="btn-transparent" asp-controller="Auth" asp-action="SignOut"><i class="fa-sharp fa-light fa-person-to-door"></i> Sign out</a>
+                <a class="btn-theme-s" asp-controller="Account" asp-action="Security"><i class="fa-light fa-lock"></i> Security</a>
+                <a class="btn-theme-s" asp-controller="Account" asp-action="SavedCourses"><i class="fa-light fa-bookmark"></i> Saved Courses</a>
+                <a class="btn-theme-s" asp-controller="Auth" asp-action="SignOut"><i class="fa-sharp fa-light fa-person-to-door"></i> Sign out</a>
             </nav>
         </aside>
         <div class="details">
@@ -74,7 +74,7 @@
                         <div id="form-phone" class="input-group">
                             <label asp-for=BasicInfo.Phone></label>
                             <input type="tel" asp-for="BasicInfo.Phone" />
-                            <span asp-validation-for="BasicInfo.Phone"></span>
+                            <span asp-validation-for="BasicInfo.Phone" data-skip-validation="true"></span>
                         </div>
 
                         <div id="form-bio" class="input-group">
@@ -98,25 +98,25 @@
                     <div class="content">
                         <div id="form-addressline_1" class="input-group">
                             <label asp-for=AddressInfo.Addressline_1></label>
-                            <span asp-validation-for="AddressInfo.Addressline_1"></span>
+                            <span asp-validation-for="AddressInfo.Addressline_1" data-skip-validation="true"></span>
                             <input type="text" asp-for="AddressInfo.Addressline_1" />
                         </div>
 
                         <div id="form-addressline_2" class="input-group">
                             <label asp-for=AddressInfo.Addressline_2></label>
-                            <span asp-validation-for="AddressInfo.Addressline_2"></span>
+                            <span asp-validation-for="AddressInfo.Addressline_2" data-skip-validation="true"></span>
                             <input type="text" asp-for="AddressInfo.Addressline_2" />
                         </div>
 
                         <div id="form-postalcode" class="input-group">
                             <label asp-for=AddressInfo.PostalCode></label>
-                            <span asp-validation-for="AddressInfo.PostalCode"></span>
+                            <span asp-validation-for="AddressInfo.PostalCode" data-skip-validation="true"></span>
                             <input type="text" asp-for="AddressInfo.PostalCode" />
                         </div>
 
                         <div id="form-city" class="input-group">
                             <label asp-for=AddressInfo.City></label>
-                            <span asp-validation-for="AddressInfo.City"></span>
+                            <span asp-validation-for="AddressInfo.City" data-skip-validation="true"></span>
                             <input type="text" asp-for="AddressInfo.City" />
                         </div>
 
@@ -132,3 +132,5 @@
         </div>
     </section>
 </div>
+
+@await Html.PartialAsync("_ValidationScriptPartial")

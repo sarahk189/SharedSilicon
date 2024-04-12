@@ -187,6 +187,7 @@
 
                         input {
                             background-color: var(--gray-000);
+                            color: var(--gray-900);
                             width: 491px;
                             height: 52px;
                             padding: 10px;
@@ -215,13 +216,13 @@
                             color: var(--gray-900);
                             display: block;
                             margin-bottom: 0.188rem;
-                            font-weight: 700;                           
+                            font-weight: 700;
                         }
 
                         span {
                             display: block;
                             color: red;
-                            margin-top: 5px;                          
+                            margin-top: 5px;
 
                             &.field-validation-error {
                                 position: absolute;

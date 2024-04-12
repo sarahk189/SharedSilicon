@@ -502,6 +502,18 @@ header .container .btn-mobile {
     display: none;
   }
 }
+header .container .mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  overflow: auto;
+  padding: 20px;
+  display: none;
+}
 
 footer {
   margin-top: auto;
@@ -706,6 +718,7 @@ footer .container .social-media a {
 }
 .contact-us .container .contact-layout .contact-form-container .contact-form .input-group input {
   background-color: var(--gray-000);
+  color: var(--gray-900);
   width: 491px;
   height: 52px;
   padding: 10px;
