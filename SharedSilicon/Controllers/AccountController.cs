@@ -9,35 +9,41 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.EntityFrameworkCore;
 using static SharedSilicon.Models.SavedCoursesModel;
 using Infrastructure.Contexts;
+using Newtonsoft.Json;
+using static SharedSilicon.Models.CoursesModel;
+using static System.Net.WebRequestMethods;
+using System.Net.Http.Headers;
 
 namespace SharedSilicon.Controllers;
 
 
-//[Authorize]
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context) : Controller
+[Authorize]
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context, HttpClient http, IConfiguration configuration) : Controller
 {
 	
 	private readonly UserManager<UserEntity> _userManager = userManager;
 	private readonly SignInManager<UserEntity> _signInManager = signInManager;
+	private readonly HttpClient _http = http;
+	private readonly IConfiguration _configuration = configuration;
 
-    #region Details
-    [HttpGet]
-    [Route("/account/details")]
-    public async Task<IActionResult> Details()
-    {
-        if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
+	#region Details
+	[HttpGet]
+	[Route("/account/details")]
+	public async Task<IActionResult> Details(string id)
+	{
+		if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
 		{
-            var userEntity = await _userManager.GetUserAsync(User);
-            var claims = HttpContext.User.Identities.FirstOrDefault();
-            var viewModel = await PopulateViewModelAsync();
-
-            return View("Details", viewModel);
-        }
-
-
-		return RedirectToAction("SignIn", "Auth");
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+			var response = await _http.GetAsync($"https://localhost:7152/api/Courses/{id}?key={_configuration["ApiKey:Secret"]}");
+			if (response.IsSuccessStatusCode)
+			{
+				var data = await response.Content.ReadAsStringAsync();
+				var course = JsonConvert.DeserializeObject<Course>(data);
+				return View(course);
+			}
+		}
+        return View();
     }
-
 
     public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
 	{
