@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SharedSilicon.ViewModels;
 using System.Net.Http.Headers;
 using System.Net.WebSockets;
+using static SharedSilicon.Models.CoursesModel;
 
 
 
