@@ -1,14 +1,16 @@
 ﻿using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SharedSilicon.ViewModels;
 using System.Net.Http.Headers;
 using System.Net.WebSockets;
+using static SharedSilicon.Models.CoursesModel;
 
 
 
 namespace SharedSilicon.Controllers;
 
+[Authorize]
 public class CoursesController(CategoryService categoryService, CourseService courseService, IConfiguration configuration, HttpClient http) : Controller
 {
 	private readonly CategoryService _categoryService = categoryService;
@@ -64,17 +66,17 @@ public class CoursesController(CategoryService categoryService, CourseService co
     [HttpGet("Details/{id}")]
     public async Task<IActionResult> CourseDetails(int id)
     {
-        using var http = new HttpClient();
-        var apiKey = "Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh";
-        var response = await http.GetAsync($"https://localhost:7152/api/courses/{id}?key={_configuration["ApiKey:Secret"]}");
-        var json = await response.Content.ReadAsStringAsync();
-        var courseDto = JsonConvert.DeserializeObject<Infrastructure.Dtos.CourseDto>(json);
-
-        if (courseDto == null)
+        if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
         {
-            return NotFound();
+            _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _http.GetAsync($"https://localhost:7152/api/Courses/{id}?key={_configuration["ApiKey:Secret"]}");
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var course = JsonConvert.DeserializeObject<Course>(data);
+                return View(course);
+            }
         }
-
-        return View("Sections/_SingleCourse", courseDto);
+        return View();
     }
 }

@@ -25,17 +25,17 @@ public class AuthController(DataContext dataContext, IConfiguration configuratio
         if (ModelState.IsValid)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!);
+            var secret = Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new(ClaimTypes.Email, form.Email)
-                }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                //Subject = new ClaimsIdentity(new Claim[]
+                //{
+                //    new(ClaimTypes.Email, form.Email)
+                //}),
+                Expires = DateTime.UtcNow.AddMinutes(15),
                 Issuer = _configuration["Jwt:Issuer"],
                 Audience = _configuration["Jwt:Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
