@@ -9,7 +9,9 @@ public class UseApiKeyAttribute : Attribute, IAsyncActionFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-        var apiKey = config.GetValue<string>("ApiKey");
+        var apiKey = config.GetValue<string>("ApiKey:Secret");
+
+       
 
         if (!context.HttpContext.Request.Query.TryGetValue("key", out var providedKey))
         {
@@ -25,4 +27,5 @@ public class UseApiKeyAttribute : Attribute, IAsyncActionFilter
 
         await next();
     }
+
 }

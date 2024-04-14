@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Dtos;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -14,7 +13,7 @@ public class CategoryService(HttpClient http, IConfiguration configuration)
 
 	public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
 	{
-		var response = await _http.GetAsync(_configuration["ApiUris:Categories"]);
+		var response = await _http.GetAsync(_configuration["ApiUris:categories"]);
 		if (response.IsSuccessStatusCode)
 		{
 			var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await response.Content.ReadAsStringAsync());

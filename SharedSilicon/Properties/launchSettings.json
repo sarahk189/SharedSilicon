@@ -31,7 +31,7 @@
       "launchUrl": "https://localhost:7048",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://localhost:7048;http://localhost:5131"
+        "ASPNETCORE_URLS": "https://localhost:7048"
       },
       "distributionName": ""
     }
@@ -45,4 +45,5 @@
       "sslPort": 44366
     }
   }
+
 }

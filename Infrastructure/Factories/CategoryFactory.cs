@@ -13,7 +13,7 @@ public class CategoryFactory
 
 			return new CategoryDto
 			{
-				//Id = entity.Id,
+				Id = entity.Id,
 				Name = entity.Name,
 			};
 
@@ -29,7 +29,7 @@ public class CategoryFactory
 		{
 
 			foreach (var entity in entities)
-				categories.Add(Create(entity));
+			categories.Add(Create(entity));
 
 		}
 		catch { }

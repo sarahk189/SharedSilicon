@@ -69,6 +69,10 @@
             {
                 <span class="alert alert-danger">Please enter a valid email address.</span>
             }
+            else if (ViewData["Status"]?.ToString() == "Error")
+            {
+                <span class="alert alert-danger">An error occurred. Please try again.</span>
+            }
             else if (ViewData["Status"]?.ToString() == "Unauthorized")
             {
                 <span class="alert alert-danger">Unables to fullfill request due to authorization. Please contact web admin.</span>
