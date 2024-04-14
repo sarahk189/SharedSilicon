@@ -17,8 +17,7 @@ using System.Net.Http.Headers;
 namespace SharedSilicon.Controllers;
 
 
-//[Authorize]
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context) : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context, IConfiguration configuration, HttpClient http) : Controller
 {
 	
 	private readonly UserManager<UserEntity> _userManager = userManager;

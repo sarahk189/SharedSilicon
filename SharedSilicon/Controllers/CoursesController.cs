@@ -23,26 +23,14 @@ public class CoursesController(CategoryService categoryService, CourseService co
 		var categories = await _categoryService.GetCategoriesAsync();
 		var courses = await _courseService.GetCoursesAsync();
 
-		//var viewModel = new CoursesViewModel
-		//{
-		//	Categories = categories,
-		//	Courses = courses
-		//};
+        var viewModel = new CourseIndexViewModel
+        {
+            Categories = categories,
+            Courses = courses
+        };
 
-		//return View(viewModel);
-	}
-    //public async Task <IActionResult> Index()
-    //   {
-    //       using var http = new HttpClient();
-    //       var response = await http.GetAsync("https://localhost:7152/api/courses");       
-    //       var json = await response.Content.ReadAsStringAsync();
-    //       var data = JsonConvert.DeserializeObject<IEnumerable<CourseEntity>>(json);
-
-
-    //       return View(data);
-
-
-    //   }
+        return View(viewModel);
+    }
 
     [Route("Courses/Details/{id}")]
     [HttpGet("Details/{id}")]
