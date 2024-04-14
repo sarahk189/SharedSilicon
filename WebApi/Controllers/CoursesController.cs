@@ -21,6 +21,7 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 	#region CREATE
+	[Authorize]
 	[HttpPost]
     [UseApiKey]
 	[Authorize]
@@ -187,14 +188,12 @@ public class CoursesController(DataContext context) : ControllerBase
 		return NotFound();
 	}
 
-	#endregion region
+    #endregion region
 
-	#region UPDATE
-
-	[HttpPut("{id}")]
-    [UseApiKey]
-	[Authorize]
-    public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
+    #region UPDATE
+    [Authorize]
+    [HttpPut("{id}")]
+	public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
 	{
 
 		if (!ModelState.IsValid)
@@ -241,13 +240,12 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 
-	#endregion
+    #endregion
 
-	#region DELETE
-	[HttpDelete("{id}")]
-    [UseApiKey]
-	[Authorize]
-    public async Task<IActionResult> DeleteOne(int id)
+    #region DELETE
+    [Authorize]
+    [HttpDelete("{id}")]
+	public async Task<IActionResult> DeleteOne(int id)
 	{
 		var course = await context.Courses
 			.Include(c => c.CourseDetails)

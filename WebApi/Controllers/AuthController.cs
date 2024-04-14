@@ -17,33 +17,35 @@ public class AuthController(DataContext dataContext, IConfiguration configuratio
     private readonly DataContext _dataContext = dataContext;
     private readonly IConfiguration _configuration = configuration;
 
-    [UseApiKey]
+    //[UseApiKey]
     [HttpPost]
     [Route("token")]
-    public IActionResult GetToken(SignIn form)
+    public IActionResult GetToken()
     {
-        if (ModelState.IsValid)
+        try
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var secret = Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            if (ModelState.IsValid)
             {
-                //Subject = new ClaimsIdentity(new Claim[]
-                //{
-                //    new(ClaimTypes.Email, form.Email)
-                //}),
-                Expires = DateTime.UtcNow.AddMinutes(15),
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
-            };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Expires = DateTime.UtcNow.AddDays(1),
+                    Issuer = _configuration["Jwt:Issuer"],
+                    Audience = _configuration["Jwt:Audience"],
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
 
-            return Ok(tokenString);
-
+                return Ok(tokenString);
+            }
+        } 
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
         }
         return Unauthorized();
-    }
+        }
 }
