@@ -85,7 +85,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     [HttpPost]
     public async Task<IActionResult> SignIn(SignInViewModel viewModel, string returnUrl)
     {
-        ModelState.Remove("returnUrl"); // Remove returnUrl from the model state
+        ModelState.Remove("returnUrl");
 
         if (string.IsNullOrEmpty(returnUrl))
         {
