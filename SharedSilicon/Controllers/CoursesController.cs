@@ -54,7 +54,6 @@ public class CoursesController(CategoryService categoryService, CourseService co
 	//};
 
 	//return View(viewModel);
-}
 
 
 
