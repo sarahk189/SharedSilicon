@@ -96,17 +96,39 @@
 						<p class="courses-time">
 							<i class="fa-light fa-clock"></i>@course.Hours hours <i class="fa-light fa-thumbs-up"></i> @course.RatingPercentage%  (@course.RatingCount)
 						</p>
+
+						
 					</div>
+
 					
 				</div>
+
+
 			}
 
 
 		</div>
+			@if (Model.Pagination != null && Model.Pagination.TotalPages > 1)
+			{
+				<div class="pagination">
+					@for (int i = 1; i <= Model.Pagination.TotalPages; i++)
+					{
+						if (i == Model.Pagination.CurrentPage)
+						{
+							<span class="number active">@i</span>
+						}
+						else
+						{
+							<a class="number" href="@Url.Action("Index", new { pageNumber = i, pageSize = Model.Pagination.PageSize})">@i</a>
+						}
+					}
+
+				</div>
+			}
 
 		}
 
-		@if (Model.Pagination != null && Model.Pagination.TotalPages > 1)
+	@* 	@if (Model.Pagination != null && Model.Pagination.TotalPages > 1)
 		{
 			<div class="pagination">
 				@for (int i = 1; i <= Model.Pagination.TotalPages; i++)
@@ -122,10 +144,12 @@
 				}
 
 			</div>
-		}
+		} *@
 
 		
 	</div>
+
+	
 
 	<div class="banner">
 		<div class="container">
