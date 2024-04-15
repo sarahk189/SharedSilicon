@@ -17,13 +17,9 @@ namespace WebApi.Controllers;
 public class CoursesController(DataContext context) : ControllerBase
 {
 
-	
-
-
 	#region CREATE
+
 	[HttpPost]
- //   [UseApiKey]
-	//[Authorize]
     public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
 	{
 		if (ModelState.IsValid)
@@ -103,10 +99,12 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region READ
 
 	[HttpGet]
-	//[UseApiKey]
+
 	
 	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
 	{
+		Console.WriteLine($"Category: {category}, SearchQuery: {searchQuery}");
+
 		var query = context.Courses
 			.Include(x => x.FilterCategory)
 			.ThenInclude(x => x.Category)
@@ -114,11 +112,15 @@ public class CoursesController(DataContext context) : ControllerBase
 
 		if (!string.IsNullOrWhiteSpace(category) && category != "all")
 			query = query.Where(x => x.FilterCategory.Any(fc => fc.Category.Name == category));
+		Console.WriteLine($"After category filter: {await query.CountAsync()}");
+
+
 
 		if (!string.IsNullOrEmpty(searchQuery))
 			query = query.Where(x => x.Title.Contains(searchQuery) || 
 			x.Author.FirstName.Contains(searchQuery)||
 			x.Author.LastName.Contains(searchQuery));
+		Console.WriteLine($"After searchQuery filter: {await query.CountAsync()}");
 
 
 
@@ -128,6 +130,8 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 		var courses = await query.ToListAsync();
+		Console.WriteLine($"Returning {courses.Count} courses");
+
 		var courseDtos = courses.Select(CourseFactory.Create).ToList();
 
 		var response = new CourseResult
@@ -144,7 +148,7 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 	[HttpGet("{id}")]
-    //[UseApiKey]
+    
     public async Task<IActionResult> GetOne(int id)
 	{
 		var course = await context.Courses
