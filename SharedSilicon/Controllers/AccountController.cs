@@ -17,8 +17,7 @@ using System.Net.Http.Headers;
 namespace SharedSilicon.Controllers;
 
 
-[Authorize]
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context, HttpClient http, IConfiguration configuration) : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context, IConfiguration configuration, HttpClient http) : Controller
 {
 	
 	private readonly UserManager<UserEntity> _userManager = userManager;
@@ -26,23 +25,22 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	private readonly HttpClient _http = http;
 	private readonly IConfiguration _configuration = configuration;
 
-	#region Details
-	[HttpGet]
-	[Route("/account/details")]
-	public async Task<IActionResult> Details(string id)
-	{
-		if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
+    #region Details
+    [HttpGet]
+    [Route("/account/details")]
+    public async Task<IActionResult> Details()
+    {
+        if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
 		{
-			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-			var response = await _http.GetAsync($"https://localhost:7152/api/Courses/{id}?key={_configuration["ApiKey:Secret"]}");
-			if (response.IsSuccessStatusCode)
-			{
-				var data = await response.Content.ReadAsStringAsync();
-				var course = JsonConvert.DeserializeObject<Course>(data);
-				return View(course);
-			}
-		}
-        return View();
+            var userEntity = await _userManager.GetUserAsync(User);
+            var claims = HttpContext.User.Identities.FirstOrDefault();
+            var viewModel = await PopulateViewModelAsync();
+
+            return View("Details", viewModel);
+        }
+
+
+		return RedirectToAction("SignIn", "Auth");
     }
 
     public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
