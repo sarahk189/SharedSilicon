@@ -2614,12 +2614,6 @@ form span.field-validation-error {
 .courses-page .container .courses-show .course .courses .courses-time i.fa-light.fa-thumbs-up {
   margin-left: 20px;
 }
-.courses-page .container .carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 45px 0 0 0;
-}
 .courses-page .banner {
   padding: 50px 0;
   margin-top: 50px;

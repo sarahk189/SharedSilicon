@@ -1,12 +1,10 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Infrastructure.Factories;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Filters;
+
 
 
 
@@ -101,9 +99,9 @@ public class CoursesController(DataContext context) : ControllerBase
 	[HttpGet]
 
 	
-	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
+	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 10)
 	{
-		Console.WriteLine($"Category: {category}, SearchQuery: {searchQuery}");
+		
 
 		var query = context.Courses
 			.Include(x => x.FilterCategory)
@@ -112,7 +110,7 @@ public class CoursesController(DataContext context) : ControllerBase
 
 		if (!string.IsNullOrWhiteSpace(category) && category != "all")
 			query = query.Where(x => x.FilterCategory.Any(fc => fc.Category.Name == category));
-		Console.WriteLine($"After category filter: {await query.CountAsync()}");
+		
 
 
 
@@ -120,7 +118,7 @@ public class CoursesController(DataContext context) : ControllerBase
 			query = query.Where(x => x.Title.Contains(searchQuery) || 
 			x.Author.FirstName.Contains(searchQuery)||
 			x.Author.LastName.Contains(searchQuery));
-		Console.WriteLine($"After searchQuery filter: {await query.CountAsync()}");
+		
 
 
 
@@ -130,15 +128,21 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 		var courses = await query.ToListAsync();
-		Console.WriteLine($"Returning {courses.Count} courses");
+		
 
 		var courseDtos = courses.Select(CourseFactory.Create).ToList();
 
 		var response = new CourseResult
 		{
 			Succeeded = true,
-			Courses = courseDtos,
+			TotalItems = await query.CountAsync()
+			//TotalPages = await query.CountAsync(),
+			//Courses = courseDtos,
 		};
+
+		
+		response.TotalPages = (int)Math.Ceiling(response.TotalItems / (double)pageSize);
+		response.Courses = CourseFactory.Create(await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync());
 
 		return Ok(response);
 	}

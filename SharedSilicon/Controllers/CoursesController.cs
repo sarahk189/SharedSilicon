@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services;
+﻿using Infrastructure.Dtos;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SharedSilicon.ViewModels;
@@ -15,15 +16,26 @@ public class CoursesController(CategoryService categoryService, CourseService co
     private readonly IConfiguration _configuration = configuration;
     private readonly HttpClient _http = http;
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 6)
     {
-        var categories = await _categoryService.GetCategoriesAsync();
-        var courses = await _courseService.GetCoursesAsync();
+        //var categories = await _categoryService.GetCategoriesAsync();
+        //var courses = await _courseService.GetCoursesAsync(category, searchQuery);
+        var courseResult = await _courseService.GetCoursesAsync(category, searchQuery, pageNumber, pageSize);
+
+
 
         var viewModel = new CourseIndexViewModel
         {
-            Categories = categories,
-            Courses = courses
+            Categories = await _categoryService.GetCategoriesAsync(),
+            Courses = courseResult.Courses,
+            Pagination = new Pagination
+            {
+                PageSize = pageSize,
+                CurrentPage = pageNumber,
+                TotalPages = courseResult.TotalPages,
+                TotalItems = courseResult.TotalItems
+
+            }
         };
 
         return View(viewModel);

@@ -3,17 +3,17 @@ document.addEventListener('DOMContentLoaded', function () {
     select()
     searchQuery()
     updateCoursesByFilter()
-});
+})
 
 
 
 function select() {
     try {
-        let select = document.querySelector('.select');
+        let select = document.querySelector('.select')
         console.log('Select:', select);
-        let dropbtn = select.querySelector('.dropbtn');
+        let dropbtn = select.querySelector('.dropbtn')
         console.log('Dropbtn:', dropbtn);
-        let selectOptions = select.querySelector('.select-options');
+        let selectOptions = select.querySelector('.select-options')
         console.log('Select options:', selectOptions);
 
         dropbtn.addEventListener('click', function () {
@@ -58,7 +58,7 @@ function updateCoursesByFilter() {
     try {
         console.log('Update courses by filter function called');
         const category = document.querySelector('.select .dropbtn').getAttribute('data-value') || 'all'
-        const searchQuery = document.querySelector('.dropdown-search #searchQuery').value;
+        const searchQuery = document.querySelector('.dropdown-search #searchQuery').value
         console.log('Category:', category);
         console.log('Search query:', searchQuery);
 
@@ -70,7 +70,10 @@ function updateCoursesByFilter() {
             .then(data => {
                 const parser = new DOMParser()
                 const dom = parser.parseFromString(data, 'text/html')
-                document.querySelector('.courses-show').innerHTML = dom.querySelector('.courses-show').innerHTML;
+                document.querySelector('.courses-show').innerHTML = dom.querySelector('.courses-show').innerHTML
+
+                const pagination = dom.querySelector('.pagination') ? dom.querySelector('.pagination').innerHTML : ''
+                document.querySelector('pagination').innerHTML = pagination
             })
             .catch(error => console.error('Error:', error));
 
