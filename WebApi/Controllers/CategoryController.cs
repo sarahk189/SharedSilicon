@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Factories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class CategoryController(DataContext context) : ControllerBase
     {
 
