@@ -80,7 +80,7 @@
             }
         }
 
-        .dropdown {
+        .select {
             position: relative;
             display: inline-block;
             margin-right: 25px;
@@ -110,7 +110,7 @@
             }
         }
 
-        .dropdown-content {
+        .select-options {
             list-style: none;
             display: none;
             position: absolute;
@@ -167,29 +167,29 @@
         }
     }
     //Courses cards.
-    .container {
+.container {
 
 
 
-        .courses-show {
+    .courses-show {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+
+        @include sm {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
             gap: 20px;
+        }
 
-            @include sm {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            @include mid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
+        @include mid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
 
 
-
+        .course {
             .courses {
 
                 @include shadow-s;
@@ -278,7 +278,6 @@
                 .author {
                     @include text-s;
                     margin-left: 20px;
-                    
                 }
 
 
@@ -299,11 +298,11 @@
                 }
             }
         }
-
-        .pagination {
-            
-        }
     }
+
+    .pagination {
+    }
+}
     //Work with us.
     .banner {
         padding: 50px 0;
@@ -358,4 +357,4 @@
             }
         }
     }
-}
+

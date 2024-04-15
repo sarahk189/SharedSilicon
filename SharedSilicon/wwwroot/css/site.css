@@ -2819,7 +2819,6 @@ form span.field-validation-error {
 }
 .courses-page .container .select {
   position: relative;
-  min-width: 300px;
   display: inline-block;
   margin-right: 25px;
   background-color: var(--gray-000);
@@ -2852,14 +2851,9 @@ form span.field-validation-error {
   margin-left: 10px;
 }
 .courses-page .container .select-options {
+  list-style: none;
   display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: var(--color-white);
-  border: 1px solid var(--color-gray-400);
-  z-index: 9999;
   background-color: white;
   min-width: 160px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
@@ -2868,13 +2862,14 @@ form span.field-validation-error {
   background-color: var(--gray-000);
   color: var(--gray-900);
 }
-.courses-page .container .select-options .option {
+.courses-page .container .option {
   padding: 10px;
+  cursor: pointer;
 }
-.courses-page .container .select-options .option:hover {
+.courses-page .container .option:hover {
   background-color: var(--color-gray-400);
 }
-.courses-page .container .search-courses {
+.courses-page .search-courses {
   border-radius: 6px;
   text-align: center;
   font-size: 14px;
@@ -2888,7 +2883,7 @@ form span.field-validation-error {
   box-shadow: 0px 4px 9px -1px rgba(86, 89, 115, 0.3), 0px 4.4px 20px -1px rgba(86, 89, 115, 0.5);
   position: relative;
 }
-.courses-page .container .search-courses input {
+.courses-page .search-courses input {
   width: 100%;
   height: 100%;
   padding-right: 40px;
@@ -2896,10 +2891,10 @@ form span.field-validation-error {
   background-color: var(--gray-000);
   color: var(--gray-900);
 }
-.courses-page .container .search-courses input::placeholder {
+.courses-page .search-courses input::placeholder {
   color: #D4D7E5;
 }
-.courses-page .container .search-courses input i {
+.courses-page .search-courses input i {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -2907,26 +2902,27 @@ form span.field-validation-error {
   font-size: 18px;
   font-weight: bold;
 }
-.courses-page .container .courses-show {
+
+.container .courses-show {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 @media (max-width: 390px) {
-  .courses-page .container .courses-show {
+  .container .courses-show {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
   }
 }
 @media (min-width: 376px) and (max-width: 1350px) {
-  .courses-page .container .courses-show {
+  .container .courses-show {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 }
-.courses-page .container .courses-show .course .courses {
+.container .courses-show .course .courses {
   box-shadow: 0px 2px 6.4px -1px rgba(19, 16, 34, 0.03), 0px 4.4px 12px -1px rgba(19, 16, 34, 0.06);
   position: relative;
   border-radius: 8px;
@@ -2935,10 +2931,10 @@ form span.field-validation-error {
   row-gap: 5px;
   text-decoration: none;
 }
-.courses-page .container .courses-show .course .courses:hover {
+.container .courses-show .course .courses:hover {
   text-decoration: none;
 }
-.courses-page .container .courses-show .course .courses .bestbadge {
+.container .courses-show .course .courses .bestbadge {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -2946,7 +2942,7 @@ form span.field-validation-error {
   height: 22px;
   background-size: cover;
 }
-.courses-page .container .courses-show .course .courses .bookmark {
+.container .courses-show .course .courses .bookmark {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -2954,18 +2950,18 @@ form span.field-validation-error {
   height: 50px;
   background-size: cover;
 }
-.courses-page .container .courses-show .course .courses img {
+.container .courses-show .course .courses img {
   border-radius: 8px 8px 0 0;
   margin-bottom: 10px;
   max-width: 100%;
   height: auto;
 }
-.courses-page .container .courses-show .course .courses .price {
+.container .courses-show .course .courses .price {
   font-weight: bold;
   margin-top: -10px;
   margin-bottom: 0;
 }
-.courses-page .container .courses-show .course .courses h5 {
+.container .courses-show .course .courses h5 {
   line-height: 160%;
   font-weight: 400;
   color: var(--gray-700);
@@ -2976,33 +2972,33 @@ form span.field-validation-error {
   margin: 0;
   padding: 0 20px 0 20px;
 }
-.courses-page .container .courses-show .course .courses h5:hover {
+.container .courses-show .course .courses h5:hover {
   text-decoration: underline;
 }
-.courses-page .container .courses-show .course .courses hr {
+.container .courses-show .course .courses hr {
   border-color: #E2E5F1;
   margin: 5px 20px 0 10px;
 }
-.courses-page .container .courses-show .course .courses .price-container {
+.container .courses-show .course .courses .price-container {
   display: flex;
   align-items: center;
   margin-left: 20px;
   margin-top: 0;
 }
-.courses-page .container .courses-show .course .courses .price-red {
+.container .courses-show .course .courses .price-red {
   color: #EF4444;
   font-weight: bold;
   margin-right: 20px;
   margin-top: -10px;
   margin-bottom: 0;
 }
-.courses-page .container .courses-show .course .courses .old-price {
+.container .courses-show .course .courses .old-price {
   color: #9397AD;
   font-weight: normal;
   margin-top: -10px;
   margin-bottom: 0;
 }
-.courses-page .container .courses-show .course .courses .author {
+.container .courses-show .course .courses .author {
   line-height: 160%;
   font-weight: 400;
   color: var(--gray-700);
@@ -3010,7 +3006,7 @@ form span.field-validation-error {
   font-size: 14px !important;
   margin-left: 20px;
 }
-.courses-page .container .courses-show .course .courses .courses-time {
+.container .courses-show .course .courses .courses-time {
   line-height: 160%;
   font-weight: 400;
   color: var(--gray-700);
@@ -3019,17 +3015,17 @@ form span.field-validation-error {
   color: #9397AD;
   margin: 15px 0 20px 20px;
 }
-.courses-page .container .courses-show .course .courses .courses-time i {
+.container .courses-show .course .courses .courses-time i {
   margin-right: 5px;
 }
-.courses-page .container .courses-show .course .courses .courses-time i.fa-light.fa-thumbs-up {
+.container .courses-show .course .courses .courses-time i.fa-light.fa-thumbs-up {
   margin-left: 20px;
 }
-.courses-page .banner {
+.banner {
   padding: 50px 0;
   margin-top: 50px;
 }
-.courses-page .banner .container {
+.banner .container {
   flex-direction: row;
   display: flex;
   justify-content: space-between;
@@ -3039,26 +3035,26 @@ form span.field-validation-error {
   align-items: center;
 }
 @media (max-width: 390px) {
-  .courses-page .banner .container {
+  .banner .container {
     flex-direction: column;
     align-items: center;
   }
 }
-.courses-page .banner .container .banner-text {
+.banner .container .banner-text {
   text-align: left;
   flex: 1;
   padding: 80px;
 }
-.courses-page .banner .container .banner-image {
+.banner .container .banner-image {
   order: 2;
   max-width: 100%;
   height: auto;
   padding-right: 180px;
 }
-.courses-page .banner .container h1 {
+.banner .container h1 {
   margin-bottom: 20px;
 }
-.courses-page .banner .container p {
+.banner .container p {
   line-height: 160%;
   font-weight: 400;
   color: var(--gray-700);
@@ -3067,9 +3063,9 @@ form span.field-validation-error {
   color: var(--gray-700);
   margin-bottom: 20px;
 }
-.courses-page .banner .container span {
+.banner .container span {
   color: #6366F1;
 }
-.courses-page .banner .container button {
+.banner .container button {
   box-shadow: 0px 8px 18px -8px rgba(99, 102, 241, 0.9);
 }
