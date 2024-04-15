@@ -21,6 +21,7 @@ public class CategoryService(HttpClient http, IConfiguration configuration)
             return categories ??= null!;
         }
 
-        return null!;
-    }
+		Console.Error.WriteLine($"Failed to fetch categories, status code: {response.StatusCode}");
+		return null!;
+	}
 }
