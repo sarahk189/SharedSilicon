@@ -7,7 +7,7 @@ public class CourseEntity
     [Key]
     public int Id { get; set; }
     public int? CourseDetailsId { get; set; }
-    public virtual CourseDetailsEntity CourseDetails { get; set; }
+    public virtual CourseDetailsEntity CourseDetails { get; set; } = null!;
     public int AuthorId { get; set; } 
 	public string Title { get; set; } = null!;
     public string? ImageUrl { get; set; }
@@ -19,7 +19,7 @@ public class CourseEntity
     public decimal? RedPrice { get; set; }
     public decimal? RatingPercentage { get; set; }
     public decimal? RatingCount { get; set; }
-	public virtual CourseAuthorEntity Author { get; set; }
+    public virtual CourseAuthorEntity Author { get; set; } = null!;
 
     public virtual ICollection<FilterCategoryEntity> FilterCategory { get; set; } = new List<FilterCategoryEntity>();
     public virtual ICollection<SavedCourseEntity> SavedCourses { get; set; } = new List<SavedCourseEntity>();

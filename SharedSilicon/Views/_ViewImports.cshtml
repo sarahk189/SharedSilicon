@@ -3,5 +3,9 @@
 @using SharedSilicon.ViewModels
 @using Microsoft.AspNetCore.Identity
 @using Infrastructure.Entities
+@using SharedSilicon.Models
+
+@inject SignInManager<UserEntity> SignInManager
+@inject UserManager<UserEntity> UserManager
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

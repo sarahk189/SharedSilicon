@@ -1,10 +1,24 @@
 ﻿
+//}
 document.addEventListener('DOMContentLoaded', function () {
     let sw = document.querySelector('#switch-mode')
 
+//const checkScreenSize = () => {
+//    if (window.innerwidth >= 1200) {
+//        document.getElementById('menu').classList.remove('hide');
+//        document.getElementById('account-buttons').classList.remove('hide');
+//    } else {
+//        if (!document.getElementById('menu').classList.contains('hide')) {
+//            document.getElementById('menu').classList.add('hide');
+//        }
+//        if (!document.getElementById('account-buttons').classList.contains('hide')){
+//            document.getElementById('account-buttons').classList.add('hide');
+//        }
+//    }
     sw.addEventListener('change', function () {
         let theme = this.checked ? "dark" : "light"
 
+//};
         fetch(`/sitesettings/changetheme?mode=${theme}`) 
         .then(res => {
             if(res.ok)
@@ -13,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('something')
         })
 
+       
     })
 })
 
@@ -64,5 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
 //});
 
 
+//window.addEventListener('resize', checkScreenSize);
+//checkScreenSize();
 //window.addEventListener('resize', checkScreenSize);)
 //checkScreenSize();

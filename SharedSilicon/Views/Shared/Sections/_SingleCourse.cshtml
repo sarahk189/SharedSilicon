@@ -41,7 +41,7 @@
                 <img class="smol-albert" src="@Url.Content("~/" + Model.Author.AuthorImageUrl)" />
                     <div class="albert-text">
                         <p class="created">Created by</p>
-                    <p>@Model.Author.FirstName @Model.Author.LastName</p>
+                    <p>@Model.Author?.FirstName @Model.Author?.LastName</p>
                     </div>
                 </div>
             </div>
@@ -139,8 +139,8 @@
 
                     <div class="halfscreen">
 
-                        <p class="learn">@Model.Author.Headline</p>
-                        <h2>@Model.Author.FirstName @Model.Author.LastName</h2>
+                        <p class="learn">@Model.Author?.Headline</p>
+                        <h2>@Model.Author?.FirstName @Model.Author?.LastName</h2>
                         <p>
                             Dolor ipsum amet cursus quisque porta adipiscing. Lorem convallis malesuada sed maecenas. Ac dui at vitae mauris cursus in nullam porta sem. Quis pellentesque elementum ac bibendum. Nunc aliquam in tortor facilisis. Vulputate eget risus, metus phasellus. Pellentesque faucibus amet, eleifend diam quam condimentum convallis ultricies placerat. Duis habitasse placerat amet, odio pellentesque rhoncus, feugiat at. Eget pellentesque tristique felis magna fringilla.
                         </p>

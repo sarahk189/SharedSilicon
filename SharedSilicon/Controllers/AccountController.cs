@@ -9,37 +9,41 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.EntityFrameworkCore;
 using static SharedSilicon.Models.SavedCoursesModel;
 using Infrastructure.Contexts;
+using Newtonsoft.Json;
+using static SharedSilicon.Models.CoursesModel;
+using static System.Net.WebRequestMethods;
+using System.Net.Http.Headers;
 
 namespace SharedSilicon.Controllers;
 
 
-[Authorize]
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context) : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context, IConfiguration configuration, HttpClient http) : Controller
 {
 	
 	private readonly UserManager<UserEntity> _userManager = userManager;
 	private readonly SignInManager<UserEntity> _signInManager = signInManager;
+	private readonly HttpClient _http = http;
+	private readonly IConfiguration _configuration = configuration;
 
-	#region Details
-	//If signed in, directs to the account details page
-	[HttpGet]
-	[Route("/account/details")]
-	public async Task<IActionResult> Details()
-	{
-		if (!_signInManager.IsSignedIn(User))
+    #region Details
+    [HttpGet]
+    [Route("/account/details")]
+    public async Task<IActionResult> Details()
+    {
+        if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
 		{
-			return RedirectToAction("SignIn", "Auth");
-		}
-		var userEntity = await _userManager.GetUserAsync(User);
-		var claims = HttpContext.User.Identities.FirstOrDefault();
-		var viewModel = await PopulateViewModelAsync();
-		//viewModel.BasicInfo = _accountService.GetBasicInfo();
-		//viewModel.AddressInfo = _accountService.GetAddressInfo();
+            var userEntity = await _userManager.GetUserAsync(User);
+            var claims = HttpContext.User.Identities.FirstOrDefault();
+            var viewModel = await PopulateViewModelAsync();
 
-		return View(viewModel);
-	}
+            return View("Details", viewModel);
+        }
 
-	public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
+
+		return RedirectToAction("SignIn", "Auth");
+    }
+
+    public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
 	{
 		var user = await _userManager.GetUserAsync(User);
 
@@ -125,7 +129,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 		{
 			var user = await _userManager.GetUserAsync(User);
 
-			if (user.Address != null)
+			if (user!.Address != null)
 			{
 				user.Address.AddressLine1 = viewModel.AddressInfo.Addressline_1;
 				user.Address.AddressLine2 = viewModel.AddressInfo.Addressline_2!;
@@ -182,9 +186,9 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 		{
 			Password = new ChangePasswordModel
 			{
-				FirstName = userEntity.FirstName,
+				FirstName = userEntity!.FirstName,
 				LastName = userEntity.LastName,
-				Email = userEntity.Email,
+				Email = userEntity!.Email!,
 				ProfileImage = userEntity.ProfileImage
 			}
 		};
@@ -205,7 +209,6 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 			return NotFound();
 		}
 
-		// Check if the current password or new password is null
 		if (string.IsNullOrEmpty(viewModel.Password.CurrentPassword) || string.IsNullOrEmpty(viewModel.Password.NewPassword))
 		{
 			ModelState.AddModelError(string.Empty, "Password cannot be null or empty");
