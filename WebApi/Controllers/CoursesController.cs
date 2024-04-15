@@ -21,7 +21,6 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 	#region CREATE
-	[Authorize]
 	[HttpPost]
     [UseApiKey]
 	[Authorize]
