@@ -99,8 +99,48 @@
 			}
 			
 		</div>
-		<div class="carousel"> <img src="~/images/coursesImages/pagination.svg" alt="carousel-img">  </div>
+			@if (Model.Pagination != null && Model.Pagination.TotalPages > 1)
+			{
+				<div class="pagination">
+					@for (int i = 1; i <= Model.Pagination.TotalPages; i++)
+					{
+						if (i == Model.Pagination.CurrentPage)
+						{
+							<span class="number active">@i</span>
+						}
+						else
+						{
+							<a class="number" href="@Url.Action("Index", new { pageNumber = i, pageSize = Model.Pagination.PageSize})">@i</a>
+						}
+					}
+
+				</div>
+			}
+
+		}
+
+	@* 	@if (Model.Pagination != null && Model.Pagination.TotalPages > 1)
+		{
+			<div class="pagination">
+				@for (int i = 1; i <= Model.Pagination.TotalPages; i++)
+				{
+					if (i == Model.Pagination.CurrentPage)
+						{
+							<span class="number active">@i</span>
+						}
+						else
+						{
+							<a class="number" href="@Url.Action("Index", new { pageNumber = i, pageSize = Model.Pagination.PageSize})">@i</a>
+						}
+				}
+
+			</div>
+		} *@
+
+		
 	</div>
+
+	
 
 	<div class="banner">
 		<div class="container">
@@ -117,6 +157,6 @@
 
 	</div>
 
-
+	<script src="~/js/categories.js" asp-append-version="true"></script>
 </section>
 

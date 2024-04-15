@@ -1,12 +1,10 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Infrastructure.Factories;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Filters;
+
 
 
 
@@ -17,14 +15,9 @@ namespace WebApi.Controllers;
 public class CoursesController(DataContext context) : ControllerBase
 {
 
-	
-
-
 	#region CREATE
-	[Authorize]
+
 	[HttpPost]
-    [UseApiKey]
-	[Authorize]
     public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
 	{
 		if (ModelState.IsValid)
@@ -104,10 +97,12 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region READ
 
 	[HttpGet]
-	[UseApiKey]
+
 	
-	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
+	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 3)
 	{
+		
+
 		var query = context.Courses
 			.Include(x => x.FilterCategory)
 			.ThenInclude(x => x.Category)
@@ -115,11 +110,15 @@ public class CoursesController(DataContext context) : ControllerBase
 
 		if (!string.IsNullOrWhiteSpace(category) && category != "all")
 			query = query.Where(x => x.FilterCategory.Any(fc => fc.Category.Name == category));
+		
+
+
 
 		if (!string.IsNullOrEmpty(searchQuery))
 			query = query.Where(x => x.Title.Contains(searchQuery) || 
 			x.Author.FirstName.Contains(searchQuery)||
 			x.Author.LastName.Contains(searchQuery));
+		
 
 
 
@@ -129,13 +128,21 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 		var courses = await query.ToListAsync();
+		
+
 		var courseDtos = courses.Select(CourseFactory.Create).ToList();
 
 		var response = new CourseResult
 		{
 			Succeeded = true,
-			Courses = courseDtos,
+			TotalItems = await query.CountAsync()
+			//TotalPages = await query.CountAsync(),
+			//Courses = courseDtos,
 		};
+
+		
+		response.TotalPages = (int)Math.Ceiling(response.TotalItems / (double)pageSize);
+		response.Courses = CourseFactory.Create(await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync());
 
 		return Ok(response);
 	}
@@ -145,7 +152,7 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 	[HttpGet("{id}")]
-    [UseApiKey]
+    
     public async Task<IActionResult> GetOne(int id)
 	{
 		var course = await context.Courses
@@ -191,7 +198,7 @@ public class CoursesController(DataContext context) : ControllerBase
     #endregion region
 
     #region UPDATE
-    [Authorize]
+    //[Authorize]
     [HttpPut("{id}")]
 	public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
 	{
@@ -243,7 +250,7 @@ public class CoursesController(DataContext context) : ControllerBase
     #endregion
 
     #region DELETE
-    [Authorize]
+    //[Authorize]
     [HttpDelete("{id}")]
 	public async Task<IActionResult> DeleteOne(int id)
 	{

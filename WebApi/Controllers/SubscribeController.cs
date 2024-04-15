@@ -16,7 +16,7 @@ public class SubscribeController(DataContext context) : ControllerBase
     #region CREATE
 
     [HttpPost]
-    [UseApiKey]
+    //[UseApiKey]
     public async Task<IActionResult> Create(SubscriberDto input)
     {
         if (ModelState.IsValid)
@@ -114,7 +114,7 @@ public class SubscribeController(DataContext context) : ControllerBase
     #endregion
 
     #region DELETE
-    [UseApiKey]
+    //[UseApiKey]
     [HttpDelete("{id}")]
     public async Task <IActionResult> DeleteOne(int id)
     {

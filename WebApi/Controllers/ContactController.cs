@@ -20,7 +20,7 @@ public class ContactController(DataContext context) : ControllerBase
 	private readonly DataContext _context = context;
 
 	[HttpPost("send")]
-	[UseApiKey]
+	//[UseApiKey]
 	public async Task<IActionResult> Send([FromBody] ContactDto input)
 	{
 

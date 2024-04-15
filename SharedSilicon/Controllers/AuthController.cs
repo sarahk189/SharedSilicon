@@ -86,6 +86,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     [HttpPost]
     public async Task<IActionResult> SignIn(SignInViewModel viewModel)
     {
+        ModelState.Remove("returnUrl");
 
         if (ModelState.IsValid)
         {
@@ -119,8 +120,8 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         return View(viewModel);
     }
 
-
-
+       
+  
 
 
     [Route("/signout")]
