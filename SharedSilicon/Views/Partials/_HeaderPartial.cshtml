@@ -55,7 +55,7 @@
             <i class="fa-regular fa-bars"></i>
         </button>
 
-        <div id="mobile-menu" class="mobile-menu hide">
+        <div id="mobile-menu" class="mobile-menu">
             <nav>
                 <a class="menu-link" asp-controller="Home" asp-action="Index" asp-fragment="overview">Overview</a>
                 <a class="menu-link" asp-controller="Home" asp-action="Index" asp-fragment="features">Features</a>
@@ -65,7 +65,7 @@
                     <a class="menu-link" asp-controller="Courses" asp-action="Index" asp-fragment="courses">Courses</a>
                 }
             </nav>
-            <div id="mobile-account-buttons" class="account-buttons hide">
+            <div id="mobile-account-buttons" class="account-buttons">
                 @if (_signInManager.IsSignedIn(User))
                 {
                     <a class="btn-gray" asp-controller="Account" asp-action="Details"><span>My Account</span></a>
@@ -82,5 +82,4 @@
 </header>
 
 @await Html.PartialAsync("_TogglePartial")
-
- ?                  
+                 

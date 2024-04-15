@@ -74,7 +74,9 @@
 						}
 					</div>
 					<h5>@course.Title</h5>
-					<p class="author">@course.Author</p>
+					<p class="author">
+						By @course.Author.FirstName @course.Author.LastName					
+					</p>
 						<div class="price-container">
 								@if (course.RedPrice.HasValue)
 								{

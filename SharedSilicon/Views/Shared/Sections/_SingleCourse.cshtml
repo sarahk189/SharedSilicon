@@ -5,12 +5,16 @@
 }
 
 <section class="single-course">
-    <div class="top-content" style="background-image: url('@Model.ImageUrl');">
-@*         <img class="laptop" src="@Model.ImageUrl" /> *@
+    <div class="top-content" style="background-image: url('@Url.Content("~/" + Model.ImageUrl)');">
+
             <div class="container">
-                <p class="seeding">
-                <a><i class="fa-regular fa-house"></i> Home <i class="fa-regular fa-chevrons-right arrows"></i> Courses <i class="fa-regular fa-chevrons-right arrows"></i>@Model.Title</a>
-                </p>
+                
+                <div class="seeding navigation">
+                    <a class="menu-links" asp-controller="Home" asp-action="Index"> <i class="fa-regular fa-house"></i>  Home   <i class="fa-sharp fa-solid fa-angles-right"></i></a>
+                <a class="menu-links" asp-controller="Courses" asp-action="Index">  Courses   <i class="fa-sharp fa-solid fa-angles-right"></i></a>
+                    <a href="#">@Model.Title</a>              
+                </div>
+
                 <div class="small-btns">
                     <p class="green-btn">Best Seller</p>
                     <p class="white-btn">Digital</p>
@@ -25,16 +29,16 @@
                         <i class="fa-solid fa-star star"></i>
                         <i class="fa-regular fa-star blank-star"></i>
                     </div>
-                    <p>("@Model.CourseDetails.NumberOfReviews"K reviews)</p>
+                    <p>(@Model.CourseDetails.NumberOfReviews K reviews)</p>
                     <span></span>
                     <i class="fa-regular fa-thumbs-up little-icon"></i>
-                    <p>"@Model.RatingCount"K likes</p>
+                    <p>@Model.RatingCount K likes</p>
                     <span></span>
                     <i class="fa-regular fa-clock little-icon"></i>
-                    <p>"@Model.Hours" hours</p>
+                    <p>@Model.Hours hours</p>
                 </div>
                 <div class="albert">
-                    <img class="smol-img-albert" src="@Model.Author?.AuthorImageUrl" />
+                <img class="smol-albert" src="@Url.Content("~/" + Model.Author.AuthorImageUrl)" />
                     <div class="albert-text">
                         <p class="created">Created by</p>
                     <p>@Model.Author?.FirstName @Model.Author?.LastName</p>
@@ -128,8 +132,11 @@
                 </div>
             </div>
                 <div class="big-albert">
-                    <img class="albert-big" src="@Model.Author?.AuthorImageUrl" />
-                    <img class="blu-background" src="images/pattern-single-course.png" />
+                <img class="albert-big" src="@Url.Content("~/" + Model.Author.AuthorImageUrl)" />
+
+
+                <img class="blu-background" src="~/images/pattern-single-course.png" />
+
                     <div class="halfscreen">
 
                         <p class="learn">@Model.Author?.Headline</p>

@@ -1,6 +1,5 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Factories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,9 +9,6 @@ namespace WebApi.Controllers
     [ApiController]
     public class CategoryController(DataContext context) : ControllerBase
     {
-
-        
-
 
         [HttpGet]
         public async Task<IActionResult> GetCategories()

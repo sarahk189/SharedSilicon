@@ -13,6 +13,7 @@ public class CourseDto
 	public decimal? RedPrice { get; set; }
 	public decimal? RatingPercentage { get; set; }
 	public decimal? RatingCount { get; set; }
+	public string? Category { get; set; }
 	public CourseDetailsDto CourseDetails { get; set; } = null!;
 	public CourseAuthorDto Author { get; set; } = null!;
 }

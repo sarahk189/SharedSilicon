@@ -5,6 +5,12 @@ using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Factories;
 using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 
 namespace SharedSilicon.Controllers;
@@ -24,7 +30,6 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 		if (_signInManager.IsSignedIn(User))
 			return RedirectToAction("/details", "Account");
 
-		//return View();
         var viewModel = new SignUpViewModel();
         return View(viewModel);
     }
@@ -59,13 +64,9 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
             }
             
         }
-        //if (!ModelState.IsValid) 
-        //    return View(viewModel);
 
         return RedirectToAction("SignIn", "Auth");
     }
-
-
 
 
     [Route("/signin")]
@@ -76,7 +77,6 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         if (_signInManager.IsSignedIn(User))
             return RedirectToAction("Details", "Account");
 
-        //return View();
         var viewModel = new SignInViewModel();
         return View(viewModel);
     }
@@ -114,26 +114,19 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
                 
         }
 
-
-        ViewData["ErrorMessage"] = "Incorrect email or password";
-            return View(viewModel);
-        
-
-        //var result = _authService.SignIn(viewModel.Form);
-        //if (result)
-        //    return RedirectToAction("Account", "Index");
-
-
-       
+        // If we got this far, something failed, redisplay form
+        ViewData["StatusMessage"] = "Incorrect e-mail and password";
+        return View(viewModel);
+    }
 
        
     }
 
 
-    [Route("/signout")]
-    [HttpGet]
-    public new async Task<IActionResult> SignOut()
-    {
+	[Route("/signout")]
+	[HttpGet]
+	public new async Task <IActionResult> SignOut()
+	{
 
 		await _signInManager.SignOutAsync();
 		return RedirectToAction("Signin", "Auth");

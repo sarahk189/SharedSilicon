@@ -31,6 +31,7 @@ public class HomeController(HttpClient http) : Controller
             try
             {
                 var content = new StringContent(JsonConvert.SerializeObject(viewModel.Form), Encoding.UTF8, "application/json");
+                _http.DefaultRequestHeaders.Add("ApiKey", "Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh");
                 var response = await _http.PostAsync("https://localhost:7152/api/Subscribe?key=Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh", content);
 
                 if (response.IsSuccessStatusCode)
@@ -43,7 +44,11 @@ public class HomeController(HttpClient http) : Controller
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    ViewData["Status"] = "Unauhorized";
+                    ViewData["Status"] = "Unauthorized";
+                }
+                else
+                {
+                    ViewData["Status"] = "Error";
                 }
             }
             catch
@@ -58,9 +63,45 @@ public class HomeController(HttpClient http) : Controller
         return View("Index", viewModel);
     }
 
+    [HttpPost]
+    [Route("/unsubscribe")]
+    public async Task<IActionResult> Unsubscribe(int id)
+    {
+        try
+        {
+            _http.DefaultRequestHeaders.Add("ApiKey", "Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh");
+            var response = await _http.DeleteAsync($"https://localhost:7152/api/Subscribe/{id}?key=Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh");
+
+            if (response.IsSuccessStatusCode)
+            {
+                ViewData["Status"] = "Success";
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                ViewData["Status"] = "NotFound";
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                ViewData["Status"] = "Unauthorized";
+            }
+            else
+            {
+                ViewData["Status"] = "Error";
+            }
+        }
+        catch
+        {
+            ViewData["Status"] = "ConnectionFailed";
+        }
+
+        return View("Index");
+    }
+}
+
+
     //public IActionResult Error404()
     //{
     //    return View("Error404/Index");
     //}
 
-}
+
