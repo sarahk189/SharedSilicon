@@ -22,8 +22,8 @@ public class CoursesController(DataContext context) : ControllerBase
 
 	#region CREATE
 	[HttpPost]
-    [UseApiKey]
-	[Authorize]
+ //   [UseApiKey]
+	//[Authorize]
     public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
 	{
 		if (ModelState.IsValid)
@@ -103,7 +103,7 @@ public class CoursesController(DataContext context) : ControllerBase
 	#region READ
 
 	[HttpGet]
-	[UseApiKey]
+	//[UseApiKey]
 	
 	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
 	{
@@ -144,7 +144,7 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 	[HttpGet("{id}")]
-    [UseApiKey]
+    //[UseApiKey]
     public async Task<IActionResult> GetOne(int id)
 	{
 		var course = await context.Courses
@@ -190,7 +190,7 @@ public class CoursesController(DataContext context) : ControllerBase
     #endregion region
 
     #region UPDATE
-    [Authorize]
+    //[Authorize]
     [HttpPut("{id}")]
 	public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
 	{
@@ -242,7 +242,7 @@ public class CoursesController(DataContext context) : ControllerBase
     #endregion
 
     #region DELETE
-    [Authorize]
+    //[Authorize]
     [HttpDelete("{id}")]
 	public async Task<IActionResult> DeleteOne(int id)
 	{
