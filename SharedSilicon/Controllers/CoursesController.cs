@@ -16,7 +16,7 @@ public class CoursesController(CategoryService categoryService, CourseService co
     private readonly IConfiguration _configuration = configuration;
     private readonly HttpClient _http = http;
 
-    public async Task<IActionResult> Index(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 6)
+    public async Task<IActionResult> Index(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 3)
     {
         //var categories = await _categoryService.GetCategoriesAsync();
         //var courses = await _courseService.GetCoursesAsync(category, searchQuery);

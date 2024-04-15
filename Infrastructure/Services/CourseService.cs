@@ -12,10 +12,10 @@ public class CourseService(HttpClient http, IConfiguration configuration)
 	private readonly IConfiguration _configuration = configuration;
 
 
-    public async Task<CourseResult> GetCoursesAsync(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 6)
+    public async Task<CourseResult> GetCoursesAsync(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 3)
     {
         var apiKey = _configuration["ApiKey:Secret"];
-        var response = await _http.GetAsync($"{_configuration["ApiUris:Courses"]}?category={Uri.UnescapeDataString(category)}&searchQuery={Uri.UnescapeDataString(searchQuery)}&pageNumber={pageNumber}&pageSize{pageSize}&key={apiKey}");
+        var response = await _http.GetAsync($"{_configuration["ApiUris:Courses"]}?category={Uri.UnescapeDataString(category)}&searchQuery={Uri.UnescapeDataString(searchQuery)}&pageNumber={pageNumber}&pageSize={pageSize}&key={apiKey}");
         if (response.IsSuccessStatusCode)
         {
             var result = JsonConvert.DeserializeObject<CourseResult>(await response.Content.ReadAsStringAsync());

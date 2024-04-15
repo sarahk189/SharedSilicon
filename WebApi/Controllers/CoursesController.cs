@@ -99,7 +99,7 @@ public class CoursesController(DataContext context) : ControllerBase
 	[HttpGet]
 
 	
-	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 6)
+	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 3)
 	{
 		
 

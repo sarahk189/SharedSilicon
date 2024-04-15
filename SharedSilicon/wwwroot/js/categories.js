@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOMContentLoaded event fired');
+    
     select()
     searchQuery()
     updateCoursesByFilter()
+    paginationClick(); // Add this line
+
+   
 })
 
 
@@ -10,11 +13,11 @@ document.addEventListener('DOMContentLoaded', function () {
 function select() {
     try {
         let select = document.querySelector('.select')
-        console.log('Select:', select);
+       
         let dropbtn = select.querySelector('.dropbtn')
-        console.log('Dropbtn:', dropbtn);
+       
         let selectOptions = select.querySelector('.select-options')
-        console.log('Select options:', selectOptions);
+        
 
         dropbtn.addEventListener('click', function () {
             selectOptions.style.display = (selectOptions.style.display === 'block') ? 'none' : 'block'
@@ -40,7 +43,7 @@ function searchQuery() {
 
     try {
         document.querySelector('#searchQuery').addEventListener('keyup', function () {
-            console.log('Search query keyup event fired');
+          
             updateCoursesByFilter()
 
 
@@ -52,18 +55,30 @@ function searchQuery() {
 
 }
 
-
-
-function updateCoursesByFilter() {
+function paginationClick() {
     try {
-        console.log('Update courses by filter function called');
+        document.querySelector('.pagination').addEventListener('click', function (event) {
+            if (event.target.classList.contains('number')) {
+                event.preventDefault();
+                const url = event.target.getAttribute('href');
+                updateCoursesByFilter(url);
+            }
+        });
+    } catch (error) {
+        console.error('Error in paginationClick:', error);
+    }
+}
+
+function updateCoursesByFilter(url) {
+    try { 
+    if (!url) {
+
         const category = document.querySelector('.select .dropbtn').getAttribute('data-value') || 'all'
         const searchQuery = document.querySelector('.dropdown-search #searchQuery').value
-        console.log('Category:', category);
-        console.log('Search query:', searchQuery);
 
-        const url = `/courses/index?category=${encodeURIComponent(category)}&searchQuery=${encodeURIComponent(searchQuery)}`
-        console.log('URL:', url);
+
+        url = `/courses/index?category=${encodeURIComponent(category)}&searchQuery=${encodeURIComponent(searchQuery)}`
+    }
 
         fetch(url)
             .then(res => res.text())
@@ -73,7 +88,7 @@ function updateCoursesByFilter() {
                 document.querySelector('.courses-show').innerHTML = dom.querySelector('.courses-show').innerHTML
 
                 const pagination = dom.querySelector('.pagination') ? dom.querySelector('.pagination').innerHTML : ''
-                document.querySelector('pagination').innerHTML = pagination
+                document.querySelector('.pagination').innerHTML = pagination
             })
             .catch(error => console.error('Error:', error));
 
