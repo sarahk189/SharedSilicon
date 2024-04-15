@@ -9,6 +9,7 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class CategoryController(DataContext context) : ControllerBase
     {
 
