@@ -27,8 +27,8 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     public IActionResult SignUp()
     {
 
-		if (_signInManager.IsSignedIn(User))
-			return RedirectToAction("/details", "Account");
+        if (_signInManager.IsSignedIn(User))
+            return RedirectToAction("/details", "Account");
 
         var viewModel = new SignUpViewModel();
         return View(viewModel);
@@ -49,20 +49,20 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
             var exists = await _userManager.Users.AnyAsync(x => x.Email == viewModel.Form.Email);
             if (exists)
             {
-				
+
                 ViewData["ErrorMessage"] = "User with the same email address already exists";
-				return View(viewModel);
-			}
+                return View(viewModel);
+            }
 
             var userEntity = UserFactory.CreateUser(viewModel.Form.FirstName, viewModel.Form.LastName, viewModel.Form.Email);
 
 
             var result = await _userManager.CreateAsync(userEntity, viewModel.Form.Password);
             if (result.Succeeded)
-            { 
-                return RedirectToAction("SignIn", "Auth"); 
+            {
+                return RedirectToAction("SignIn", "Auth");
             }
-            
+
         }
 
         return RedirectToAction("SignIn", "Auth");
@@ -86,7 +86,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     [HttpPost]
     public async Task<IActionResult> SignIn(SignInViewModel viewModel)
     {
-       
+
         if (ModelState.IsValid)
         {
             var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
@@ -111,7 +111,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 
                 return RedirectToAction("Details", "Account");
             }
-                
+
         }
 
         // If we got this far, something failed, redisplay form
@@ -119,19 +119,19 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         return View(viewModel);
     }
 
-       
+
+
+
+
+    [Route("/signout")]
+    [HttpGet]
+    public new async Task<IActionResult> SignOut()
+    {
+
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Signin", "Auth");
+
     }
-
-
-	[Route("/signout")]
-	[HttpGet]
-	public new async Task <IActionResult> SignOut()
-	{
-
-		await _signInManager.SignOutAsync();
-		return RedirectToAction("Signin", "Auth");
-		
-	}
 
 
 
@@ -161,7 +161,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     [HttpGet]
     public async Task<IActionResult> FacebookCallback()
     {
-        var info = await _signInManager.GetExternalLoginInfoAsync();    
+        var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info != null)
         {
             var userEntity = new UserEntity
@@ -189,15 +189,15 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
                 {
                     user.FirstName = userEntity.FirstName;
                     user.LastName = userEntity.LastName;
-                    user.Email = userEntity.Email;                 
+                    user.Email = userEntity.Email;
 
                     await _userManager.UpdateAsync(user);
-                } 
+                }
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
                 if (HttpContext.User != null)
                     return RedirectToAction("Details", "Account");
-            }                     
+            }
         }
         ModelState.AddModelError("InvalidFacebookAuthentication", "danger|Failed to authenticate with Facebook");
         ViewData["StatusMessage"] = "danger|Failed to authenticate with Facebook";
@@ -208,3 +208,5 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     #endregion
 
 }
+
+
