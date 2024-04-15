@@ -11,15 +11,16 @@ public class CategoryService(HttpClient http, IConfiguration configuration)
 	private readonly IConfiguration _configuration = configuration;
 
 
-	public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
-	{
-		var response = await _http.GetAsync(_configuration["ApiUris:categories"]);
-		if (response.IsSuccessStatusCode)
-		{
-			var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await response.Content.ReadAsStringAsync());
-			return categories ??= null!;
-		}
+    public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
+    {
+        var apiKey = _configuration["ApiKey:Secret"];
+        var response = await _http.GetAsync($"{_configuration["ApiUris:categories"]}?key={apiKey}");
+        if (response.IsSuccessStatusCode)
+        {
+            var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await response.Content.ReadAsStringAsync());
+            return categories ??= null!;
+        }
 
-		return null!;
-	}
+        return null!;
+    }
 }
