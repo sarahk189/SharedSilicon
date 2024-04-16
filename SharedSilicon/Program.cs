@@ -33,9 +33,12 @@ builder.Services.AddDefaultIdentity<UserEntity>(x =>
     x.Password.RequiredLength = 8;
 }).AddEntityFrameworkStores<DataContext>();
 
-builder.Services.ConfigureApplicationCookie(x =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    x.LoginPath = "/signin";
+	options.LoginPath = "/signin";
+	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+	options.Cookie.SameSite = SameSiteMode.None;
+	options.ExpireTimeSpan = TimeSpan.FromDays(1);
 });
 
 builder.Services.AddAuthentication().AddFacebook(x =>
@@ -55,7 +58,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
-//app.UseAuthentication();
+app.UseAuthentication();
 
 
 app.MapControllerRoute(

@@ -25,25 +25,24 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	private readonly HttpClient _http = http;
 	private readonly IConfiguration _configuration = configuration;
 
-    #region Details
-    [HttpGet]
-    [Route("/account/details")]
-    public async Task<IActionResult> Details()
-    {
-        if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
+	#region Details
+	[HttpGet]
+	[Route("/account/details")]
+	public async Task<IActionResult> Details()
+	{
+
+		var userEntity = await _userManager.GetUserAsync(User);
+		if (userEntity == null)
 		{
-            var userEntity = await _userManager.GetUserAsync(User);
-            var claims = HttpContext.User.Identities.FirstOrDefault();
-            var viewModel = await PopulateViewModelAsync();
+			return RedirectToAction("SignIn", "Auth");
+		}
 
-            return View("Details", viewModel);
-        }
+		var viewModel = await PopulateViewModelAsync();
+		return View("Details", viewModel);
+	}
 
 
-		return RedirectToAction("SignIn", "Auth");
-    }
-
-    public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
+	public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
 	{
 		var user = await _userManager.GetUserAsync(User);
 

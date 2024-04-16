@@ -11,7 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Security.Claims;
 
 namespace SharedSilicon.Controllers;
 
@@ -82,49 +81,42 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     }
 
 
-    [Route("/signin")]
-    [HttpPost]
-    public async Task<IActionResult> SignIn(SignInViewModel viewModel)
-    {
-        ModelState.Remove("returnUrl");
+	[Route("/signin")]
+	[HttpPost]
+	public async Task<IActionResult> SignIn(SignInViewModel viewModel, string returnUrl)
+	{
+		ModelState.Remove("returnUrl");
 
-        if (ModelState.IsValid)
-        {
-            var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
-            if (result.Succeeded)
-            {
-                //var content = new FormUrlEncodedContent(viewModel.Form);
+		if (string.IsNullOrEmpty(returnUrl))
+		{
+			returnUrl = "/Home/Index";
+		}
+		ViewData["ReturnUrl"] = returnUrl;
+		if (ModelState.IsValid)
+		{
+			var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
 
-                //var response = await _httpClient.PostAsync($"https://localhost:7152/api/Auth/token?key={_configuration["ApiKey:Secret"]}", content);
-                //if (response.IsSuccessStatusCode)
-                //{
-                //    var token = await response.Content.ReadAsStringAsync();
-                //    var cookieOptions = new CookieOptions
-                //    {
-                //        HttpOnly = true,
-                //        Secure = true,
-                //        Expires = DateTime.Now.AddDays(1)
-                //    };
+			if (result.Succeeded)
+			{
+				// Removed the code that retrieves the access token
 
-                //    response.cookies.Append("AccessToken", token, cookieOptions);
-                //}
+				return RedirectToAction("Details", "Account");
+			}
+			else
+			{
+				// Sign-in was not successful, add an error
+				ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+				return View(viewModel);
+			}
+		}
 
-
-                return RedirectToAction("Details", "Account");
-            }
-
-        }
-
-        // If we got this far, something failed, redisplay form
-        ViewData["StatusMessage"] = "Incorrect e-mail and password";
-        return View(viewModel);
-    }
-
-       
-  
+		// If we got this far, something failed, redisplay form
+		ViewData["StatusMessage"] = "Incorrect e-mail and password";
+		return View(viewModel);
+	}
 
 
-    [Route("/signout")]
+	[Route("/signout")]
     [HttpGet]
     public new async Task<IActionResult> SignOut()
     {
@@ -133,22 +125,6 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         return RedirectToAction("Signin", "Auth");
 
     }
-
-
-
-    //[Route("/auth/details")]
-    //[HttpGet]
-    //public async Task<IActionResult> Details()
-    //{
-    //    if (!_signInManager.IsSignedIn(User))
-    //        return RedirectToAction("Details", "Account");
-
-    //    var userEntity = await _userManager.GetUserAsync(User);
-
-    //    var viewModel = new AccountDetailsViewModel();
-    //    return View("~/Views/Account/Details.cshtml", viewModel);
-    //}
-
 
     #region External Account | Facebook
 
