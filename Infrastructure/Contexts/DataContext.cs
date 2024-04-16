@@ -15,9 +15,11 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
 	public DbSet<SavedCourseEntity> SavedCourses { get; set; } = null!;
 	public DbSet<CourseDetailsEntity> CoursesDetails { get; set;} = null!;
 	public DbSet<CourseAuthorEntity> CoursesAuthor { get; set;} = null!;
-	public DbSet<ContactRequestEntity> ContactRequests { get; set; }
-	public DbSet<CategoryEntity> Categories { get; set; } = null!;
+	public DbSet<ContactRequestEntity> ContactRequests { get; set; } = null!;
+    public DbSet<ContactEntity> Contacts { get; set; } = null!;
+    public DbSet<CategoryEntity> Categories { get; set; } = null!;
 	public DbSet<FilterCategoryEntity> FilterCategories { get; set; } = null!;
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

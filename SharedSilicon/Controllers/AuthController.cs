@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Diagnostics.Eventing.Reader;
 
 namespace SharedSilicon.Controllers;
 
@@ -21,30 +22,32 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
     private readonly HttpClient _httpClient = httpClient;
     private readonly IConfiguration _configuration = configuration;
 
-    [Route("/signup")]
+
+    #region Sign Up
+
     [HttpGet]
+    [Route("/signup")]
+   
     public IActionResult SignUp()
     {
 
         if (_signInManager.IsSignedIn(User))
-            return RedirectToAction("/details", "Account");
+            return RedirectToAction("Details", "Account");
 
-        var viewModel = new SignUpViewModel();
+        var viewModel =  new SignUpViewModel();
         return View(viewModel);
     }
 
-    [Route("/signup")]
+
     [HttpPost]
+    [Route("/signup")]
+    
     public async Task<IActionResult> SignUp(SignUpViewModel viewModel)
     {
         if (ModelState.IsValid)
         {
 
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.SelectMany(x => x.Value.Errors.Select(p => p.ErrorMessage)).ToList();
-                // Nu kan du inspektera 'errors'-listan i din debugger för att se vilka felmeddelanden som finns
-            }
+            
             var exists = await _userManager.Users.AnyAsync(x => x.Email == viewModel.Form.Email);
             if (exists)
             {
@@ -67,38 +70,54 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         return RedirectToAction("SignIn", "Auth");
     }
 
+    #endregion
 
-    [Route("/signin")]
+    #region Sign in
     [HttpGet]
+    [Route("/signin")]
+    
     public IActionResult SignIn()
     {
 
         if (_signInManager.IsSignedIn(User))
             return RedirectToAction("Details", "Account");
 
+        
+
         var viewModel = new SignInViewModel();
         return View(viewModel);
     }
 
+    [HttpPost]
+    [Route("/signin")]
+   
+    public async Task<IActionResult> SignIn(SignInViewModel viewModel)
+    {
+        ModelState.Remove("returnUrl");
 
-	[Route("/signin")]
-	[HttpPost]
-	public async Task<IActionResult> SignIn(SignInViewModel viewModel, string returnUrl)
-	{
-		ModelState.Remove("returnUrl");
+        if (ModelState.IsValid)
+        {
+            var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
+            if (result.Succeeded)
+            {
+                //var content = new FormUrlEncodedContent(viewModel.Form);
 
-		if (string.IsNullOrEmpty(returnUrl))
-		{
-			returnUrl = "/Home/Index";
-		}
-		ViewData["ReturnUrl"] = returnUrl;
-		if (ModelState.IsValid)
-		{
-			var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
+                //var response = await _httpClient.PostAsync($"https://localhost:7152/api/Auth/token?key={_configuration["ApiKey:Secret"]}", content);
+                //if (response.IsSuccessStatusCode)
+                //{
+                //    var token = await response.Content.ReadAsStringAsync();
+                //    var cookieOptions = new CookieOptions
+                //    {
+                //        HttpOnly = true,
+                //        Secure = true,
+                //        Expires = DateTime.Now.AddDays(1)
+                //    };
 
-			if (result.Succeeded)
-			{
-				// Removed the code that retrieves the access token
+                //    response.cookies.Append("AccessToken", token, cookieOptions);
+                //}
+                //if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+
+                //    return Redirect(returnUrl);
 
 				return RedirectToAction("Details", "Account");
 			}
@@ -110,14 +129,18 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 			}
 		}
 
-		// If we got this far, something failed, redisplay form
-		ViewData["StatusMessage"] = "Incorrect e-mail and password";
-		return View(viewModel);
-	}
+        ViewData["StatusMessage"] = "Incorrect e-mail and password";
+        return View(viewModel);
 
+    }
 
-	[Route("/signout")]
+    #endregion
+
+    #region Sign Out
+
     [HttpGet]
+    [Route("/signout")]
+    
     public new async Task<IActionResult> SignOut()
     {
 
@@ -125,6 +148,23 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         return RedirectToAction("Signin", "Auth");
 
     }
+
+
+
+    //[Route("/auth/details")]
+    //[HttpGet]
+    //public async Task<IActionResult> Details()
+    //{
+    //    if (!_signInManager.IsSignedIn(User))
+    //        return RedirectToAction("Details", "Account");
+
+    //    var userEntity = await _userManager.GetUserAsync(User);
+
+    //    var viewModel = new AccountDetailsViewModel();
+    //    return View("~/Views/Account/Details.cshtml", viewModel);
+    //}
+
+    #endregion
 
     #region External Account | Facebook
 
@@ -135,54 +175,54 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         return new ChallengeResult("Facebook", authProps);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> FacebookCallback()
-    {
-        var info = await _signInManager.GetExternalLoginInfoAsync();
-        if (info != null)
-        {
-            var userEntity = new UserEntity
-            {
-                FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName)!,
-                LastName = info.Principal.FindFirstValue(ClaimTypes.Surname)!,
-                Email = info.Principal.FindFirstValue(ClaimTypes.Email)!,
-                UserName = info.Principal.FindFirstValue(ClaimTypes.Email)!,
-                IsExternalAccount = true
-            };
+	[HttpGet]
+	public async Task<IActionResult> FacebookCallback()
+	{
+		var info = await _signInManager.GetExternalLoginInfoAsync();
+		if (info != null)
+		{
+			var userEntity = new UserEntity
+			{
+				FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName)!,
+				LastName = info.Principal.FindFirstValue(ClaimTypes.Surname)!,
+				Email = info.Principal.FindFirstValue(ClaimTypes.Email)!,
+				UserName = info.Principal.FindFirstValue(ClaimTypes.Email)!,
+				IsExternalAccount = true
+			};
 
-            var user = await _userManager.FindByEmailAsync(userEntity.Email);
-            if (user == null)
-            {
-                var result = await _userManager.CreateAsync(userEntity);
-                if (result.Succeeded)
-                {
-                    user = await _userManager.FindByEmailAsync(userEntity.Email);
-                }
-            }
+			var user = await _userManager.FindByEmailAsync(userEntity.Email);
+			if (user == null)
+			{
+				var result = await _userManager.CreateAsync(userEntity);
+				if (result.Succeeded)
+				{
+					user = await _userManager.FindByEmailAsync(userEntity.Email);
+				}
+			}
 
-            if (user != null)
-            {
-                if (user.FirstName != userEntity.FirstName || user.LastName != userEntity.LastName || user.Email != userEntity.Email)
-                {
-                    user.FirstName = userEntity.FirstName;
-                    user.LastName = userEntity.LastName;
-                    user.Email = userEntity.Email;
+			if (user != null)
+			{
+				if (user.FirstName != userEntity.FirstName || user.LastName != userEntity.LastName || user.Email != userEntity.Email)
+				{
+					user.FirstName = userEntity.FirstName;
+					user.LastName = userEntity.LastName;
+					user.Email = userEntity.Email;
 
-                    await _userManager.UpdateAsync(user);
-                }
-                await _signInManager.SignInAsync(user, isPersistent: false);
+					await _userManager.UpdateAsync(user);
+				}
+				await _signInManager.SignInAsync(user, isPersistent: false);
 
-                if (HttpContext.User != null)
-                    return RedirectToAction("Details", "Account");
-            }
-        }
-        ModelState.AddModelError("InvalidFacebookAuthentication", "danger|Failed to authenticate with Facebook");
-        ViewData["StatusMessage"] = "danger|Failed to authenticate with Facebook";
-        return RedirectToAction("SignIn", "Auth");
+				if (HttpContext.User != null)
+					return RedirectToAction("Details", "Account");
+			}
+		}
+		ModelState.AddModelError("InvalidFacebookAuthentication", "danger|Failed to authenticate with Facebook");
+		ViewData["StatusMessage"] = "danger|Failed to authenticate with Facebook";
+		return RedirectToAction("SignIn", "Auth");
+	}
 
-    }
 
-    #endregion
+	#endregion
 
 }
 
