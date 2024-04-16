@@ -2,87 +2,72 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Authorization;
 using SharedSilicon.Models;
-using System.Net;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.EntityFrameworkCore;
-using static SharedSilicon.Models.SavedCoursesModel;
-using Infrastructure.Contexts;
-using Newtonsoft.Json;
-using static SharedSilicon.Models.CoursesModel;
-using static System.Net.WebRequestMethods;
-using System.Net.Http.Headers;
+
 
 namespace SharedSilicon.Controllers;
 
 
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context, IConfiguration configuration, HttpClient http) : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, HttpClient http, IConfiguration configuration) : Controller
 {
-	
 	private readonly UserManager<UserEntity> _userManager = userManager;
 	private readonly SignInManager<UserEntity> _signInManager = signInManager;
 	private readonly HttpClient _http = http;
 	private readonly IConfiguration _configuration = configuration;
 
-    #region Details
-    [HttpGet]
+	#region Details
+	[HttpGet]
     [Route("/account/details")]
     public async Task<IActionResult> Details()
     {
-        if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
-		{
-            var userEntity = await _userManager.GetUserAsync(User);
-            var claims = HttpContext.User.Identities.FirstOrDefault();
-            var viewModel = await PopulateViewModelAsync();
+		var userEntity = await _userManager.GetUserAsync(User);
+		var viewModel = await PopulateViewModelAsync();
 
-            return View("Details", viewModel);
-        }
+		return View("Details", viewModel);
 
 
-		return RedirectToAction("SignIn", "Auth");
+		//return RedirectToAction("SignIn", "Auth");
     }
 
     public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
 	{
-		var user = await _userManager.GetUserAsync(User);
+        var viewModel = new AccountDetailsViewModel();
 
-		try
-		{
-			if (user != null)
-			{
-				var address = user.Address ?? new AddressEntity();
+        try
+        {
+            var user = await _userManager.GetUserAsync(User);
 
-				var viewModel = new AccountDetailsViewModel()
-				{
-					IsExternalAccount = user.IsExternalAccount,
-					BasicInfo = new AccountDetailsBasicInfoModel
-					{
-						FirstName = user.FirstName,
-						LastName = user.LastName,
-						Email = user.Email!,
-						Phone = user.PhoneNumber!,
-						Biography = user.Biography						
-					},
-					AddressInfo = new AccountDetailsAddressInfoModel
-					{
-						Addressline_1 = address.AddressLine1,
-						Addressline_2 = address.AddressLine2!,
-						PostalCode = address.PostalCode,
-						City = address.City
-					}
-				};
-				return viewModel;
-			}
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex);
-		}
-		return null!;
-	}
+            if (user != null)
+            {
+                var address = user.Address ?? new AddressEntity();
 
-	[HttpPost]
+                viewModel.IsExternalAccount = user.IsExternalAccount;
+                viewModel.BasicInfo = new AccountDetailsBasicInfoModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email!,
+                    Phone = user.PhoneNumber!,
+                    Biography = user.Biography
+                };
+                viewModel.AddressInfo = new AccountDetailsAddressInfoModel
+                {
+                    Addressline_1 = address.AddressLine1,
+                    Addressline_2 = address.AddressLine2!,
+                    PostalCode = address.PostalCode,
+                    City = address.City
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+
+        return viewModel;
+    }
+
+    [HttpPost]
 	public async Task<IActionResult> SaveBasicInfo(AccountDetailsViewModel viewModel)
 	{
 		if (!TryValidateModel(viewModel.BasicInfo, nameof(viewModel.BasicInfo)))
@@ -134,7 +119,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 				user.Address.AddressLine1 = viewModel.AddressInfo.Addressline_1;
 				user.Address.AddressLine2 = viewModel.AddressInfo.Addressline_2!;
 				user.Address.PostalCode = viewModel.AddressInfo.PostalCode;
-				user.Address.PostalCode = viewModel.AddressInfo.City;
+				user.Address.City = viewModel.AddressInfo.City;
 
 				var updated = await _userManager.UpdateAsync(user);
 				if (updated.Succeeded)
@@ -175,10 +160,10 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	[Route("/account/security")]
 	public async Task<IActionResult> Security()
 	{
-		if (!_signInManager.IsSignedIn(User))
-		{
-			return RedirectToAction("SignIn", "Auth");
-		}
+		//if (!_signInManager.IsSignedIn(User))
+		//{
+		//	return RedirectToAction("SignIn", "Auth");
+		//}
 		var userEntity = await _userManager.GetUserAsync(User);
 		var claims = HttpContext.User.Identities.FirstOrDefault();
 

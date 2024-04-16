@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -35,7 +36,16 @@ builder.Services.AddDefaultIdentity<UserEntity>(x =>
 
 builder.Services.ConfigureApplicationCookie(x =>
 {
+    
     x.LoginPath = "/signin";
+    x.LogoutPath = "/signout";
+    x.AccessDeniedPath = "/denied";
+
+    x.Cookie.HttpOnly = true;
+    x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    x.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    x.SlidingExpiration = true;
+    
 });
 
 builder.Services.AddAuthentication().AddFacebook(x =>
@@ -48,14 +58,16 @@ builder.Services.AddAuthentication().AddFacebook(x =>
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+
 app.UseHsts();
 app.UseStatusCodePagesWithReExecute("/Error404", "?statusCode={0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+//app.UseUserSessionValidation();
+app.UseAuthentication();
 app.UseAuthorization();
-//app.UseAuthentication();
+
 
 
 app.MapControllerRoute(
