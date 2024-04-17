@@ -31,6 +31,7 @@
                 padding-right: 15%;
                 grid-template-columns: 1fr;
                 grid-template-areas: "sign-up" "signup-check1" "signup-check2" "signup-check3" "signup-check4" "signup-check5" "signup-check6";
+                align-items: center;
 
                 @include md {
                     grid-template-columns: repeat(4, 1fr);
@@ -47,7 +48,7 @@
                     border: 2px solid gray;
                     border-radius: 3px;
                     transform: translateY(10%);
-                    opacity: 0.6;
+                    opacity: 0.8;
 
                     &:checked {
                         color: $theme;
@@ -87,33 +88,45 @@
                 }
 
                 .input-group-span {
+                    width: 100%;
+                    margin-top: 20px;
 
                     .input-group {
                         display: flex;
+                        align-items: center;
                         width: 100%;
                         position: relative;
 
                         input {
                             background-color: var(--gray-100);
                             color: var(--gray-900);
-                            width: auto;
+                            width: 78%;
+                            height: 3rem;
                             padding-left: 2.5rem;
+                            margin-right: 10px;
 
                             &::placeholder {
                                 color: var(--gray-700);
+                                margin-right: 10px;
                             }
                         }
 
                         #email.sign-up {
                             max-width: 33rem;
                             width: 80%;
-                            height: 3rem;
+                            height: 2rem;
                             border-radius: 10px;
                             border: 1px solid;
                             border-color: var(--gray-400);
-                            padding-left: 20px;
+                            padding: 8px 30px 8px 0;
+                            margin-left: 20px;
                             font-weight: 500;
                             opacity: 0.8;
+                            justify-content: center;
+
+                            @include md {
+                                height: 3rem;
+                            }
                         }
 
                         i {
@@ -123,10 +136,18 @@
                             display: none;
                             top: .9rem;
                             left: -41rem;*/
-                            position: absolute; 
-                            top: 50%; 
-                            left: 3%; 
-                            transform: translateY(-50%); 
+                            position: absolute;
+                            top: 27%;
+                            left: 3%;
+                            transform: translateY(-50%);
+
+                            @include md {
+                                position: absolute;
+                                top: 50%;
+                                left: 2%;
+                                transform: translateY(-50%);
+                            }
+
 
                             @include xxl {
                                 display: inline-block;
@@ -137,15 +158,14 @@
                             @include button;
                             @include theme-shadow;
                             margin-top: 10px;
-                            height: 2rem;
-                            width: 20%;
+                            height: 2.5rem;
+                            width: 70%;
                             margin-left: 20px;
                             border-radius: 6px !important;
-                          
-                           
+
 
                             @include md {
-                                height: 3rem;
+                                height: 2.8rem;
                                 width: 20%;
                                 margin-top: 0px;
                                 margin-left: 10px;
