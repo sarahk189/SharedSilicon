@@ -2002,6 +2002,7 @@ form span.field-validation-error {
   padding-right: 15%;
   grid-template-columns: 1fr;
   grid-template-areas: "sign-up" "signup-check1" "signup-check2" "signup-check3" "signup-check4" "signup-check5" "signup-check6";
+  align-items: center;
 }
 @media (min-width: 768px) {
   .subscribe .container form .grid {
@@ -2018,7 +2019,7 @@ form span.field-validation-error {
   border: 2px solid gray;
   border-radius: 3px;
   transform: translateY(10%);
-  opacity: 0.6;
+  opacity: 0.8;
 }
 .subscribe .container form .grid .checkbox input:checked {
   color: #6366F1;
@@ -2048,30 +2049,45 @@ form span.field-validation-error {
     flex-direction: row;
   }
 }
+.subscribe .container form .subscribe-form .input-group-span {
+  width: 100%;
+  margin-top: 20px;
+}
 .subscribe .container form .subscribe-form .input-group-span .input-group {
   display: flex;
+  align-items: center;
   width: 100%;
   position: relative;
 }
 .subscribe .container form .subscribe-form .input-group-span .input-group input {
   background-color: var(--gray-100);
   color: var(--gray-900);
-  width: auto;
+  width: 78%;
+  height: 3rem;
   padding-left: 2.5rem;
+  margin-right: 10px;
 }
 .subscribe .container form .subscribe-form .input-group-span .input-group input::placeholder {
   color: var(--gray-700);
+  margin-right: 10px;
 }
 .subscribe .container form .subscribe-form .input-group-span .input-group #email.sign-up {
   max-width: 33rem;
   width: 80%;
-  height: 3rem;
+  height: 2rem;
   border-radius: 10px;
   border: 1px solid;
   border-color: var(--gray-400);
-  padding-left: 20px;
+  padding: 8px 30px 8px 0;
+  margin-left: 20px;
   font-weight: 500;
   opacity: 0.8;
+  justify-content: center;
+}
+@media (min-width: 768px) {
+  .subscribe .container form .subscribe-form .input-group-span .input-group #email.sign-up {
+    height: 3rem;
+  }
 }
 .subscribe .container form .subscribe-form .input-group-span .input-group i {
   font-weight: 300;
@@ -2081,9 +2097,17 @@ form span.field-validation-error {
   top: .9rem;
   left: -41rem;*/
   position: absolute;
-  top: 50%;
+  top: 27%;
   left: 3%;
   transform: translateY(-50%);
+}
+@media (min-width: 768px) {
+  .subscribe .container form .subscribe-form .input-group-span .input-group i {
+    position: absolute;
+    top: 50%;
+    left: 2%;
+    transform: translateY(-50%);
+  }
 }
 @media (min-width: 1400px) {
   .subscribe .container form .subscribe-form .input-group-span .input-group i {
@@ -2101,14 +2125,14 @@ form span.field-validation-error {
   gap: 12px;
   box-shadow: 0px 8px 18px -8px rgba(99, 102, 241, 0.9);
   margin-top: 10px;
-  height: 2rem;
-  width: 20%;
+  height: 2.5rem;
+  width: 70%;
   margin-left: 20px;
   border-radius: 6px !important;
 }
 @media (min-width: 768px) {
   .subscribe .container form .subscribe-form .input-group-span .input-group button {
-    height: 3rem;
+    height: 2.8rem;
     width: 20%;
     margin-top: 0px;
     margin-left: 10px;
