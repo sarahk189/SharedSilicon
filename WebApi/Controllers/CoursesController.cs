@@ -106,6 +106,7 @@ public class CoursesController(DataContext context) : ControllerBase
 		var query = context.Courses
 			.Include(x => x.FilterCategory)
 			.ThenInclude(x => x.Category)
+			.Include(c => c.Author)
 			.AsQueryable();
 
 		if (!string.IsNullOrWhiteSpace(category) && category != "all")

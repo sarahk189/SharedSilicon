@@ -54,7 +54,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	}
 
 
-	public async Task<AccountDetailsViewModel> PopulateViewModelAsync(UserEntity user)
+	public async Task <AccountDetailsViewModel> PopulateViewModelAsync(UserEntity user)
 	{
         var viewModel = new AccountDetailsViewModel();
 
