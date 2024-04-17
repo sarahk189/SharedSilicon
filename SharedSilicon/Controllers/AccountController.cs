@@ -106,7 +106,29 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	{
 		if (!TryValidateModel(viewModel.BasicInfo, nameof(viewModel.BasicInfo)))
 		{
-			var user = await _userManager.GetUserAsync(User);
+			var token = HttpContext.Session.GetString("JwtToken");
+			if (string.IsNullOrEmpty(token))
+			{
+				// If the token is not in the session, redirect the user to the sign in page
+				return RedirectToAction("SignIn", "Auth");
+			}
+
+			// Use the token to make authenticated requests...
+			// For example, you can set the Authorization header of your HttpClient
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			// Extract the user's ID or username from the token
+			var handler = new JwtSecurityTokenHandler();
+			var jwtToken = handler.ReadJwtToken(token);
+			var claims = jwtToken.Claims;
+			var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "nameid");
+			if (userIdClaim == null)
+			{
+				// Handle the case where the claim is not found
+				return NotFound("User ID claim not found in the token");
+			}
+			var userId = userIdClaim.Value;
+			var user = await _userManager.FindByIdAsync(userId);
 
 			if (user != null)
 			{
@@ -122,7 +144,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 
 
 			}
-			var result = await _userManager.UpdateAsync(user);
+			var result = await _userManager.UpdateAsync(user!);
 
 
 			if (result.Succeeded)
