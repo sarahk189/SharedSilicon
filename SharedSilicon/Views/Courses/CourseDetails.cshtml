@@ -1,4 +1,4 @@
-﻿@model Infrastructure.Dtos.CourseDetailsDto
+﻿@model Infrastructure.Dtos.CourseDto
 
 @{
     ViewData["Title"] = "Course Details";
@@ -8,12 +8,8 @@
 
 @if (Model  != null)
 {
-    <div>
-      @*   <p>@Model.CourseDescription</p>
-        <p>@Model.WhatYoullLearn</p>
-        <p>@Model.ProgramDetailOne</p> *@
-    </div>
-    <partial name="~/Views/Shared/Sections/_SingleCourse.cshtml" />    
+    
+    <partial name="~/Views/Shared/Sections/_SingleCourse.cshtml" model="Model" />    
 }
 else
 {

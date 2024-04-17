@@ -2,87 +2,118 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Authorization;
 using SharedSilicon.Models;
-using System.Net;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using static SharedSilicon.Models.SavedCoursesModel;
-using Infrastructure.Contexts;
+
 
 namespace SharedSilicon.Controllers;
 
 
-[Authorize]
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, DataContext context) : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, HttpClient http, IConfiguration configuration, ILogger<AccountController> logger) : Controller
 {
-	
 	private readonly UserManager<UserEntity> _userManager = userManager;
 	private readonly SignInManager<UserEntity> _signInManager = signInManager;
+	private readonly HttpClient _http = http;
+	private readonly IConfiguration _configuration = configuration;
+	private readonly ILogger<AccountController> _logger = logger;
 
 	#region Details
-	//If signed in, directs to the account details page
 	[HttpGet]
 	[Route("/account/details")]
 	public async Task<IActionResult> Details()
 	{
-		if (!_signInManager.IsSignedIn(User))
+		var token = HttpContext.Session.GetString("JwtToken");
+		if (string.IsNullOrEmpty(token))
 		{
 			return RedirectToAction("SignIn", "Auth");
 		}
-		var userEntity = await _userManager.GetUserAsync(User);
-		var claims = HttpContext.User.Identities.FirstOrDefault();
-		var viewModel = await PopulateViewModelAsync();
-		//viewModel.BasicInfo = _accountService.GetBasicInfo();
-		//viewModel.AddressInfo = _accountService.GetAddressInfo();
+		_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+		var handler = new JwtSecurityTokenHandler();
+		var jwtToken = handler.ReadJwtToken(token);
+		var claims = jwtToken.Claims;
+		var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "nameid");
+		if (userIdClaim == null)
+		{
+			return NotFound("User ID claim not found in the token");
+		}
+		var userId = userIdClaim.Value;
+		var user = await _userManager.Users.Include(u => u.Address).FirstOrDefaultAsync(u => u.Id == userId);
+		if (user == null)
+		{
+			return NotFound();
+		}
+
+		var viewModel = await PopulateViewModelAsync(user);
 		return View(viewModel);
 	}
 
-	public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
+
+	public async Task<AccountDetailsViewModel> PopulateViewModelAsync(UserEntity user)
 	{
-		var user = await _userManager.GetUserAsync(User);
+        var viewModel = new AccountDetailsViewModel();
 
-		try
-		{
-			if (user != null)
-			{
-				var address = user.Address ?? new AddressEntity();
+        try
+        {
+            if (user != null)
+            {
+                var address = user.Address ?? new AddressEntity();
 
-				var viewModel = new AccountDetailsViewModel()
-				{
-					BasicInfo = new AccountDetailsBasicInfoModel
-					{
-						FirstName = user.FirstName,
-						LastName = user.LastName,
-						Email = user.Email!,
-						Phone = user.PhoneNumber!,
-						Biography = user.Biography
-					},
-					AddressInfo = new AccountDetailsAddressInfoModel
-					{
-						Addressline_1 = address.AddressLine1,
-						Addressline_2 = address.AddressLine2!,
-						PostalCode = address.PostalCode,
-						City = address.City
-					}
-				};
-				return viewModel;
-			}
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex);
-		}
-		return null!;
-	}
+                viewModel.IsExternalAccount = user.IsExternalAccount;
+                viewModel.BasicInfo = new AccountDetailsBasicInfoModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email!,
+                    Phone = user.PhoneNumber!,
+                    Biography = user.Biography
+                };
+                viewModel.AddressInfo = new AccountDetailsAddressInfoModel
+                {
+                    
+					Addressline_1 = address!.AddressLine1,
+                    Addressline_2 = address!.AddressLine2!,
+                    PostalCode = address!.PostalCode,
+                    City = address!.City
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
 
-	[HttpPost]
+        return viewModel;
+    }
+
+    [HttpPost]
 	public async Task<IActionResult> SaveBasicInfo(AccountDetailsViewModel viewModel)
 	{
 		if (!TryValidateModel(viewModel.BasicInfo, nameof(viewModel.BasicInfo)))
 		{
-			var user = await _userManager.GetUserAsync(User);
+			var token = HttpContext.Session.GetString("JwtToken");
+			if (string.IsNullOrEmpty(token))
+			{
+				return RedirectToAction("SignIn", "Auth");
+			}
+
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var handler = new JwtSecurityTokenHandler();
+			var jwtToken = handler.ReadJwtToken(token);
+			var claims = jwtToken.Claims;
+			var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "nameid");
+			if (userIdClaim == null)
+			{
+				return NotFound("User ID claim not found in the token");
+			}
+			var userId = userIdClaim.Value;
+			var user = await _userManager.FindByIdAsync(userId);
 
 			if (user != null)
 			{
@@ -98,11 +129,12 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 
 
 			}
-			var result = await _userManager.UpdateAsync(user);
+			var result = await _userManager.UpdateAsync(user!);
 
 
 			if (result.Succeeded)
 			{
+				viewModel = await PopulateViewModelAsync(user!);
 				return RedirectToAction(nameof(Details));
 
 			}
@@ -122,19 +154,38 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	{
 		if (!TryValidateModel(viewModel.AddressInfo, nameof(viewModel.AddressInfo)))
 		{
-			var user = await _userManager.GetUserAsync(User);
+			var token = HttpContext.Session.GetString("JwtToken");
+			if (string.IsNullOrEmpty(token))
+			{
+				return RedirectToAction("SignIn", "Auth");
+			}
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-			if (user.Address != null)
+			var handler = new JwtSecurityTokenHandler();
+			var jwtToken = handler.ReadJwtToken(token);
+			var claims = jwtToken.Claims;
+			var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "nameid");
+			if (userIdClaim == null)
+			{
+				return NotFound("User ID claim not found in the token");
+			}
+			var userId = userIdClaim.Value;
+			var user = await _userManager.FindByIdAsync(userId);
+
+
+			if (user!.Address != null)
 			{
 				user.Address.AddressLine1 = viewModel.AddressInfo.Addressline_1;
 				user.Address.AddressLine2 = viewModel.AddressInfo.Addressline_2!;
 				user.Address.PostalCode = viewModel.AddressInfo.PostalCode;
-				user.Address.PostalCode = viewModel.AddressInfo.City;
+				user.Address.City = viewModel.AddressInfo.City;
 
 				var updated = await _userManager.UpdateAsync(user);
 				if (updated.Succeeded)
 				{
-					return RedirectToAction(nameof(Details));
+					user = await _userManager.FindByIdAsync(userId);
+					viewModel = await PopulateViewModelAsync(user);
+					return View("Details", viewModel);
 				}
 				else
 				{
@@ -153,10 +204,12 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 					PostalCode = viewModel.AddressInfo.PostalCode,
 					City = viewModel.AddressInfo.City
 				};
-				var result = await _userManager.UpdateAsync(user);
+				var result = await _userManager.UpdateAsync(user!);
 				if (result.Succeeded)
 				{
-					return RedirectToAction(nameof(Details));
+					user = await _userManager.FindByIdAsync(userId);
+					viewModel = await PopulateViewModelAsync(user);
+					return View("Details", viewModel);
 				}
 			}
 		}
@@ -170,21 +223,32 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	[Route("/account/security")]
 	public async Task<IActionResult> Security()
 	{
-		if (!_signInManager.IsSignedIn(User))
+		var token = HttpContext.Session.GetString("JwtToken");
+		if (string.IsNullOrEmpty(token))
 		{
 			return RedirectToAction("SignIn", "Auth");
 		}
-		var userEntity = await _userManager.GetUserAsync(User);
-		var claims = HttpContext.User.Identities.FirstOrDefault();
+		_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+		var handler = new JwtSecurityTokenHandler();
+		var jwtToken = handler.ReadJwtToken(token);
+		var claims = jwtToken.Claims;
+		var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "nameid");
+		if (userIdClaim == null)
+		{
+			return NotFound("User ID claim not found in the token");
+		}
+		var userId = userIdClaim.Value;
+		var user = await _userManager.FindByIdAsync(userId);
 
 		var viewModel = new SecurityViewModel
 		{
 			Password = new ChangePasswordModel
 			{
-				FirstName = userEntity.FirstName,
-				LastName = userEntity.LastName,
-				Email = userEntity.Email,
-				ProfileImage = userEntity.ProfileImage
+				FirstName = user!.FirstName,
+				LastName = user.LastName,
+				Email = user!.Email!,
+				ProfileImage = user.ProfileImage
 			}
 		};
 
@@ -197,14 +261,30 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	[Route("/account/security")]
 	public async Task<IActionResult> Security(SecurityViewModel viewModel)
 	{
-		var user = await _userManager.GetUserAsync(User);
+		var token = HttpContext.Session.GetString("JwtToken");
+		if (string.IsNullOrEmpty(token))
+		{
+			return RedirectToAction("SignIn", "Auth");
+		}
+
+		_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+		var handler = new JwtSecurityTokenHandler();
+		var jwtToken = handler.ReadJwtToken(token);
+		var claims = jwtToken.Claims;
+		var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "nameid");
+		if (userIdClaim == null)
+		{
+			return NotFound("User ID claim not found in the token");
+		}
+		var userId = userIdClaim.Value;
+		var user = await _userManager.FindByIdAsync(userId);
+
 
 		if (user == null)
 		{
 			return NotFound();
 		}
 
-		// Check if the current password or new password is null
 		if (string.IsNullOrEmpty(viewModel.Password.CurrentPassword) || string.IsNullOrEmpty(viewModel.Password.NewPassword))
 		{
 			ModelState.AddModelError(string.Empty, "Password cannot be null or empty");
@@ -230,7 +310,26 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	{
 		if (viewModel.DeleteAccount)
 		{
-			var user = await _userManager.GetUserAsync(User);
+
+			var token = HttpContext.Session.GetString("JwtToken");
+			if (string.IsNullOrEmpty(token))
+			{
+				return RedirectToAction("SignIn", "Auth");
+			}
+
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var handler = new JwtSecurityTokenHandler();
+			var jwtToken = handler.ReadJwtToken(token);
+			var claims = jwtToken.Claims;
+			var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "nameid");
+			if (userIdClaim == null)
+			{
+				return NotFound("User ID claim not found in the token");
+			}
+			var userId = userIdClaim.Value;
+			var user = await _userManager.FindByIdAsync(userId);
+
 			if (user == null)
 			{
 				return NotFound();
@@ -258,9 +357,21 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	#region MyCourses
 	[HttpGet]
 	[Route("/account/mycourses")]
-	public IActionResult SavedCourses(SavedCoursesViewModel viewModel)
+	public async Task<IActionResult> SavedCourses(SavedCoursesViewModel viewModel)
 	{
-		return View(viewModel);
+		if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
+		{
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var response = await _http.GetAsync($"https://localhost:7152/account/details?key={_configuration["ApiKey:Secret"]}");
+			if (response.IsSuccessStatusCode)
+			{
+				var data = await response.Content.ReadAsStringAsync();
+				var courses = JsonConvert.DeserializeObject<List<SavedCourseEntity>>(data);
+			}
+
+		}
+		return View();
 	}
 	#endregion
 }

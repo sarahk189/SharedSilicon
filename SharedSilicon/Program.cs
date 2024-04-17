@@ -1,7 +1,13 @@
 using Infrastructure.Contexts;
 using Infrastructure.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using SharedSilicon.Helpers.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +18,45 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<CategoryService>();
 
+
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+	options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie();
+
+builder.Services.AddSession(options =>
+{
+	options.IdleTimeout = TimeSpan.FromMinutes(30);
+	options.Cookie.HttpOnly = true;
+	options.Cookie.IsEssential = true;
+});
+
+
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+	options.IncludeErrorDetails = true;
+	options.TokenValidationParameters = new TokenValidationParameters
+	{
+		ValidateIssuer = true,
+		ValidateAudience = true,
+		ValidateLifetime = true,
+		ValidateIssuerSigningKey = true,
+		ValidIssuer = builder.Configuration["Jwt:Issuer"],
+		ValidAudience = builder.Configuration["Jwt:Audience"],
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
+	};
+});
+
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),
 b => b.MigrationsAssembly("Infrastructure")));
+
 builder.Services.AddDefaultIdentity<UserEntity>(x =>
 {
     x.User.RequireUniqueEmail = true;
@@ -21,20 +64,35 @@ builder.Services.AddDefaultIdentity<UserEntity>(x =>
     x.Password.RequiredLength = 8;
 }).AddEntityFrameworkStores<DataContext>();
 
-builder.Services.ConfigureApplicationCookie(x =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    x.LoginPath = "/signin";
+	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+	options.Cookie.SameSite = SameSiteMode.None;
+	options.ExpireTimeSpan = TimeSpan.FromDays(1);
+});
+
+builder.Services.AddAuthentication().AddFacebook(x =>
+{
+    x.AppId = "371729882544755";
+    x.AppSecret = "e50bb2b0018b70f57a6f03f050699f1a";
+    x.Fields.Add("first_name");
+	x.Fields.Add("last_name");
 });
 
 var app = builder.Build();
 
 
-app.UseHsts();
 app.UseStatusCodePagesWithReExecute("/Error404", "?statusCode={0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseSession();
+app.UseMiddleware<UserSessionValidationMiddleware>();
 app.UseAuthorization();
+
+
 
 app.MapControllerRoute(
     name: "default",

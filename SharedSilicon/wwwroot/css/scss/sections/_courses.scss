@@ -1,4 +1,5 @@
 .courses-page {
+    
     padding: 50px 0;
     //Toolbar and navigation.
     .container {
@@ -52,6 +53,7 @@
 
 
 
+
             h1 {
                 margin-bottom: 35px;
             }
@@ -79,7 +81,7 @@
             }
         }
 
-        .dropdown {
+        .select {
             position: relative;
             display: inline-block;
             margin-right: 25px;
@@ -98,7 +100,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 10px;
-            box-shadow: 0px 4px 9px -1px rgba($gray-700, 0.3), 0px 4.4px 20px -1px rgba($gray-700, 0.5);
+            box-shadow: 0px 4px 9px -1px rgba($gray-700, 0.3), 0px 4.4px 20px -1px rgba($gray-700, 0.5);          
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
 
 
             i {
@@ -106,7 +111,7 @@
             }
         }
 
-        .dropdown-content {
+        .select-options {
             list-style: none;
             display: none;
             position: absolute;
@@ -119,22 +124,17 @@
             color: var(--gray-900);
         }
 
-        .dropdown-content li {
-            padding: 10px;
-            background-color: var(--gray-000);
-            color: var(--gray-900);
-        }
+            .option {
+                padding: 10px;
+                cursor: pointer;
+            }
 
-        .dropdown-content li a {
-            color: #333;
-            text-decoration: none;
-            display: block;
+            .option:hover {
+                background-color: var(--color-gray-400);
+            }
         }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
+        
+     
         .search-courses {
             @include button;
             width: 300px;
@@ -168,29 +168,29 @@
         }
     }
     //Courses cards.
-    .container {
+.container {
 
 
 
-        .courses-show {
+    .courses-show {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+
+        @include sm {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
             gap: 20px;
+        }
 
-            @include sm {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            @include mid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
+        @include mid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
 
 
-
+        .course {
             .courses {
 
                 @include shadow-s;
@@ -279,7 +279,6 @@
                 .author {
                     @include text-s;
                     margin-left: 20px;
-                    margin-bottom: -15px;
                 }
 
 
@@ -300,14 +299,11 @@
                 }
             }
         }
-
-        .carousel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 45px 0 0 0;
-        }
     }
+
+    .pagination {
+    }
+}
     //Work with us.
     .banner {
         padding: 50px 0;
@@ -362,4 +358,4 @@
             }
         }
     }
-}
+

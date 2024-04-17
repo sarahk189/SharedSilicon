@@ -9,5 +9,6 @@ namespace SharedSilicon.ViewModels
         public AccountDetailsBasicInfoModel BasicInfo { get; set; } = new AccountDetailsBasicInfoModel();
          
         public AccountDetailsAddressInfoModel AddressInfo { get; set; } = new AccountDetailsAddressInfoModel();
+        public bool IsExternalAccount { get; set; }
     }
 }

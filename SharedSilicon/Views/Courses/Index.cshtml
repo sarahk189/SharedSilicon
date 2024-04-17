@@ -1,11 +1,10 @@
 ﻿@* @using Infrastructure.Entities *@
 @* @model IEnumerable<Infrastructure.Entities.CourseEntity> *@
-	@model SharedSilicon.ViewModels.CoursesViewModel
+	@model SharedSilicon.ViewModels.CourseIndexViewModel
 
 @{
 	ViewData["Title"] = "Courses";
 }
 
 
-
-<partial name="~/Views/Shared/Sections/_Courses.cshtml" model=Model />
+<partial name="~/Views/Shared/Sections/_Courses.cshtml" model="@Model" />

@@ -1,9 +1,10 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.JsonPatch;
+using Infrastructure.Factories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 
 
 
@@ -11,14 +12,13 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-
 public class CoursesController(DataContext context) : ControllerBase
 {
 
-
 	#region CREATE
+
 	[HttpPost]
-	public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
+    public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
 	{
 		if (ModelState.IsValid)
 		{
@@ -95,46 +95,64 @@ public class CoursesController(DataContext context) : ControllerBase
 	#endregion region
 
 	#region READ
+
 	[HttpGet]
-	public async Task<IActionResult> GetAll()
+
+	
+	public async Task<IActionResult> GetAll(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 3)
 	{
-		var courses = await context.Courses
-			.Include(c => c.CourseDetails)
-			.Include(c => c.Author)
-			.ToListAsync();
+		
 
-		var courseDtos = courses.Select(course => new CourseDto
+		var query = context.Courses
+			.Include(x => x.FilterCategory)
+			.ThenInclude(x => x.Category)
+			.AsQueryable();
+
+		if (!string.IsNullOrWhiteSpace(category) && category != "all")
+			query = query.Where(x => x.FilterCategory.Any(fc => fc.Category.Name == category));
+		
+
+
+
+		if (!string.IsNullOrEmpty(searchQuery))
+			query = query.Where(x => x.Title.Contains(searchQuery) || 
+			x.Author.FirstName.Contains(searchQuery)||
+			x.Author.LastName.Contains(searchQuery));
+		
+
+
+
+
+		query = query.OrderBy(x => x.Id);
+
+
+
+		var courses = await query.ToListAsync();
+		
+
+		var courseDtos = courses.Select(CourseFactory.Create).ToList();
+
+		var response = new CourseResult
 		{
-			Id = course.Id,
-			Title = course.Title,
-			ImageUrl = course.ImageUrl,
-			BestBadgeUrl = course.BestBadgeUrl,
-			BookmarkUrl = course.BookmarkUrl,
-			Hours = course.Hours,
-			Price = course.Price,
-			OldPrice = course.OldPrice,
-			RedPrice = course.RedPrice,
-			RatingPercentage = course.RatingPercentage,
-			RatingCount = course.RatingCount,
-			CourseDetails = new CourseDetailsDto
-			{
-				NumberOfReviews = course.CourseDetails.NumberOfReviews,
-				Digital = course.CourseDetails.Digital
-			},
-			Author = new CourseAuthorDto
-			{
-				AuthorImageUrl = course.Author.AuthorImageUrl,
-				FirstName = course.Author.FirstName,
-				LastName = course.Author.LastName,
-				Headline = course.Author.Headline
-			}
-		}).ToList();
+			Succeeded = true,
+			TotalItems = await query.CountAsync()
+			
+		};
 
-		return Ok(courseDtos);
+		
+		response.TotalPages = (int)Math.Ceiling(response.TotalItems / (double)pageSize);
+		response.Courses = CourseFactory.Create(await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync());
+
+		return Ok(response);
 	}
 
+
+
+
+
 	[HttpGet("{id}")]
-	public async Task<IActionResult> GetOne(int id)
+    
+    public async Task<IActionResult> GetOne(int id)
 	{
 		var course = await context.Courses
 			.Include(c => c.CourseDetails)
@@ -176,11 +194,11 @@ public class CoursesController(DataContext context) : ControllerBase
 		return NotFound();
 	}
 
-	#endregion region
+    #endregion region
 
-	#region UPDATE
-
-	[HttpPut("{id}")]
+    #region UPDATE
+    //[Authorize]
+    [HttpPut("{id}")]
 	public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
 	{
 
@@ -228,10 +246,11 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 
-	#endregion
+    #endregion
 
-	#region DELETE
-	[HttpDelete("{id}")]
+    #region DELETE
+    //[Authorize]
+    [HttpDelete("{id}")]
 	public async Task<IActionResult> DeleteOne(int id)
 	{
 		var course = await context.Courses
@@ -252,3 +271,6 @@ public class CoursesController(DataContext context) : ControllerBase
 	#endregion
 
 }
+
+
+
