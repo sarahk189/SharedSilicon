@@ -3,39 +3,73 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
 using SharedSilicon.Models;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace SharedSilicon.Controllers;
 
 
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, HttpClient http, IConfiguration configuration) : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, HttpClient http, IConfiguration configuration, ILogger<AccountController> logger) : Controller
 {
 	private readonly UserManager<UserEntity> _userManager = userManager;
 	private readonly SignInManager<UserEntity> _signInManager = signInManager;
 	private readonly HttpClient _http = http;
 	private readonly IConfiguration _configuration = configuration;
+	private readonly ILogger<AccountController> _logger = logger;
 
 	#region Details
 	[HttpGet]
-    [Route("/account/details")]
-    public async Task<IActionResult> Details()
-    {
-		var userEntity = await _userManager.GetUserAsync(User);
-		var viewModel = await PopulateViewModelAsync();
+	[Route("/account/details")]
+	public async Task<IActionResult> Details()
+	{
+		// Retrieve the token from the session
+		var token = HttpContext.Session.GetString("JwtToken");
+		if (string.IsNullOrEmpty(token))
+		{
+			// If the token is not in the session, redirect the user to the sign in page
+			return RedirectToAction("SignIn", "Auth");
+		}
 
-		return View("Details", viewModel);
+		// Use the token to make authenticated requests...
+		// For example, you can set the Authorization header of your HttpClient
+		_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+		// Extract the user's ID or username from the token
+		var handler = new JwtSecurityTokenHandler();
+		var jwtToken = handler.ReadJwtToken(token);
+		var claims = jwtToken.Claims;
+		var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "nameid");
+		if (userIdClaim == null)
+		{
+			// Handle the case where the claim is not found
+			return NotFound("User ID claim not found in the token");
+		}
+		var userId = userIdClaim.Value;
+
+		// Get the user based on the user's ID or username
+		var user = await _userManager.FindByIdAsync(userId);
+		if (user == null)
+		{
+			// Handle the case where the user is not found
+			return NotFound();
+		}
+
+		// Populate the view model based on the user
+		var viewModel = await PopulateViewModelAsync(user);
+		return View(viewModel);
+	}
 
 
-		//return RedirectToAction("SignIn", "Auth");
-    }
-
-	public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
+	public async Task<AccountDetailsViewModel> PopulateViewModelAsync(UserEntity user)
 	{
         var viewModel = new AccountDetailsViewModel();
 
         try
         {
-            var user = await _userManager.GetUserAsync(User);
 
             if (user != null)
             {
@@ -247,9 +281,21 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	#region MyCourses
 	[HttpGet]
 	[Route("/account/mycourses")]
-	public IActionResult SavedCourses(SavedCoursesViewModel viewModel)
+	public async Task<IActionResult> SavedCourses(SavedCoursesViewModel viewModel)
 	{
-		return View(viewModel);
+		if (HttpContext.Request.Cookies.TryGetValue("AccessToken", out var token))
+		{
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var response = await _http.GetAsync($"https://localhost:7152/account/details?key={_configuration["ApiKey:Secret"]}");
+			if (response.IsSuccessStatusCode)
+			{
+				var data = await response.Content.ReadAsStringAsync();
+				var courses = JsonConvert.DeserializeObject<List<SavedCourseEntity>>(data);
+			}
+
+		}
+		return View();
 	}
 	#endregion
 }

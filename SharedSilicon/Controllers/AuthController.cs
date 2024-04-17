@@ -4,14 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Factories;
-using Microsoft.AspNetCore.Authentication;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Diagnostics.Eventing.Reader;
+using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
+using Infrastructure.Dtos;
 
 namespace SharedSilicon.Controllers;
 
@@ -82,68 +80,72 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
         if (_signInManager.IsSignedIn(User))
             return RedirectToAction("Details", "Account");
 
-        
-
         var viewModel = new SignInViewModel();
         return View(viewModel);
     }
 
-    [HttpPost]
-    [Route("/signin")]
-   
-    public async Task<IActionResult> SignIn(SignInViewModel viewModel)
-    {
-        ModelState.Remove("returnUrl");
-
-        if (ModelState.IsValid)
-        {
-            var result = await _signInManager.PasswordSignInAsync(viewModel.Form.Email, viewModel.Form.Password, viewModel.Form.RememberMe, false);
-            if (result.Succeeded)
-            {
-                //var content = new FormUrlEncodedContent(viewModel.Form);
-
-                //var response = await _httpClient.PostAsync($"https://localhost:7152/api/Auth/token?key={_configuration["ApiKey:Secret"]}", content);
-                //if (response.IsSuccessStatusCode)
-                //{
-                //    var token = await response.Content.ReadAsStringAsync();
-                //    var cookieOptions = new CookieOptions
-                //    {
-                //        HttpOnly = true,
-                //        Secure = true,
-                //        Expires = DateTime.Now.AddDays(1)
-                //    };
-
-                //    response.cookies.Append("AccessToken", token, cookieOptions);
-                //}
-                //if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-
-                //    return Redirect(returnUrl);
-
-				return RedirectToAction("Details", "Account");
-			}
-			else
+	[HttpPost]
+	[Route("/signin")]
+	public async Task<IActionResult> SignIn(SignInViewModel viewModel)
+	{
+		if (ModelState.IsValid)
+		{
+			var user = await _userManager.FindByEmailAsync(viewModel.Form.Email);
+			if (user != null)
 			{
-				// Sign-in was not successful, add an error
-				ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-				return View(viewModel);
+				var isValidPassword = await _userManager.CheckPasswordAsync(user, viewModel.Form.Password);
+				if (isValidPassword)
+				{
+					var claims = new[]
+					{
+						new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+						new Claim(ClaimTypes.Name, user.UserName!)
+					};
+
+					var identity = new ClaimsIdentity(claims, "Custom");
+					var principal = new ClaimsPrincipal(identity);
+
+					await _signInManager.Context.SignInAsync(IdentityConstants.ApplicationScheme, principal);
+
+					// Pass the claims to the GetToken method
+					var content = new StringContent(JsonConvert.SerializeObject(claims), Encoding.UTF8, "application/json");
+					var response = await _httpClient.PostAsync("https://localhost:7152/api/Auth/token?key=Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh", content);
+
+					if (response.IsSuccessStatusCode)
+					{
+						var token = await response.Content.ReadAsStringAsync();
+						// Store the token in a secure place, like a secure cookie or the session
+						HttpContext.Session.SetString("JwtToken", token);
+						return RedirectToAction("Details", "Account");
+					}
+					else
+					{
+						ModelState.AddModelError(string.Empty, "Failed to generate token.");
+						return View(viewModel);
+					}
+				}
+				else
+				{
+					ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+					return View(viewModel);
+				}
 			}
 		}
 
-        ViewData["StatusMessage"] = "Incorrect e-mail and password";
-        return View(viewModel);
+		ViewData["StatusMessage"] = "Incorrect e-mail and password";
+		return View(viewModel);
+	}
 
-    }
+	#endregion
 
-    #endregion
+	#region Sign Out
 
-    #region Sign Out
-
-    [HttpGet]
+	[HttpGet]
     [Route("/signout")]
     
     public new async Task<IActionResult> SignOut()
     {
-
+        Response.Cookies.Delete("AccessToken");
         await _signInManager.SignOutAsync();
         return RedirectToAction("Signin", "Auth");
 

@@ -8,7 +8,7 @@ public static class JwtConfiguration
 {
     public static void RegisterJwt(this IServiceCollection services, IConfiguration configuration)
     {
-        //var tokenSetting = configuration.GetSection("Token");
+        var tokenSetting = configuration.GetSection("Token");
 
         services.AddAuthentication(x =>
         {

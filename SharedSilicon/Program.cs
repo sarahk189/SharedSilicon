@@ -3,6 +3,10 @@ using Infrastructure.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using SharedSilicon.Helpers.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +27,32 @@ builder.Services.AddAuthentication(options =>
 })
 .AddCookie();
 
+builder.Services.AddSession(options =>
+{
+	options.IdleTimeout = TimeSpan.FromMinutes(30);
+	options.Cookie.HttpOnly = true;
+	options.Cookie.IsEssential = true;
+});
+
+
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+	options.IncludeErrorDetails = true;
+	options.TokenValidationParameters = new TokenValidationParameters
+	{
+		ValidateIssuer = true,
+		ValidateAudience = true,
+		ValidateLifetime = true,
+		ValidateIssuerSigningKey = true,
+		ValidIssuer = builder.Configuration["Jwt:Issuer"],
+		ValidAudience = builder.Configuration["Jwt:Audience"],
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
+	};
+});
 
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),
 b => b.MigrationsAssembly("Infrastructure")));
@@ -36,20 +66,9 @@ builder.Services.AddDefaultIdentity<UserEntity>(x =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    
-    x.LoginPath = "/signin";
-	options.LoginPath = "/signin";
 	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 	options.Cookie.SameSite = SameSiteMode.None;
 	options.ExpireTimeSpan = TimeSpan.FromDays(1);
-    x.LogoutPath = "/signout";
-    x.AccessDeniedPath = "/denied";
-
-    x.Cookie.HttpOnly = true;
-    x.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    x.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-    x.SlidingExpiration = true;
-    
 });
 
 builder.Services.AddAuthentication().AddFacebook(x =>
@@ -63,13 +82,14 @@ builder.Services.AddAuthentication().AddFacebook(x =>
 var app = builder.Build();
 
 
-app.UseHsts();
 app.UseStatusCodePagesWithReExecute("/Error404", "?statusCode={0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-//app.UseUserSessionValidation();
+
 app.UseAuthentication();
+app.UseSession();
+app.UseMiddleware<UserSessionValidationMiddleware>();
 app.UseAuthorization();
 
 
