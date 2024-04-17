@@ -1,4 +1,4 @@
-﻿@model Infrastructure.Dtos.CourseDetailsDto
+﻿@model Infrastructure.Dtos.CourseDto
 
 @{
     ViewData["Title"] = "Course Details";
@@ -9,7 +9,7 @@
 @if (Model  != null)
 {
     
-    <partial name="~/Views/Shared/Sections/_SingleCourse.cshtml" />    
+    <partial name="~/Views/Shared/Sections/_SingleCourse.cshtml" model="Model" />    
 }
 else
 {

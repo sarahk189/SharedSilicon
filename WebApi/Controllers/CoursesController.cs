@@ -123,7 +123,7 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 
-		query = query.OrderByDescending(x => x.Id);
+		query = query.OrderBy(x => x.Id);
 
 
 
@@ -136,8 +136,7 @@ public class CoursesController(DataContext context) : ControllerBase
 		{
 			Succeeded = true,
 			TotalItems = await query.CountAsync()
-			//TotalPages = await query.CountAsync(),
-			//Courses = courseDtos,
+			
 		};
 
 		

@@ -18,8 +18,7 @@ public class CoursesController(CategoryService categoryService, CourseService co
 
     public async Task<IActionResult> Index(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 3)
     {
-        //var categories = await _categoryService.GetCategoriesAsync();
-        //var courses = await _courseService.GetCoursesAsync(category, searchQuery);
+        
         var courseResult = await _courseService.GetCoursesAsync(category, searchQuery, pageNumber, pageSize);
 
 
@@ -55,49 +54,9 @@ public class CoursesController(CategoryService categoryService, CourseService co
         {
             return NotFound();
         }
-        return View();
+        return View(courseDto);
     }
 
-    //[HttpPost]
-    //public async Task<IActionResult> RegisterCourse(CourseRegistrationFormViewModel model)
-    //{
-    //    if (!ModelState.IsValid)
-    //    {
-    //        return View(model);
-    //    }
-
-    //    var createCourseDto = new CreateCourseDto
-    //    {
-    //        Course = new CourseDto
-    //        {
-    //            Title = model.Title,
-    //            Price = model.Parse(model.Price),
-    //            RedPrice = model.Parse(model.RedPrice),
-    //            Hours = model.Hours.Value,
-    //            BestBadgeUrl = model.BestBadgeUrl,
-    //            RatingCount = model.RatingCount,
-    //            RatingPercentage = model.RatingPercentage,
-    //            Author = new CourseAuthorDto
-    //            {
-    //                AuthorImageUrl = model.Author.AuthorImageUrl,
-    //                FirstName = model.Author.FirstName,
-    //                LastName = model.Author.LastName,
-    //                Headline = model.Author.Headline
-    //            }
-    //        },
-    //        CategoryName = new CategoryDto
-    //        {
-    //            Name = model.
-    //        }
-    //    };
-
-    //    var response = await _http.PostAsJsonAsync("https://localhost:7152/api/courses", createCourseDto);
-
-    //    if (response.IsSuccessStatusCode)
-    //    {
-    //        return RedirectToAction("Index");
-    //    }
-
-    //    return View(model);
-    //}
+      
+ 
 }
