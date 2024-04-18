@@ -4,9 +4,6 @@
 
 
 
-@* Courses section *@
-
-
 
 <section class="courses-page">
 
@@ -42,9 +39,6 @@
 				</div>
 			</div>
 		</div>
-
-
-
 	</div>
 
 
@@ -110,7 +104,10 @@
 			</div>
 			@if (Model.Pagination != null && Model.Pagination.TotalPages > 1)
 			{
-				<div class="pagination">
+				<div class="pagination" data-current-page="@Model.Pagination.CurrentPage" data-total-pages="@Model.Pagination.TotalPages">
+					<a class="chevron" href="@Url.Action("Index", new { pageNumber = Model.Pagination.CurrentPage > 1 ? Model.Pagination.CurrentPage - 1 : 1, pageSize = Model.Pagination.PageSize})">
+						<i class="fa-sharp fa-solid fa-chevron-left"></i>
+					</a>
 					@for (int i = 1; i <= Model.Pagination.TotalPages; i++)
 					{
 						if (i == Model.Pagination.CurrentPage)
@@ -122,14 +119,14 @@
 							<a class="number" href="@Url.Action("Index", new { pageNumber = i, pageSize = Model.Pagination.PageSize})">@i</a>
 						}
 					}
-
+					<a class="chevron" href="@Url.Action("Index", new { pageNumber = Model.Pagination.CurrentPage < Model.Pagination.TotalPages ? Model.Pagination.CurrentPage + 1 : Model.Pagination.TotalPages, pageSize = Model.Pagination.PageSize})">
+						<i class="fa-sharp fa-solid fa-chevron-right"></i>
+					</a>
 				</div>
 			}
 
+
 		}
-
-	
-
 
 	</div>
 
