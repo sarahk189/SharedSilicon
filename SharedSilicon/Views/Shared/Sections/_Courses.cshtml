@@ -110,20 +110,21 @@
 				</div>
 			@if (Model.Pagination != null && Model.Pagination.TotalPages > 1)
 			{
-								<div class="pagination">
-					<a class="chevron" href="@Url.Action("Index", new { pageNumber = Model.Pagination.CurrentPage - 1, pageSize = Model.Pagination.PageSize})"><i class="fa-sharp fa-chevron-left"></i></a>
+				<div class="pagination" data-current-page="@Model.Pagination.CurrentPage" data-total-pages="@Model.Pagination.TotalPages">
+
+					<a id="previous-button" class="chevron" href="@Url.Action("Index", new { pageNumber = Model.Pagination.CurrentPage - 1, pageSize = Model.Pagination.PageSize})"><i class="fa-sharp fa-chevron-left"></i></a>
 					@for (int i = 1; i <= Model.Pagination.TotalPages; i++)
 					{
 						if (i == Model.Pagination.CurrentPage)
 						{
-											<span class="number active">@i</span>
+							<span class="number active">@i</span>
 						}
 						else
 						{
-											<a class="number" href="@Url.Action("Index", new { pageNumber = i, pageSize = Model.Pagination.PageSize})">@i</a>
+							<a class="number" href="@Url.Action("Index", new { pageNumber = i, pageSize = Model.Pagination.PageSize})">@i</a>
 						}
 					}
-							<a class="chevron" href="@Url.Action("Index", new { pageNumber = Model.Pagination.CurrentPage + 1, pageSize = Model.Pagination.PageSize})"><i class="fa-sharp fa-chevron-right"></i></a>
+					<a id="next-button" class="chevron" href="@Url.Action("Index", new { pageNumber = Model.Pagination.CurrentPage + 1, pageSize = Model.Pagination.PageSize})"><i class="fa-sharp fa-chevron-right"></i></a>
 				</div>
 			}
 

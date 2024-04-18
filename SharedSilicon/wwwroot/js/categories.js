@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     select()
     searchQuery()
     updateCoursesByFilter()
-    paginationClick(); // Add this line
+    paginationClick(); 
 
    
 })
@@ -57,17 +57,27 @@ function searchQuery() {
 
 function paginationClick() {
     try {
-        document.querySelector('.pagination').addEventListener('click', function (event) {
-            if (event.target.classList.contains('number')) {
-                event.preventDefault();
-                const url = event.target.getAttribute('href');
-                updateCoursesByFilter(url);
+        const paginationElement = document.querySelector('.pagination');
+        let currentPage = parseInt(paginationElement.getAttribute('data-current-page'));
+        const totalPages = parseInt(paginationElement.getAttribute('data-total-pages'));
+
+        paginationElement.addEventListener('click', function (event) {
+            event.preventDefault();
+            if (event.target.closest('.number')) {
+                currentPage = parseInt(event.target.textContent);
+            } else if (event.target.closest('#previous-button')) {
+                currentPage = Math.max(currentPage - 1, 1);
+            } else if (event.target.closest('#next-button')) {
+                currentPage = Math.min(currentPage + 1, totalPages);
             }
+            const url = `/courses/index?pageNumber=${currentPage}`;
+            updateCoursesByFilter(url);
         });
     } catch (error) {
         console.error('Error in paginationClick:', error);
     }
 }
+
 
 function updateCoursesByFilter(url) {
     try { 
