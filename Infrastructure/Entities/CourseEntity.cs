@@ -22,5 +22,5 @@ public class CourseEntity
     public virtual CourseAuthorEntity Author { get; set; } = null!;
 
     public virtual ICollection<FilterCategoryEntity> FilterCategory { get; set; } = new List<FilterCategoryEntity>();
-    public virtual ICollection<SavedCourseEntity> SavedCourses { get; set; } = new List<SavedCourseEntity>();
+    public virtual ICollection<SavedCourseEntity>? SavedCourses { get; set; } /*= new List<SavedCourseEntity>();*/
 }

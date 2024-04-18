@@ -73,6 +73,23 @@ public abstract class Repo<TEntity>(DataContext context) where TEntity : class
 		return [];
 	}
 
+	public virtual async Task<ResponseResult> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+	{
+		try
+		{
+			if (await _context.Set<TEntity>().AnyAsync(predicate))
+				return ResponseFactory.Exists();
+			return ResponseFactory.NotFound();
+
+		}
+		catch (Exception ex)
+		{
+
+			return ResponseFactory.Error(ex.Message);
+		}
+
+	}
+
 	public virtual async Task<TEntity> DeleteAsync(TEntity entity)
 	{
 		try

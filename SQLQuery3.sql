@@ -1,0 +1,7 @@
+﻿INSERT INTO SavedCourses VALUES('38976ef2-77b6-42db-9d92-1528323d9cf5', 1)
+INSERT INTO SavedCourses VALUES('38976ef2-77b6-42db-9d92-1528323d9cf5', 2)
+INSERT INTO SavedCourses VALUES('38976ef2-77b6-42db-9d92-1528323d9cf5', 3)
+INSERT INTO SavedCourses VALUES('38976ef2-77b6-42db-9d92-1528323d9cf5', 4)
+
+SELECT * FROM SavedCourses sc
+JOIN Courses c ON c.Id = sc.CourseId

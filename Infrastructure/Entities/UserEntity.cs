@@ -25,7 +25,7 @@ public class UserEntity : IdentityUser
 	public int? AddressId { get; set; }
 	public virtual AddressEntity? Address { get; set; }
 
-    public virtual ICollection<SavedCourseEntity> SavedCourses { get; set; } = new List<SavedCourseEntity>();
+    public virtual ICollection<SavedCourseEntity>? SavedCourses { get; set; } /*= new List<SavedCourseEntity>();*/
 
 	public bool IsExternalAccount { get; set; } = false;
 

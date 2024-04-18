@@ -7,6 +7,7 @@ using SharedSilicon.Helpers.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Infrastructure.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddRouting(x => x.LowercaseUrls = true);
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<SavedCoursesRepository>();
 
 builder.Services.AddSession(options =>
 {
