@@ -224,6 +224,7 @@
                 }
 
                 img {
+                    object-fit: cover;
                     border-radius: 8px 8px 0 0;
                     margin-bottom: 10px;
                     max-width: 100%;
@@ -241,6 +242,9 @@
                     @include h5;
                     margin: 0;
                     padding: 0 20px 0 20px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
 
                     &:hover {
                         text-decoration: underline;
@@ -306,7 +310,7 @@
         justify-content: center;
         align-items: center;
         gap: 10px;
-        margin-top:30px;
+        margin-top: 30px;
 
         .number {
             padding: 5px 15px;
