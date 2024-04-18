@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     select()
     searchQuery()
     updateCoursesByFilter()
-    paginationClick(); 
+    paginationClick(); // Add this line
 
    
 })
@@ -58,35 +58,16 @@ function searchQuery() {
 function paginationClick() {
     try {
         document.querySelector('.pagination').addEventListener('click', function (event) {
-            const chevron = event.target.closest('.chevron');
-            if (chevron) {
+            if (event.target.classList.contains('number')) {
                 event.preventDefault();
-                const currentPage = parseInt(this.getAttribute('data-current-page'), 10);
-                if (chevron.classList.contains('fa-chevron-left')) {
-                    const previousPage = currentPage - 1;
-                    if (previousPage >= 1) {
-                        const url = generatePaginationUrl(previousPage);
-                        updateCoursesByFilter(url);
-                    }
-                } else if (chevron.classList.contains('fa-chevron-right')) {
-                    const nextPage = currentPage + 1;
-                    const totalPages = parseInt(this.getAttribute('data-total-pages'), 10);
-                    if (nextPage <= totalPages) {
-                        const url = generatePaginationUrl(nextPage);
-                        updateCoursesByFilter(url);
-                    }
-                }
+                const url = event.target.getAttribute('href');
+                updateCoursesByFilter(url);
             }
         });
     } catch (error) {
         console.error('Error in paginationClick:', error);
     }
 }
-
-
-
-
-
 
 function updateCoursesByFilter(url) {
     try { 
@@ -100,14 +81,14 @@ function updateCoursesByFilter(url) {
     }
 
         fetch(url)
-            .then(res => res.json())
+            .then(res => res.text())
             .then(data => {
                 const parser = new DOMParser()
                 const dom = parser.parseFromString(data, 'text/html')
                 document.querySelector('.courses-show').innerHTML = dom.querySelector('.courses-show').innerHTML
 
-                document.querySelector('.pagination').setAttribute('data-current-page', data.Pagination.CurrentPage);
-                document.querySelector('.pagination').setAttribute('data-total-pages', data.Pagination.TotalPages);
+                const pagination = dom.querySelector('.pagination') ? dom.querySelector('.pagination').innerHTML : ''
+                document.querySelector('.pagination').innerHTML = pagination
             })
             .catch(error => console.error('Error:', error));
 
