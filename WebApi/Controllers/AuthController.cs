@@ -21,15 +21,15 @@ public class AuthController(DataContext dataContext, IConfiguration configuratio
 	[UseApiKey]
 	[HttpPost]
 	[Route("token")]
-	public IActionResult GetToken([FromBody] SimpleClaimDto[] claims)
+	public IActionResult GetToken()
 	{
 		try
 		{
-			var claimObjects = claims.Select(c => new Claim(c.Type, c.Value)).ToArray();
+			//var claimObjects = claims.Select(c => new Claim(c.Type, c.Value)).ToArray();
 			var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!);
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
-				Subject = new ClaimsIdentity(claimObjects),
+				//Subject = new ClaimsIdentity(claimObjects),
 				Expires = DateTime.UtcNow.AddDays(1),
 				Issuer = _configuration["Jwt:Issuer"],
 				Audience = _configuration["Jwt:Audience"],

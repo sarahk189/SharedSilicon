@@ -13,45 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRouting(x => x.LowercaseUrls = true);
-
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<CategoryService>();
-
-
-builder.Services.AddAuthentication(options =>
-{
-	options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-	options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-})
-.AddCookie();
 
 builder.Services.AddSession(options =>
 {
 	options.IdleTimeout = TimeSpan.FromMinutes(30);
 	options.Cookie.HttpOnly = true;
 	options.Cookie.IsEssential = true;
-});
-
-
-builder.Services.AddAuthentication(options =>
-{
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-	options.IncludeErrorDetails = true;
-	options.TokenValidationParameters = new TokenValidationParameters
-	{
-		ValidateIssuer = true,
-		ValidateAudience = true,
-		ValidateLifetime = true,
-		ValidateIssuerSigningKey = true,
-		ValidIssuer = builder.Configuration["Jwt:Issuer"],
-		ValidAudience = builder.Configuration["Jwt:Audience"],
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
-	};
 });
 
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),
@@ -81,18 +51,12 @@ builder.Services.AddAuthentication().AddFacebook(x =>
 
 var app = builder.Build();
 
-
 app.UseStatusCodePagesWithReExecute("/Error404", "?statusCode={0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthentication();
-app.UseSession();
-app.UseMiddleware<UserSessionValidationMiddleware>();
 app.UseAuthorization();
-
-
 
 app.MapControllerRoute(
     name: "default",

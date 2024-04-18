@@ -2,6 +2,7 @@
 using Infrastructure.Dtos;
 using Infrastructure.Entities;
 using Infrastructure.Factories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,7 @@ public class CoursesController(DataContext context) : ControllerBase
 {
 
 	#region CREATE
-
+	[Authorize]
 	[HttpPost]
     public async Task<IActionResult> Create(CreateCourseDto createCourseDto)
 	{
@@ -194,50 +195,59 @@ public class CoursesController(DataContext context) : ControllerBase
 		return NotFound();
 	}
 
-    #endregion region
+	#endregion region
 
-    #region UPDATE
-    //[Authorize]
-    [HttpPut("{id}")]
-	public async Task<IActionResult> UpdateOne(int id, CreateCourseDto createCourseDto)
+	#region UPDATE
+	[Authorize]
+	[HttpPut("{id}")]
+	public async Task<IActionResult> UpdateOne(int id, CourseDto createCourseDto)
 	{
-
-		if (!ModelState.IsValid)
+		try
 		{
-			return BadRequest(ModelState);
-		}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-		var course = await context.Courses
-			.Include(c => c.CourseDetails)
-			.Include(c => c.Author)
-			.FirstOrDefaultAsync(x => x.Id == id);
+            var course = await context.Courses
+                .Include(c => c.CourseDetails)
+                .Include(c => c.Author)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-		if (course != null)
+            if (course != null)
+            {
+                course.Id = id;
+                course.Title = createCourseDto.Title;
+                course.ImageUrl = createCourseDto.ImageUrl;
+                course.BestBadgeUrl = createCourseDto.BestBadgeUrl;
+                course.BookmarkUrl = createCourseDto.BookmarkUrl;
+                course.Hours = createCourseDto.Hours;
+                course.Price = createCourseDto.Price;
+                course.OldPrice = createCourseDto.OldPrice;
+                course.RedPrice = createCourseDto.RedPrice;
+                course.RatingPercentage = createCourseDto.RatingPercentage;
+                course.RatingCount = createCourseDto.RatingCount;
+
+                course.Author.AuthorImageUrl = createCourseDto.Author.AuthorImageUrl;
+                course.Author.FirstName = createCourseDto.Author.FirstName;
+                course.Author.LastName = createCourseDto.Author.LastName;
+                course.Author.Headline = createCourseDto.Author.Headline;
+
+                course.CourseDetails.NumberOfReviews = createCourseDto.CourseDetails.NumberOfReviews;
+                course.CourseDetails.Digital = createCourseDto.CourseDetails.Digital;
+
+                context.Courses.Update(course);
+                await context.SaveChangesAsync();
+
+                return Ok(course);
+            }
+        }
+		catch (Exception)
 		{
-			course.Title = createCourseDto.Course.Title;
-			course.ImageUrl = createCourseDto.Course.ImageUrl;
-			course.BestBadgeUrl = createCourseDto.Course.BestBadgeUrl;
-			course.BookmarkUrl = createCourseDto.Course.BookmarkUrl;
-			course.Hours = createCourseDto.Course.Hours;
-			course.Price = createCourseDto.Course.Price;
-			course.OldPrice = createCourseDto.Course.OldPrice;
-			course.RedPrice = createCourseDto.Course.RedPrice;
-			course.RatingPercentage = createCourseDto.Course.RatingPercentage;
-			course.RatingCount = createCourseDto.Course.RatingCount;
 
-			course.Author.AuthorImageUrl = createCourseDto.Course.Author.AuthorImageUrl;
-			course.Author.FirstName = createCourseDto.Course.Author.FirstName;
-			course.Author.LastName = createCourseDto.Course.Author.LastName;
-			course.Author.Headline = createCourseDto.Course.Author.Headline;
-
-			course.CourseDetails.NumberOfReviews = createCourseDto.Course.CourseDetails.NumberOfReviews;
-			course.CourseDetails.Digital = createCourseDto.Course.CourseDetails.Digital;
-
-			context.Courses.Update(course);
-			await context.SaveChangesAsync();
-
-			return Ok(course);
+			throw;
 		}
+		
 
 		return NotFound();
 	}
@@ -246,11 +256,11 @@ public class CoursesController(DataContext context) : ControllerBase
 
 
 
-    #endregion
+	#endregion
 
-    #region DELETE
-    //[Authorize]
-    [HttpDelete("{id}")]
+	#region DELETE
+	[Authorize]
+	[HttpDelete("{id}")]
 	public async Task<IActionResult> DeleteOne(int id)
 	{
 		var course = await context.Courses
