@@ -657,7 +657,6 @@ footer .container .social-media a {
   margin-left: 10px;
 }
 .contact-us .container .contact-layout .contact-form-container {
-  background-color: var(--gray-000);
   flex: 1;
   margin-top: 50px;
   position: absolute;
@@ -2975,6 +2974,7 @@ form span.field-validation-error {
   background-size: cover;
 }
 .container .courses-show .course .courses img {
+  object-fit: cover;
   border-radius: 8px 8px 0 0;
   margin-bottom: 10px;
   max-width: 100%;
@@ -2995,6 +2995,9 @@ form span.field-validation-error {
   font-size: 20px !important;
   margin: 0;
   padding: 0 20px 0 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .container .courses-show .course .courses h5:hover {
   text-decoration: underline;
