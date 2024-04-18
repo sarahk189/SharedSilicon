@@ -19,11 +19,12 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	[Route("/account/details")]
 	public async Task<IActionResult> Details(UserEntity user)
 	{
-		if (!_signInManager.IsSignedIn(User))
-		{
-			return RedirectToAction("SignIn", "Auth");
-		}
 		var userEntity = await _userManager.GetUserAsync(User);
+		//if (!_signInManager.IsSignedIn(User))
+		//{
+		//	return RedirectToAction("SignIn", "Auth");
+		//}
+		//var userEntity = await _userManager.GetUserAsync(User);
 		var claims = HttpContext.User.Identities.FirstOrDefault();
 		var viewModel = await PopulateViewModelAsync();
 		//viewModel.BasicInfo = _accountService.GetBasicInfo();
