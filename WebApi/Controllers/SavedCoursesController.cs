@@ -34,8 +34,8 @@ public class SavedCoursesController(UserManager<UserEntity> userManager, DataCon
 	public async Task<ActionResult> AddCourseToSavedCourses([FromBody] SavedCourseDto savedCourseDto)
 	{
 		var user = await userManager.GetUserAsync(User);
-		var userId = user.Id;
-		var courseId = savedCourseDto.CourseId;
+		var userId = user!.Id;
+		var courseId = savedCourseDto.Course!.Id;
 		var course = await context.Courses.FindAsync(courseId);
 
 		if (course == null)

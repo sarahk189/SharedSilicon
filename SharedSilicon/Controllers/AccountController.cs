@@ -6,35 +6,36 @@ using Microsoft.AspNetCore.Authorization;
 using SharedSilicon.Models;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Infrastructure.Repositories;
+using Infrastructure.Dtos;
 
 namespace SharedSilicon.Controllers;
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager) : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, SavedCoursesRepository savedCoursesRepository) : Controller
 {
 	private readonly UserManager<UserEntity> _userManager = userManager;
 	private readonly SignInManager<UserEntity> _signInManager = signInManager;
+	private readonly SavedCoursesRepository _savedCoursesRepository = savedCoursesRepository;
+
 
 	#region Details
 	//If signed in, directs to the account details page
 	[HttpGet]
 	[Route("/account/details")]
-	public async Task<IActionResult> Details(UserEntity user)
+	public async Task<IActionResult> Details()
 	{
 		var userEntity = await _userManager.GetUserAsync(User);
-		//if (!_signInManager.IsSignedIn(User))
-		//{
-		//	return RedirectToAction("SignIn", "Auth");
-		//}
-		//var userEntity = await _userManager.GetUserAsync(User);
+		if (!_signInManager.IsSignedIn(User))
+		{
+			return RedirectToAction("SignIn", "Auth");
+		}
 		var claims = HttpContext.User.Identities.FirstOrDefault();
 		var viewModel = await PopulateViewModelAsync();
-		//viewModel.BasicInfo = _accountService.GetBasicInfo();
-		//viewModel.AddressInfo = _accountService.GetAddressInfo();
 
 		return View(viewModel);
 	}
 
 
-	public async Task <AccountDetailsViewModel> PopulateViewModelAsync(/*UserEntity user*/)
+	public async Task<AccountDetailsViewModel> PopulateViewModelAsync(/*UserEntity user*/)
 	{
 		var user = await _userManager.GetUserAsync(User);
 
@@ -253,10 +254,74 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	#region MyCourses
 	[HttpGet]
 	[Route("/account/mycourses")]
-	public IActionResult SavedCourses(SavedCoursesViewModel viewModel)
+	public async Task<IActionResult> SavedCourses()
 	{
-		return View(viewModel);
+		var user = await _userManager.GetUserAsync(User);
+		if (user != null)
+		{
+			var savedCoursesEntities = await _savedCoursesRepository.GetSavedCoursesAsync(user.Id);
+
+			var savedCourses = savedCoursesEntities.Select(savedCourseEntity => new SavedCourseDto
+			{
+				User = new UserDto
+				{
+					FirstName = user.FirstName,
+					LastName = user.LastName,
+					Email = user.Email!
+				},
+				Course = PopulateCourseDto(savedCourseEntity.Course)
+			});
+
+			var viewModel = new SavedCoursesIndexViewModel
+			{
+				SavedCourses = savedCourses,
+				User = new UserDto
+				{
+					FirstName = user.FirstName,
+					LastName = user.LastName,
+					Email = user.Email!
+				}
+			};
+
+			return View(viewModel);
+		}
+
+		return RedirectToAction("Index");
 	}
+
+
+	public CourseDto PopulateCourseDto(CourseEntity courseEntity)
+	{
+		if (courseEntity == null || courseEntity.Author == null)
+		{
+			return null;
+		}
+
+		return new CourseDto
+		{
+			Title = courseEntity.Title,
+			ImageUrl = courseEntity.ImageUrl,
+			BestBadgeUrl = courseEntity.BestBadgeUrl,
+			BookmarkUrl = courseEntity.BookmarkUrl,
+			Hours = courseEntity.Hours,
+			Price = courseEntity.Price,
+			OldPrice = courseEntity.OldPrice,
+			RedPrice = courseEntity.RedPrice,
+			RatingCount = courseEntity.RatingCount,
+			Author = new CourseAuthorDto
+			{
+				FirstName = courseEntity.Author.FirstName,
+				LastName = courseEntity.Author.LastName,
+			}
+		};
+	}
+
+	//[HttpPost]
+	//[Route("/account/deletecourse")]
+	//public async Task<IActionResult> DeleteCourse(int courseId)
+	//{
+
+	//}
 	#endregion
 }
 

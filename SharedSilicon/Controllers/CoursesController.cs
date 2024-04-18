@@ -63,6 +63,7 @@ public class CoursesController(CategoryService categoryService, CourseService co
 		return View(courseDto);
 	}
 
+
 	public async Task<IActionResult> Bookmark(int courseId)
 	{
 		var userEntity = await _userManager.GetUserAsync(User);

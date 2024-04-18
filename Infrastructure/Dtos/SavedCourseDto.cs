@@ -2,6 +2,6 @@
 
 public class SavedCourseDto
 {
-	public string UserId { get; set; } = null!;
-	public int CourseId { get; set; }
+	public UserDto User { get; set; } = null!;
+	public  CourseDto? Course { get; set; }
 }

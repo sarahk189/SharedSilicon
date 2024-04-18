@@ -1,18 +1,18 @@
 ﻿@using System.Globalization
 @using SharedSilicon.ViewModels
-@using static SharedSilicon.Models.CoursesModel
-@model SavedCoursesViewModel
+@using static SharedSilicon.Models.SavedCoursesModel
+@model SavedCoursesIndexViewModel
 @{
-    ViewData["Title"] = $"Account Details for {Model.AccountInfo.FirstName} {Model.AccountInfo.LastName}";
+    ViewData["Title"] = $"Account Details for {Model.User.FirstName} {Model.User.LastName}";
 } 
 
 <div class="container">
     <section class="account-details">
         <aside>
             <div class="profile-info">
-                <img src="@Model.AccountInfo" alt="@($"{Model.AccountInfo.FirstName} {Model.AccountInfo.LastName}")" />
-                <h5>@($"{Model.AccountInfo.FirstName} {Model.AccountInfo.LastName}")</h5>
-                <p>@Model.AccountInfo.Email</p>
+                <img src="@Model.User" alt="@($"{Model.User.FirstName} {Model.User.LastName}")" />
+				<h5>@($"{Model.User.FirstName} {Model.User.LastName}")</h5>
+				<p>@Model.User.Email</p>
             </div>
             <nav>
 				<a class="btn-theme-s" asp-controller="Account" asp-action="Details"><i class="fa-light fa-gear"></i> Account Details</a>
@@ -23,38 +23,40 @@
         </aside>
 		<div class="saved-courses">
 			<div class="courses-show">
-				@foreach (var myCourse in Model.MyCourses)
+				@foreach (var savedCourse in Model.SavedCourses!)
 				{
-					<a class="my-courses" href="#">
-						<img src="@myCourse.ImageUrl" alt="course image" />
-						@if (!string.IsNullOrEmpty(myCourse.BestBadgeUrl))
-						{
-							<div class="bestbadge"> <img src="@myCourse.BestBadgeUrl" alt="Green bestseller badge"> </div>
-						}
-                        <div class="bookmark" data-course-id="@myCourse."> <img src="@myCourse.BookmarkUrl" alt="Bookmark course badge"></div>
-                        <h5>@myCourse.Title</h5>
-						<p class="author">@myCourse.Author<p>
-							<div class="price-container">
-									@if (myCourse.RedPrice.HasValue)
-									{
-									<p class="price-red">$@myCourse.RedPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
-									}
-									@if (myCourse.Price.HasValue)
-									{
-									<p class="price">$@myCourse.Price.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
-									}
-									@if (myCourse.OldPrice.HasValue)
-									{
-									<p class="old-price"><del>$@myCourse.OldPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</del></p>
-									}
-							</div>
-							<hr />
-						<p class="courses-time">
-							<i class="fa-light fa-clock"></i>@myCourse.Hours hours <i class="fa-light fa-thumbs-up"></i> @myCourse.RatingPercentage%  (@myCourse.RatingCount)
-						</p>
-					</a>
+					if (savedCourse.Course != null)
+                    {
+						<a class="my-courses" href="#">
+							<img src="@savedCourse.Course?.ImageUrl" alt="course image" />
+							@* @if (!string.IsNullOrEmpty(savedCourse.Course.BestBadgeUrl))
+							{
+								<div class="bestbadge"> <img src="@savedCourse.Course.BestBadgeUrl" alt="Green bestseller badge"> </div>
+							} *@
+							<div class="bookmark" data-course-id="@savedCourse."> <img src="/Images/courseImages/bookmark.svg" alt="Bookmark course badge"></div>
+							<h5>@savedCourse.Course?.Title</h5>
+							<p class="author">@savedCourse.Course?.Author<p>
+								<div class="price-container">
+										@if (savedCourse.Course?.RedPrice.HasValue == true)
+										{
+										<p class="price-red">$@savedCourse.Course.RedPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+										}
+										@if (savedCourse.Course?.RedPrice.HasValue == true)
+										{
+										<p class="price">$@savedCourse.Course.Price!.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+										}
+										@if (savedCourse.Course?.RedPrice.HasValue == true)
+										{
+										<p class="old-price"><del>$@savedCourse.Course.OldPrice!.Value.ToString("F2", CultureInfo.InvariantCulture)</del></p>
+										}
+								</div>
+								<hr />
+							<p class="courses-time">
+								<i class="fa-light fa-clock"></i>@savedCourse.Course?.Hours hours <i class="fa-light fa-thumbs-up"></i> @savedCourse.Course?.RatingPercentage%  (@savedCourse.Course?.RatingCount)
+							</p>
+						</a>
+					}
 				}
-
 			</div>
 		</div>
 
