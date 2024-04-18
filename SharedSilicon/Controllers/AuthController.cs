@@ -13,7 +13,6 @@ using Infrastructure.Dtos;
 using Microsoft.AspNetCore.Authorization;
 
 namespace SharedSilicon.Controllers;
-[Authorize]
 public class AuthController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, HttpClient httpClient, IConfiguration configuration) : Controller
 {
     private readonly UserManager<UserEntity> _userManager = userManager;

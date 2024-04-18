@@ -8,8 +8,6 @@ using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SharedSilicon.Controllers;
-
-[Authorize]
 public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager) : Controller
 {
 	private readonly UserManager<UserEntity> _userManager = userManager;
@@ -19,7 +17,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	//If signed in, directs to the account details page
 	[HttpGet]
 	[Route("/account/details")]
-	public async Task<IActionResult> Details()
+	public async Task<IActionResult> Details(UserEntity user)
 	{
 		if (!_signInManager.IsSignedIn(User))
 		{
