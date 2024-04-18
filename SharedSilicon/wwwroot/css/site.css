@@ -657,7 +657,6 @@ footer .container .social-media a {
   margin-left: 10px;
 }
 .contact-us .container .contact-layout .contact-form-container {
-  background-color: var(--gray-000);
   flex: 1;
   margin-top: 50px;
   position: absolute;
