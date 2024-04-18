@@ -34,8 +34,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	}
 
 
-	public async Task <AccountDetailsViewModel> PopulateViewModelAsync(UserEntity user)
-	public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
+	public async Task <AccountDetailsViewModel> PopulateViewModelAsync(/*UserEntity user*/)
 	{
 		var user = await _userManager.GetUserAsync(User);
 
@@ -125,7 +124,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 				user.Address.AddressLine1 = viewModel.AddressInfo.Addressline_1;
 				user.Address.AddressLine2 = viewModel.AddressInfo.Addressline_2!;
 				user.Address.PostalCode = viewModel.AddressInfo.PostalCode;
-				user.Address.PostalCode = viewModel.AddressInfo.City;
+				user.Address.City = viewModel.AddressInfo.City;
 
 				var updated = await _userManager.UpdateAsync(user);
 				if (updated.Succeeded)
