@@ -33,6 +33,8 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 		return View(viewModel);
 	}
 
+
+	public async Task <AccountDetailsViewModel> PopulateViewModelAsync(UserEntity user)
 	public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
 	{
 		var user = await _userManager.GetUserAsync(User);

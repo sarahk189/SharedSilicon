@@ -3045,6 +3045,35 @@ form span.field-validation-error {
 .container .courses-show .course .courses .courses-time i.fa-light.fa-thumbs-up {
   margin-left: 20px;
 }
+.container .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+.container .pagination .number {
+  padding: 5px 15px;
+  border-radius: 5px;
+  color: #9397AD;
+  text-decoration: none;
+  font-size: 12px;
+}
+.container .pagination .number:hover {
+  background-color: #EFF2FC;
+}
+.container .pagination .active {
+  background-color: #6366F1;
+  color: #FFFFFF;
+}
+.container .pagination .chevron {
+  color: #9397AD;
+  text-decoration: none;
+}
+.container .pagination .chevron:hover {
+  color: #6366F1;
+}
+
 .banner {
   padding: 50px 0;
   margin-top: 50px;

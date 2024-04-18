@@ -30,7 +30,7 @@
 						{
 							@foreach (var category in Model.Categories)
 							{
-								<div class="option" data-value="@category.Name">@category.Name</div>
+										<div class="option" data-value="@category.Name">@category.Name</div>
 							}
 						}
 					</div>
@@ -52,65 +52,67 @@
 	<div class="container">
 		@if (Model.Courses != null)
 		{
-			<div class="courses-show">
+				<div class="courses-show">
 
 				@foreach (var course in Model.Courses)
 				{
-					<div class="course">
-						<div class="courses" onclick="location.href='@Url.Action("Details", "Courses", new { id = course.Id})'">
+							<div class="course">
+								<div class="courses" onclick="location.href='@Url.Action("Details", "Courses", new { id = course.Id})'">
 
 
 
 							@if (course.BestBadgeUrl)
 							{
-								<div class="bestbadge">
+											<div class="bestbadge">
 
 
-									<img src="~/images/coursesImages/bestsellerbadge.svg" alt="Green bestseller badge">
-								</div>
+												<img src="~/images/coursesImages/bestsellerbadge.svg" alt="Green bestseller badge">
+											</div>
 
 							}
-							<a asp-action="Save" asp-controller="Courses" asp-route-id="@course.Id" class="btn btn-circle bookmark"><i class="fa-regular fa-bookmark"></i></a>
+									<a asp-action="Save" asp-controller="Courses" asp-route-id="@course.Id" class="btn btn-circle bookmark"><i class="fa-regular fa-bookmark"></i></a>
 
 
-							<img src="@course.ImageUrl" alt="course image" />
+									<img src="@course.ImageUrl" alt="course image" />
 
 
-							<h5>@course.Title</h5>
-							<p class="author">@course.Author</p>
-							<div class="price-container">
+									<h5>@course.Title</h5>
+									<p class="author">By @course.Author.FirstName @course.Author.LastName</p>
+									<div class="price-container">
 								@if (course.RedPrice.HasValue)
 								{
-									<p class="price-red">$@course.RedPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+												<p class="price-red">$@course.RedPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
 								}
 								@if (course.OldPrice.HasValue)
 								{
-									<p class="old-price"><del>$@course.OldPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</del></p>
+												<p class="old-price"><del>$@course.OldPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</del></p>
 								}
 								@if (!course.RedPrice.HasValue && !course.OldPrice.HasValue && course.Price.HasValue)
 								{
-									<p class="price">$@course.Price.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+												<p class="price">$@course.Price.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
 								}
+									</div>
+									<hr />
+									<p class="courses-time">
+										<i class="fa-light fa-clock"></i>@course.Hours hours <i class="fa-light fa-thumbs-up"></i> @course.RatingPercentage%  (@course.RatingCount)
+									</p>
+
+
+								</div>
+
+
 							</div>
-							<hr />
-							<p class="courses-time">
-								<i class="fa-light fa-clock"></i>@course.Hours hours <i class="fa-light fa-thumbs-up"></i> @course.RatingPercentage%  (@course.RatingCount)
-							</p>
-
-
-						</div>
-
-
-					</div>
 
 
 				}
 
 
-			</div>
+				</div>
 			@if (Model.Pagination != null && Model.Pagination.TotalPages > 1)
 			{
-				<div class="pagination">
+				<div class="pagination" data-current-page="@Model.Pagination.CurrentPage" data-total-pages="@Model.Pagination.TotalPages">
+
+					<a id="previous-button" class="chevron" href="@Url.Action("Index", new { pageNumber = Model.Pagination.CurrentPage - 1, pageSize = Model.Pagination.PageSize})"><i class="fa-sharp fa-chevron-left"></i></a>
 					@for (int i = 1; i <= Model.Pagination.TotalPages; i++)
 					{
 						if (i == Model.Pagination.CurrentPage)
@@ -122,19 +124,19 @@
 							<a class="number" href="@Url.Action("Index", new { pageNumber = i, pageSize = Model.Pagination.PageSize})">@i</a>
 						}
 					}
-
+					<a id="next-button" class="chevron" href="@Url.Action("Index", new { pageNumber = Model.Pagination.CurrentPage + 1, pageSize = Model.Pagination.PageSize})"><i class="fa-sharp fa-chevron-right"></i></a>
 				</div>
 			}
 
 		}
 
-	
+
 
 
 	</div>
 
 
-	
+
 
 	<div class="banner">
 		<div class="container">
