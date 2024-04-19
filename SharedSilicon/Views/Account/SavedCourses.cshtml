@@ -23,6 +23,11 @@
         </aside>
 		<div class="saved-courses">
 			<div class="courses-show">
+				<h2>Saved Items</h2>
+				<div class="form-buttons">
+					<button class="btn-gray" type="submit"><i class="fa-light fa-trash"></i> Delete All</button>
+				</div>
+
 				@foreach (var savedCourse in Model.SavedCourses!)
 				{
 					if (savedCourse.Course != null)
