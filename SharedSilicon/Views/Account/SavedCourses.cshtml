@@ -37,15 +37,15 @@
 							<h5>@savedCourse.Course?.Title</h5>
 							<p class="author">@savedCourse.Course?.Author<p>
 								<div class="price-container">
-										@if (savedCourse.Course?.RedPrice.HasValue == true)
+										@if (savedCourse.Course?.Price.HasValue == true)
 										{
-										<p class="price-red">$@savedCourse.Course.RedPrice.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+										<p class="price">$@savedCourse.Course.Price.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
 										}
 										@if (savedCourse.Course?.RedPrice.HasValue == true)
 										{
-										<p class="price">$@savedCourse.Course.Price!.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
+										<p class="price">$@savedCourse.Course.RedPrice!.Value.ToString("F2", CultureInfo.InvariantCulture)</p>
 										}
-										@if (savedCourse.Course?.RedPrice.HasValue == true)
+										@if (savedCourse.Course?.OldPrice.HasValue == true)
 										{
 										<p class="old-price"><del>$@savedCourse.Course.OldPrice!.Value.ToString("F2", CultureInfo.InvariantCulture)</del></p>
 										}
