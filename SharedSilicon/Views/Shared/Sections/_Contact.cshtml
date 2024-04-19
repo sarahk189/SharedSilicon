@@ -67,6 +67,7 @@
 						<span asp-validation-for="Message" class="error-message"></span>
 						<textarea asp-for="Message" rows="5"></textarea>
 					</div>
+					<p>@Model.Response</p>
 
 				
 					<button type="submit" class="btn-theme">Send Contact Request</button>
@@ -78,7 +79,7 @@
 	</div>
 
 	<img class="map" src="~/images/contactImages/Map.svg" alt="map with location" />
-	<script src="~/js/contact.js"></script>
+@* 	<script src="~/js/contact.js"></script> *@
 
 </section>
 

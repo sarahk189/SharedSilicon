@@ -13,14 +13,15 @@
             var json = JSON.stringify(data);
 
             
-            fetch(`https://localhost:7238/api/contact/send?key=$Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh`, {       
+            fetch(`https://localhost:7238/api/contact/send?key=Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
-                  
+                    'Content-Type': 'application/json',
+                   /* 'ApiKey': 'Yzg3OGM2MjAtZGRjYi00YzQ2LWI4M2YtY2M2Yzk2MmQyZWNh'*/
                 },
                 body: json
             })
+
                 .then(response => {
                     if (response.ok) {
                         console.log("Contact request was sent successfully.");
