@@ -48,7 +48,7 @@
 							</form>
 
 							<h5>@savedCourse.Course?.Title</h5>
-							<p class="author">@savedCourse.Course?.Author<p>
+							<p class="author">By @savedCourse.Course!.Author.FirstName @savedCourse.Course.Author.LastName <p>
 								<div class="price-container">
 										@if (savedCourse.Course?.Price.HasValue == true)
 										{
