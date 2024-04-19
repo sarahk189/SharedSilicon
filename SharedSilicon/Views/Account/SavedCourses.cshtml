@@ -37,10 +37,10 @@
                     {
 						<a class="my-courses" href="#">
 							<img src="@savedCourse.Course?.ImageUrl" alt="course image" />
-							@* @if (!string.IsNullOrEmpty(savedCourse.Course.BestBadgeUrl))
+							@if (savedCourse.Course?.BestBadgeUrl == true)
 							{
-								<div class="bestbadge"> <img src="@savedCourse.Course.BestBadgeUrl" alt="Green bestseller badge"> </div>
-							} *@
+								<div class="bestbadge"> <img src="@savedCourse.Course?.BestBadgeUrl" alt="Green bestseller badge"> </div>
+							}
 							<form asp-action="DeleteOneCourse" asp-controller="Account" method="post">
 								<input type="hidden" name="courseId" value="@savedCourse.Course?.Id" />
 								<input type="hidden" name="userId" value="@Model.User.UserId" />
