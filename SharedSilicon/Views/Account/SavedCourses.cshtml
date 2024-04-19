@@ -35,7 +35,7 @@
 				{
 					if (savedCourse.Course != null)
                     {
-						<a class="my-courses" href="#">
+						<a class="my-courses" onclick="location.href='@Url.Action("Details", "Courses", new { id = savedCourse.Course.Id})'">
 							<img src="@savedCourse.Course?.ImageUrl" alt="course image" />
 							@if (savedCourse.Course?.BestBadgeUrl == true)
 							{
