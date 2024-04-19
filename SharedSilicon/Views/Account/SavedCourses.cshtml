@@ -36,7 +36,7 @@
 					if (savedCourse.Course != null)
                     {
 						<a class="my-courses" href="#">
-							<img src="@savedCourse.Course?.ImageUrl" alt="course image" />
+							<img src="@Url.Content("~/" + savedCourse.Course.ImageUrl)" alt="course image" />
 							@* @if (!string.IsNullOrEmpty(savedCourse.Course.BestBadgeUrl))
 							{
 								<div class="bestbadge"> <img src="@savedCourse.Course.BestBadgeUrl" alt="Green bestseller badge"> </div>
