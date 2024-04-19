@@ -8,13 +8,16 @@ using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Infrastructure.Repositories;
 using Infrastructure.Dtos;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Contexts;
 
 namespace SharedSilicon.Controllers;
-public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, SavedCoursesRepository savedCoursesRepository) : Controller
+public class AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, SavedCoursesRepository savedCoursesRepository, DataContext context) : Controller
 {
 	private readonly UserManager<UserEntity> _userManager = userManager;
 	private readonly SignInManager<UserEntity> _signInManager = signInManager;
 	private readonly SavedCoursesRepository _savedCoursesRepository = savedCoursesRepository;
+	private readonly DataContext _context = context;
 
 
 	#region Details
@@ -35,48 +38,119 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	}
 
 
-	public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
-	{
-		var user = await _userManager.GetUserAsync(User);
+    public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var address = _context.Addresses.FirstOrDefault(a => a.Id == user.AddressId);
 
-		try
-		{
-			if (user != null)
-			{
-				var address = user.Address ?? new AddressEntity();
+        try
+        {
+            if (user != null)
+            {
+                address = user.Address ?? new AddressEntity();
 
-				var viewModel = new AccountDetailsViewModel()
-				{
-					BasicInfo = new AccountDetailsBasicInfoModel
-					{
-						FirstName = user.FirstName,
-						LastName = user.LastName,
-						Email = user.Email!,
-						Phone = user.PhoneNumber!,
-						Biography = user.Biography
-					},
-					AddressInfo = new AccountDetailsAddressInfoModel
+                var viewModel = new AccountDetailsViewModel()
+                {
+                    BasicInfo = new BasicInfoFormViewModel
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email!,
+                        Phone = user.PhoneNumber!,
+                        Biography = user.Biography
+                    },
+					AddressInfo = new AddressInfoFormViewModel()
 					{
 						Addressline_1 = address.AddressLine1,
-						Addressline_2 = address.AddressLine2!,
+						Addressline_2 = address.AddressLine2,
 						PostalCode = address.PostalCode,
 						City = address.City
 					}
-				};
-				return viewModel;
-			}
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex);
-		}
+                };
+
+                if (address != null)
+                {
+                    viewModel.AddressInfo = new AddressInfoFormViewModel
+                    {
+                        Addressline_1 = address.AddressLine1,
+                        Addressline_2 = address.AddressLine2,
+                        PostalCode = address.PostalCode,
+                        City = address.City
+                    };
+                }
+
+                return viewModel;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+
 		return null!;
 	}
 
-	[HttpPost]
+    public async Task<AccountDetailsViewModel> PopulateBasicInfoAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        try
+        {
+            if (user != null)
+            {
+                return new AccountDetailsViewModel
+                {
+                    BasicInfo = new BasicInfoFormViewModel
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email!,
+                        Phone = user.PhoneNumber!,
+                        Biography = user.Biography
+                    }
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+
+        return null!;
+    }
+
+    public async Task<AccountDetailsViewModel> PopulateAddressInfoAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var address = user.Address;
+
+        try
+        {
+            if (user != null)
+            {
+                return new AccountDetailsViewModel
+                {
+					AddressInfo = new AddressInfoFormViewModel
+                    {
+                        Addressline_1 = address.AddressLine1,
+                        Addressline_2 = address.AddressLine2,
+                        PostalCode = address.PostalCode,
+                        City = address.City
+                    }
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+        return null!;
+    }
+
+    [HttpPost]
 	public async Task<IActionResult> SaveBasicInfo(AccountDetailsViewModel viewModel)
 	{
-		if (!TryValidateModel(viewModel.BasicInfo, nameof(viewModel.BasicInfo)))
+		if (!TryValidateModel(viewModel.BasicInfo))
 		{
 			var user = await _userManager.GetUserAsync(User);
 
@@ -96,6 +170,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 
 			if (result.Succeeded)
 			{
+				await PopulateViewModelAsync();
 				return RedirectToAction(nameof(Details));
 
 			}
@@ -127,6 +202,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 				var updated = await _userManager.UpdateAsync(user);
 				if (updated.Succeeded)
 				{
+					await PopulateViewModelAsync();
 					return RedirectToAction(nameof(Details));
 				}
 				else
@@ -149,7 +225,8 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 				var result = await _userManager.UpdateAsync(user);
 				if (result.Succeeded)
 				{
-					return RedirectToAction(nameof(Details));
+					viewModel = await PopulateViewModelAsync();
+					return View("Details", viewModel);
 				}
 			}
 		}
