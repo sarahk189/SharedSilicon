@@ -279,6 +279,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 				SavedCourses = savedCourses,
 				User = new UserDto
 				{
+					UserId = Guid.Parse(user.Id),
 					FirstName = user.FirstName,
 					LastName = user.LastName,
 					Email = user.Email!
@@ -301,6 +302,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 
 		return new CourseDto
 		{
+			Id = courseEntity.Id,
 			Title = courseEntity.Title,
 			ImageUrl = courseEntity.ImageUrl,
 			BestBadgeUrl = courseEntity.BestBadgeUrl,
@@ -320,12 +322,71 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 		};
 	}
 
-	//[HttpPost]
-	//[Route("/account/deletecourse")]
-	//public async Task<IActionResult> DeleteCourse(int courseId)
-	//{
+	[HttpPost]
+	public async Task<IActionResult> DeleteOneCourse(int courseId, string userId)
+	{
+		//Get the saved courses from the user thats logged in
+		var savedCourses = await _savedCoursesRepository.GetSavedCoursesAsync(userId);
 
-	//}
+		//find the saved course that we want to delete
+		var savedCourse = savedCourses.FirstOrDefault(sc => sc.CourseId == courseId);
+
+		if (savedCourse != null)
+		{
+			// delete the course
+			await _savedCoursesRepository.DeleteAsync(savedCourse);
+
+			// get the updated list of saved courses
+			var updatedSavedCourses = await _savedCoursesRepository.GetSavedCoursesAsync(userId);
+
+			// make the new list of saved courses into Dtos
+			var savedCoursesDtos = updatedSavedCourses.Select(sc => new SavedCourseDto
+			{
+				User = new UserDto
+				{
+					FirstName = sc.User.FirstName,
+					LastName = sc.User.LastName,
+					Email = sc.User.Email
+				},
+				Course = PopulateCourseDto(sc.Course)
+			});
+
+			var user = await _userManager.FindByIdAsync(userId);
+
+			//get the viewmodel and return it
+			var viewModel = new SavedCoursesIndexViewModel
+			{
+				SavedCourses = savedCoursesDtos,
+				User = new UserDto
+				{
+					UserId = Guid.Parse(userId),
+					FirstName = user.FirstName,
+					LastName = user.LastName,
+					Email = user.Email
+				}
+			};
+			return View("SavedCourses", viewModel);
+		}
+
+		return NotFound();
+	}
+
+
+
+	[HttpPost]
+	public async Task<IActionResult> DeleteAllSavedCourses(string userId)
+	{
+		//find all the saved courses connected to the user
+		var savedCourses = await _savedCoursesRepository.GetSavedCoursesAsync(userId);
+
+		//delete all the saved courses
+		foreach (var savedCourse in savedCourses)
+		{
+			await _savedCoursesRepository.DeleteAsync(savedCourse);
+		}
+
+		//Go back to the view
+		return RedirectToAction("SavedCourses");
+	}
 	#endregion
 }
-
