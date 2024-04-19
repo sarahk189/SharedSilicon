@@ -4,13 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Factories;
-using System.Text;
 using System.Security.Claims;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Authentication;
-using System.IdentityModel.Tokens.Jwt;
-using Infrastructure.Dtos;
-using Microsoft.AspNetCore.Authorization;
 
 namespace SharedSilicon.Controllers;
 public class AuthController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, HttpClient httpClient, IConfiguration configuration) : Controller
@@ -31,7 +25,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 		if (_signInManager.IsSignedIn(User))
 			return RedirectToAction("/details", "Account");
 
-		//return View();
+		
 		var viewModel = new SignUpViewModel();
 		return View(viewModel);
 	}
@@ -62,8 +56,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 			}
 
 		}
-		//if (!ModelState.IsValid) 
-		//    return View(viewModel);
+		
 
 		return RedirectToAction("SignIn", "Auth");
 	}
@@ -79,7 +72,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 		if (_signInManager.IsSignedIn(User))
 			return RedirectToAction("Details", "Account");
 
-		//return View();
+		
 		var viewModel = new SignInViewModel();
 		return View(viewModel);
 	}
@@ -114,8 +107,7 @@ public class AuthController(UserManager<UserEntity> userManager, SignInManager<U
 
 		await _signInManager.SignOutAsync();
 		return RedirectToAction("SignIn", "Auth");
-		//var viewModel = new SignInViewModel();
-		//return View(viewModel);
+		
 	}
 
 

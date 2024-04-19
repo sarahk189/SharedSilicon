@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SharedSilicon.Models;
+﻿namespace SharedSilicon.Models;
 
 public class AccountDetailsAddressInfoModel
 {

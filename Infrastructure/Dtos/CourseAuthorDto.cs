@@ -1,6 +1,4 @@
-﻿
-
-namespace Infrastructure.Dtos;
+﻿namespace Infrastructure.Dtos;
 
 public class CourseAuthorDto
 {

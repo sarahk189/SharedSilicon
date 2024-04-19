@@ -1,12 +1,7 @@
 using Infrastructure.Contexts;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using SharedSilicon.Helpers.Middlewares;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Infrastructure.Repositories;
 
 

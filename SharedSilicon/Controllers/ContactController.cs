@@ -17,31 +17,13 @@ public class ContactController : Controller
 
 		if (TempData.ContainsKey("MessageSent"))
 		{
-			//ViewData["Response"] = TempData["MessageSent"];
+			
 			viewModel.Response = TempData["MessageSent"]!.ToString();
         }
 		return View(viewModel);
 	}
 
-	//[HttpPost]
-	//public IActionResult Index(ContactViewModel model)
-	//{
-	//	if (!ModelState.IsValid)
-	//	{
-	//		return View(model);
-	//	}
-
-	//	TempData["MessageSent"] = "Your message has been sent!";
-	//	ViewData["Title"] = "Contact us";
-
-		
-	//	var viewModel = new ContactViewModel();
-
-	//	ModelState.Clear();
-
-		
-	//	return View(viewModel);
-	//}
+	
 
 	[HttpPost]
 	public async Task<IActionResult> Send(ContactViewModel model)

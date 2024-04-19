@@ -1,9 +1,7 @@
 ﻿namespace Infrastructure.Dtos;
 
 public class CourseResult
-{
-
-	
+{	
 	public bool Succeeded { get; set; }
 
 	public int TotalItems { get; set; }

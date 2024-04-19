@@ -2,13 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Authorization;
 using SharedSilicon.Models;
-using System.Net;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Infrastructure.Repositories;
 using Infrastructure.Dtos;
-using Microsoft.EntityFrameworkCore;
 using Infrastructure.Contexts;
 
 namespace SharedSilicon.Controllers;
@@ -21,7 +17,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 
 
 	#region Details
-	//If signed in, directs to the account details page
+	
 	[HttpGet]
 	[Route("/account/details")]
 	public async Task<IActionResult> Details()
@@ -274,7 +270,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 			return NotFound();
 		}
 
-		// Check if the current password or new password is null
+		
 		if (string.IsNullOrEmpty(viewModel.Password.CurrentPassword) || string.IsNullOrEmpty(viewModel.Password.NewPassword))
 		{
 			ModelState.AddModelError(string.Empty, "Password cannot be null or empty");
@@ -399,21 +395,21 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	[HttpPost]
 	public async Task<IActionResult> DeleteOneCourse(int courseId, string userId)
 	{
-		//Get the saved courses from the user thats logged in
+		
 		var savedCourses = await _savedCoursesRepository.GetSavedCoursesAsync(userId);
 
-		//find the saved course that we want to delete
+		
 		var savedCourse = savedCourses.FirstOrDefault(sc => sc.CourseId == courseId);
 
 		if (savedCourse != null)
 		{
-			// delete the course
+			
 			await _savedCoursesRepository.DeleteAsync(savedCourse);
 
-			// get the updated list of saved courses
+		
 			var updatedSavedCourses = await _savedCoursesRepository.GetSavedCoursesAsync(userId);
 
-			// make the new list of saved courses into Dtos
+			
 			var savedCoursesDtos = updatedSavedCourses.Select(sc => new SavedCourseDto
 			{
 				User = new UserDto
@@ -427,7 +423,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 
 			var user = await _userManager.FindByIdAsync(userId);
 
-			//get the viewmodel and return it
+			
 			var viewModel = new SavedCoursesIndexViewModel
 			{
 				SavedCourses = savedCoursesDtos,
@@ -450,16 +446,16 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	[HttpPost]
 	public async Task<IActionResult> DeleteAllSavedCourses(string userId)
 	{
-		//find all the saved courses connected to the user
+		
 		var savedCourses = await _savedCoursesRepository.GetSavedCoursesAsync(userId);
 
-		//delete all the saved courses
+		
 		foreach (var savedCourse in savedCourses)
 		{
 			await _savedCoursesRepository.DeleteAsync(savedCourse);
 		}
 
-		//Go back to the view
+		
 		return RedirectToAction("SavedCourses");
 	}
 	#endregion

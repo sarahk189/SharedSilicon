@@ -24,7 +24,7 @@ public class CategoryService(HttpClient http, IConfiguration configuration)
         }
         else
         {
-            // Log the status code and response content
+            
             Console.WriteLine($"Response status code: {response.StatusCode}");
             Console.WriteLine($"Response content: {await response.Content.ReadAsStringAsync()}");
             Console.WriteLine("Hey! IM HERE!!!!!!");

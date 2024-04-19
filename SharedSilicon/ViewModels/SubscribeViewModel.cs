@@ -1,5 +1,4 @@
 ﻿using SharedSilicon.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace SharedSilicon.ViewModels;
 

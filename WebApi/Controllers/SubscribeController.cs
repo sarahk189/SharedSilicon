@@ -1,10 +1,8 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Dtos;
-using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
@@ -16,7 +14,7 @@ public class SubscribeController(DataContext context) : ControllerBase
     #region CREATE
 
     [HttpPost]
-    //[UseApiKey]
+  
     public async Task<IActionResult> Create(SubscriberDto input)
     {
         if (ModelState.IsValid)
@@ -114,7 +112,7 @@ public class SubscribeController(DataContext context) : ControllerBase
     #endregion
 
     #region DELETE
-    //[UseApiKey]
+    
     [HttpDelete("{id}")]
     public async Task <IActionResult> DeleteOne(int id)
     {

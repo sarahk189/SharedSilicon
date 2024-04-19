@@ -1,5 +1,4 @@
-﻿
-using Infrastructure.Entities;
+﻿using Infrastructure.Entities;
 
 
 namespace Infrastructure.Factories;

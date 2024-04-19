@@ -1,9 +1,6 @@
-﻿using Infrastructure.Entities;
-using SharedSilicon.Models;
-
-namespace SharedSilicon.ViewModels
+﻿namespace SharedSilicon.ViewModels
 {
-    public class AccountDetailsViewModel
+	public class AccountDetailsViewModel
     {
         public string Title { get; set; } = "Account Details";
         public BasicInfoFormViewModel BasicInfo { get; set; } = null!;

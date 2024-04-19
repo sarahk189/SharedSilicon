@@ -1,12 +1,9 @@
 ﻿using Infrastructure.Contexts;
-using Infrastructure.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using WebApi.Filters;
-using WebApi.Models;
 
 
 namespace WebApi.Controllers;
@@ -25,11 +22,11 @@ public class AuthController(DataContext dataContext, IConfiguration configuratio
 	{
 		try
 		{
-			//var claimObjects = claims.Select(c => new Claim(c.Type, c.Value)).ToArray();
+			
 			var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!);
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
-				//Subject = new ClaimsIdentity(claimObjects),
+				
 				Expires = DateTime.UtcNow.AddDays(1),
 				Issuer = _configuration["Jwt:Issuer"],
 				Audience = _configuration["Jwt:Audience"],

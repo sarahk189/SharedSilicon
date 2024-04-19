@@ -1,11 +1,6 @@
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Infrastructure.Contexts;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using WebApi.Dtos;
 using WebApi.Filters;
 using Infrastructure.Dtos;
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Infrastructure.Entities;
@@ -25,7 +24,7 @@ public class UserEntity : IdentityUser
 	public int? AddressId { get; set; }
 	public virtual AddressEntity? Address { get; set; }
 
-    public virtual ICollection<SavedCourseEntity>? SavedCourses { get; set; } /*= new List<SavedCourseEntity>();*/
+    public virtual ICollection<SavedCourseEntity>? SavedCourses { get; set; } 
 
 	public bool IsExternalAccount { get; set; } = false;
 

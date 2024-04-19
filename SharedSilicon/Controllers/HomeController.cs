@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using SharedSilicon.ViewModels;
 using System.Text;
-using System.Text.Json.Serialization;
-using System.Text.Unicode;
 
 
 namespace SharedSilicon.Controllers;
@@ -99,9 +96,6 @@ public class HomeController(HttpClient http) : Controller
 }
 
 
-    //public IActionResult Error404()
-    //{
-    //    return View("Error404/Index");
-    //}
+  
 
 

@@ -1,10 +1,5 @@
 ﻿using Infrastructure.Dtos;
 using Infrastructure.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Factories;
 
@@ -18,7 +13,7 @@ public class ContactFactory
 
             return new ContactDto
             {
-                //Id = entity.Id,
+                
                 FullName = entity.FullName,
                 Email = entity.Email,
                 Service = entity.Service,
