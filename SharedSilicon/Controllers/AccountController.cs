@@ -35,7 +35,7 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 	}
 
 
-	public async Task<AccountDetailsViewModel> PopulateViewModelAsync(/*UserEntity user*/)
+	public async Task<AccountDetailsViewModel> PopulateViewModelAsync()
 	{
 		var user = await _userManager.GetUserAsync(User);
 
@@ -90,9 +90,6 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 					user.PhoneNumber = viewModel.BasicInfo.Phone!;
 					user.Biography = viewModel.BasicInfo.Biography!;
 				}
-
-
-
 			}
 			var result = await _userManager.UpdateAsync(user);
 
