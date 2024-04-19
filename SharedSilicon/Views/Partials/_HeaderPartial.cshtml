@@ -16,9 +16,7 @@
             <nav>
                 <a class="menu-link" asp-controller="Home" asp-action="Index" asp-fragment="overview">Overview</a>
                 <a class="menu-link" asp-controller="Home" asp-action="Index" asp-fragment="features">Features</a>
-                <a class="menu-link" asp-controller="Contact" asp-action="Index" asp-fragment="contact">Contact</a>
-                <p>@(_signInManager.IsSignedIn(User) ? "Inloggad" : "Inte inloggad")</p>
-                <p>@(User.Identity.IsAuthenticated ? "Authenticated" : "Not authenticated")</p>
+                <a class="menu-link" asp-controller="Contact" asp-action="Index" asp-fragment="contact">Contact</a>              
 
                 @if (_signInManager.IsSignedIn(User))
                 
@@ -55,7 +53,7 @@
 
 
 
-        @*  // stupid mobile menu begins here  *@
+        @*  //mobile menu begins here  *@
         <button onclick="toggleMenu()" class="btn-mobile">
             <i class="fa-regular fa-bars"></i>
         </button>
