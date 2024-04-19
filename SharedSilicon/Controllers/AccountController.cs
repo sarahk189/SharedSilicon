@@ -270,7 +270,9 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 					Email = user.Email!
 				},
 				Course = PopulateCourseDto(savedCourseEntity.Course)
-			});
+
+                
+            });
 
 			var viewModel = new SavedCoursesIndexViewModel
 			{
@@ -312,7 +314,9 @@ public class AccountController(UserManager<UserEntity> userManager, SignInManage
 			{
 				FirstName = courseEntity.Author.FirstName,
 				LastName = courseEntity.Author.LastName,
-			}
+                AuthorImageUrl = courseEntity.Author.AuthorImageUrl,
+                Headline = courseEntity.Author.Headline
+            }
 		};
 	}
 
